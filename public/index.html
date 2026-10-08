@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<!-- Copia da CSP do _headers: protege mesmo em hospedagens que ignoram o _headers (ex.: GitHub Pages).
+     Se mudar uma, mude a outra. frame-ancestors so funciona no cabecalho. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; form-action 'self' https://wa.me; base-uri 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>ConectaByte | Sites e sistemas em Agudos e região</title>
@@ -11,9 +14,9 @@
 <meta property="og:locale" content="pt_BR">
 <meta name="theme-color" content="#07080B">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/poppins-179f97ec.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-f11d729b.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/boot.js"></script>
 <script src="assets/site.js" defer></script>
@@ -21,7 +24,7 @@
 <body>
 
 <!-- Ícones -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<svg class="sprite" width="0" height="0" aria-hidden="true">
   <defs>
     <symbol id="logo" viewBox="0 0 64 64">
       <path d="M46.85 17.15 A21 21 0 1 0 46.85 46.85" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
@@ -33,8 +36,6 @@
     <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.06c-.24.68-1.42 1.3-1.95 1.35-.5.05-.97.23-3.28-.68-2.78-1.1-4.54-3.95-4.68-4.13-.13-.18-1.12-1.49-1.12-2.84 0-1.35.71-2.02.96-2.29.25-.28.55-.35.73-.35l.52.01c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.28-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.11.6-.07.16-.18.69-.8.88-1.08.18-.27.37-.23.62-.14.25.09 1.6.76 1.87.9.28.13.46.2.53.32.07.11.07.66-.17 1.33Z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
-    <symbol id="i-site" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></g></symbol>
-    <symbol id="i-cart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6"/></g></symbol>
     <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
     <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></g></symbol>
@@ -180,33 +181,33 @@
             <div class="kpi"><small>Visitas no site</small><div class="v" data-count="2418">0</div><span class="d">↑ 18%</span>
               <svg class="spark" viewBox="0 0 112 44"><path pathLength="1" stroke="#4ADE80" d="M2 36 C14 34 18 26 28 28 S42 38 54 28 S70 12 80 16 S98 10 110 4"/></svg></div>
             <div class="kpi"><small>Pedidos no WhatsApp</small><div class="v" data-count="186">0</div><span class="d">↑ 24%</span>
-              <svg class="spark" viewBox="0 0 112 44" style="--d:.3s"><path pathLength="1" stroke="#FB923C" d="M2 34 C12 36 20 30 30 30 S44 20 56 24 S72 30 82 18 S100 8 110 6"/></svg></div>
+              <svg class="spark" viewBox="0 0 112 44" data-d=".3s"><path pathLength="1" stroke="#FB923C" d="M2 34 C12 36 20 30 30 30 S44 20 56 24 S72 30 82 18 S100 8 110 6"/></svg></div>
             <div class="kpi"><small>Posição no Google</small><div class="v">1º</div><span class="d n">“doceria em Agudos”</span>
-              <svg class="spark" viewBox="0 0 112 44" style="--d:.4s"><path pathLength="1" stroke="#FBBF24" d="M2 40 C16 38 22 34 32 30 S48 30 58 22 S76 16 86 10 S102 6 110 4"/></svg></div>
+              <svg class="spark" viewBox="0 0 112 44" data-d=".4s"><path pathLength="1" stroke="#FBBF24" d="M2 40 C16 38 22 34 32 30 S48 30 58 22 S76 16 86 10 S102 6 110 4"/></svg></div>
             <div class="kpi"><small>Carregamento</small><div class="v" data-count="0.8" data-dec="1" data-suffix=" s">0</div><span class="d">rápido no celular</span>
-              <svg class="spark" viewBox="0 0 112 44" style="--d:.5s"><path pathLength="1" stroke="#4ADE80" d="M2 6 C14 8 20 14 30 16 S46 26 58 28 S76 36 88 36 S102 38 110 40"/></svg></div>
+              <svg class="spark" viewBox="0 0 112 44" data-d=".5s"><path pathLength="1" stroke="#4ADE80" d="M2 6 C14 8 20 14 30 16 S46 26 58 28 S76 36 88 36 S102 38 110 40"/></svg></div>
           </div>
           <div class="dp-grid">
             <div class="dp-card">
               <h4>Pedidos recentes</h4>
               <div class="sub">Chegaram pelo site nas últimas horas</div>
-              <div class="ord" style="--d:.35s"><span class="av" style="background:linear-gradient(135deg,#F97316,#C2410C)">MS</span><div><b>Mariana S.</b><small>2 bolos de pote · entrega 16h</small></div><span class="val">R$ 24,00</span><span class="tag o">Pix aprovado</span></div>
-              <div class="ord" style="--d:.47s"><span class="av" style="background:linear-gradient(135deg,#FBBF24,#D97706)">CR</span><div><b>Carlos R.</b><small>Torta doce · retirada</small></div><span class="val">R$ 65,00</span><span class="tag a">Novo</span></div>
-              <div class="ord" style="--d:.59s"><span class="av" style="background:linear-gradient(135deg,#475569,#1E293B)">AP</span><div><b>Ana P.</b><small>50 brigadeiros · festa</small></div><span class="val">R$ 90,00</span><span class="tag g">Entregue</span></div>
+              <div class="ord" data-d=".35s"><span class="av av-1">MS</span><div><b>Mariana S.</b><small>2 bolos de pote · entrega 16h</small></div><span class="val">R$ 24,00</span><span class="tag o">Pix aprovado</span></div>
+              <div class="ord" data-d=".47s"><span class="av av-2">CR</span><div><b>Carlos R.</b><small>Torta doce · retirada</small></div><span class="val">R$ 65,00</span><span class="tag a">Novo</span></div>
+              <div class="ord" data-d=".59s"><span class="av av-3">AP</span><div><b>Ana P.</b><small>50 brigadeiros · festa</small></div><span class="val">R$ 90,00</span><span class="tag g">Entregue</span></div>
             </div>
             <div class="dp-card">
               <h4>Visitas por mês</h4>
               <div class="sub">Este ano comparado ao anterior</div>
-              <div class="legend"><span><i style="background:#EA580C"></i>2026</span><span><i style="background:rgba(255,255,255,.2)"></i>2025</span></div>
+              <div class="legend"><span><i class="lg-cur"></i>2026</span><span><i class="lg-prev"></i>2025</span></div>
               <div class="chart">
-                <div class="gl" style="top:0"><span>3 mil</span></div><div class="gl" style="top:33%"><span>2 mil</span></div><div class="gl" style="top:66%"><span>1 mil</span></div><div class="gl" style="top:100%"><span>0</span></div>
+                <div class="gl gl-0"><span>3 mil</span></div><div class="gl gl-33"><span>2 mil</span></div><div class="gl gl-66"><span>1 mil</span></div><div class="gl gl-100"><span>0</span></div>
                 <div class="bars">
-                  <div class="bar-col"><i class="bar prev" style="height:34%;--d:.2s"></i><i class="bar cur" style="height:46%;--d:.25s"></i><em>Jan</em></div>
-                  <div class="bar-col"><i class="bar prev" style="height:40%;--d:.27s"></i><i class="bar cur" style="height:58%;--d:.32s"></i><em>Fev</em></div>
-                  <div class="bar-col"><i class="bar prev" style="height:37%;--d:.34s"></i><i class="bar cur" style="height:52%;--d:.39s"></i><em>Mar</em></div>
-                  <div class="bar-col"><i class="bar prev" style="height:48%;--d:.41s"></i><i class="bar cur" style="height:70%;--d:.46s"></i><em>Abr</em></div>
-                  <div class="bar-col"><i class="bar prev" style="height:44%;--d:.48s"></i><i class="bar cur" style="height:79%;--d:.53s"></i><em>Mai</em></div>
-                  <div class="bar-col"><i class="bar prev" style="height:52%;--d:.55s"></i><i class="bar cur" style="height:94%;--d:.6s"></i><em>Jun</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="34" data-d=".2s"></i><i class="bar cur" data-h="46" data-d=".25s"></i><em>Jan</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="40" data-d=".27s"></i><i class="bar cur" data-h="58" data-d=".32s"></i><em>Fev</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="37" data-d=".34s"></i><i class="bar cur" data-h="52" data-d=".39s"></i><em>Mar</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="48" data-d=".41s"></i><i class="bar cur" data-h="70" data-d=".46s"></i><em>Abr</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="44" data-d=".48s"></i><i class="bar cur" data-h="79" data-d=".53s"></i><em>Mai</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="52" data-d=".55s"></i><i class="bar cur" data-h="94" data-d=".6s"></i><em>Jun</em></div>
                 </div>
               </div>
             </div>
@@ -221,13 +222,13 @@
     <div class="wrap">
       <div class="stats-grid">
         <div class="stat-n rv"><strong class="grad" data-count="27" data-suffix="%">0%</strong><p>dos pequenos negócios ainda não vendem por site, redes ou aplicativo.</p><small>Sebrae/FGV</small></div>
-        <div class="stat-n rv" style="--d:.08s"><strong class="grad" data-count="67" data-prefix="R$ " data-suffix=" bi">R$ 0 bi</strong><p>em vendas online de pequenos negócios em 2024. Em 2019 eram R$ 5 bi.</p><small>Sebrae</small></div>
-        <div class="stat-n rv" style="--d:.16s"><strong class="grad" data-count="25" data-suffix=" km">0 km</strong><p>separam Agudos de Bauru, e atendemos toda a região.</p><small>Atendimento local</small></div>
+        <div class="stat-n rv" data-d=".08s"><strong class="grad" data-count="67" data-prefix="R$ " data-suffix=" bi">R$ 0 bi</strong><p>em vendas online de pequenos negócios em 2024. Em 2019 eram R$ 5 bi.</p><small>Sebrae</small></div>
+        <div class="stat-n rv" data-d=".16s"><strong class="grad" data-count="25" data-suffix=" km">0 km</strong><p>separam Agudos de Bauru, e atendemos toda a região.</p><small>Atendimento local</small></div>
       </div>
     </div>
     <div class="cities-strip">
       <p class="rv">Atendimento local em Agudos e região</p>
-      <div class="mq rv" style="--d:.1s" aria-hidden="true">
+      <div class="mq rv" data-d=".1s" aria-hidden="true">
         <div class="mq-track">
           <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
           <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
@@ -251,12 +252,12 @@
           <h3>Sites profissionais</h3>
           <p>Sites rápidos, bonitos no celular e preparados para aparecer no Google. Têm botão de WhatsApp, formulário e e-mail profissional.</p>
           <div class="chips-v" aria-hidden="true">
-            <div class="chip-v hot" style="--d:.35s"><svg><use href="#i-bolt"/></svg>Carrega rápido<span class="ok">ativo</span></div>
-            <div class="chip-v" style="--d:.47s"><svg><use href="#i-phone"/></svg>Perfeito no celular</div>
-            <div class="chip-v" style="--d:.59s"><svg><use href="#i-search"/></svg>Pronto para o Google</div>
+            <div class="chip-v hot" data-d=".35s"><svg><use href="#i-bolt"/></svg>Carrega rápido<span class="ok">ativo</span></div>
+            <div class="chip-v" data-d=".47s"><svg><use href="#i-phone"/></svg>Perfeito no celular</div>
+            <div class="chip-v" data-d=".59s"><svg><use href="#i-search"/></svg>Pronto para o Google</div>
           </div>
         </article>
-        <article class="card bc bc-b spot glow-hover trig rv" style="--d:.08s">
+        <article class="card bc bc-b spot glow-hover trig rv" data-d=".08s">
           <span class="num">02</span>
           <h3>Catálogos e lojas virtuais</h3>
           <p>Seus produtos ficam online com carrinho, e o pedido chega no WhatsApp ou é pago por Pix e cartão. Você cadastra os produtos num painel simples.</p>
@@ -269,7 +270,7 @@
             </div>
           </div>
         </article>
-        <article class="card bc bc-c spot glow-hover trig rv" style="--d:.16s">
+        <article class="card bc bc-c spot glow-hover trig rv" data-d=".16s">
           <div class="beam" aria-hidden="true"></div>
           <div class="beam-glow" aria-hidden="true"></div>
           <div class="tile" aria-hidden="true"><svg><use href="#logo"/></svg></div>
@@ -279,24 +280,24 @@
             <p>Agendamento, estoque, ordens de serviço, orçamentos e painéis. Trocamos a planilha e o papel por um sistema feito para o seu processo.</p>
           </div>
         </article>
-        <article class="card bc bc-d spot glow-hover trig rv" style="--d:.1s">
+        <article class="card bc bc-d spot glow-hover trig rv" data-d=".1s">
           <span class="num">05</span>
           <div class="txt">
             <h3>Suporte online</h3>
             <p>Mande a dúvida pelo WhatsApp, em texto, áudio ou print. Respondemos rápido e você não precisa abrir chamado.</p>
           </div>
           <div class="sparkles" aria-hidden="true">
-            <svg viewBox="0 0 24 24" style="left:20px;top:30px;width:58px;height:58px;color:#F8FAFC"><use href="#i-spark"/></svg>
-            <svg viewBox="0 0 24 24" style="left:92px;top:4px;width:30px;height:30px;color:#FBBF24"><use href="#i-spark"/></svg>
-            <svg viewBox="0 0 24 24" style="left:100px;top:96px;width:24px;height:24px;color:#F97316"><use href="#i-spark"/></svg>
-            <svg viewBox="0 0 24 24" style="left:0;top:110px;width:16px;height:16px;color:#F8FAFC"><use href="#i-spark"/></svg>
+            <svg class="sp1" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+            <svg class="sp2" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+            <svg class="sp3" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+            <svg class="sp4" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
           </div>
           <div class="chat" aria-hidden="true">
             <div class="chat-h"><span class="lg"><svg><use href="#logo"/></svg></span><div><b>ConectaByte</b><small>● online</small></div></div>
             <div class="msgs">
-              <div class="bub in" style="--d:.45s">Oi! Consegue trocar o preço da torta no site?<small>14:02</small></div>
+              <div class="bub in" data-d=".45s">Oi! Consegue trocar o preço da torta no site?<small>14:02</small></div>
               <div class="typing"><i></i><i></i><i></i></div>
-              <div class="bub out" style="--d:1.95s">Claro! Já está no ar ✓<small>14:06</small></div>
+              <div class="bub out" data-d="1.95s">Claro! Já está no ar ✓<small>14:06</small></div>
             </div>
           </div>
         </article>
@@ -309,7 +310,7 @@
             <div class="gs-res"><span class="pin"><svg><use href="#i-pin"/></svg></span><div><b>Doceria do Bairro</b><small>Aberto agora · Agudos</small></div><span class="rank">1º</span></div>
           </div>
         </article>
-        <article class="card bc bc-f spot glow-hover trig rv" style="--d:.08s">
+        <article class="card bc bc-f spot glow-hover trig rv" data-d=".08s">
           <span class="num">06</span>
           <div class="txt">
             <h3>Suporte presencial</h3>
@@ -335,15 +336,15 @@
       <div class="f-row">
         <div class="f-copy">
           <h3 class="rv">Manutenção incluída</h3>
-          <p class="rv" style="--d:.06s">A mensalidade cobre hospedagem, backup, segurança e pequenos ajustes.</p>
-          <a class="btn btn-ghost btn-sm rv" style="--d:.12s" href="#pacotes">Ver pacotes <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="rv" data-d=".06s">A mensalidade cobre hospedagem, backup, segurança e pequenos ajustes.</p>
+          <a class="btn btn-ghost btn-sm rv" data-d=".12s" href="#pacotes">Ver pacotes <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <ul class="checks-v">
-            <li class="rv" style="--d:.18s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Foco em cliente local</b><span>Todos os pacotes trazem Google Meu Negócio, botão de WhatsApp e SEO local.</span></div></li>
-            <li class="rv" style="--d:.24s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Linguagem simples</b><span>Explicamos tudo sem jargão técnico, já na primeira conversa.</span></div></li>
-            <li class="rv" style="--d:.3s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Empresa da região</b><span>Conhecemos o comércio daqui e estamos perto quando você precisar.</span></div></li>
+            <li class="rv" data-d=".18s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Foco em cliente local</b><span>Todos os pacotes trazem Google Meu Negócio, botão de WhatsApp e SEO local.</span></div></li>
+            <li class="rv" data-d=".24s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Linguagem simples</b><span>Explicamos tudo sem jargão técnico, já na primeira conversa.</span></div></li>
+            <li class="rv" data-d=".3s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Empresa da região</b><span>Conhecemos o comércio daqui e estamos perto quando você precisar.</span></div></li>
           </ul>
         </div>
-        <div class="card f-card trig rv" style="--d:.1s" id="fCard">
+        <div class="card f-card trig rv" data-d=".1s" id="fCard">
           <div class="f-item active"><span class="fi"><svg aria-hidden="true"><use href="#i-doc"/></svg></span><div><h4>Preço fechado</h4><p>O escopo, o prazo e o valor ficam por escrito antes de começar.</p></div><span class="n">01</span></div>
           <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-split"/></svg></span><div><h4>Pagamento em etapas</h4><p>Você paga 50% na aprovação e 50% na entrega. Os pacotes maiores podem ser divididos em 3 vezes.</p></div><span class="n">02</span></div>
           <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-unlock"/></svg></span><div><h4>O site é seu</h4><p>O domínio fica no seu nome e você recebe a documentação. Ninguém fica refém da gente.</p></div><span class="n">04</span></div>
@@ -386,12 +387,12 @@
         <div class="card s-card trig rv" id="sCard" aria-hidden="true">
           <div class="s-top"><span class="fi"><svg><use href="#i-chat"/></svg></span><div><b>Respostas em até 2h úteis</b><small>Texto, áudio, foto ou print.</small></div></div>
           <div class="plane" id="plane">
-            <div class="g" style="top:0;width:60%"></div>
-            <div class="g" style="top:62px;width:82%"></div>
-            <div class="g" style="top:124px;width:70%"></div>
-            <div class="g" style="top:186px;width:90%"></div>
-            <div class="g" style="top:248px;width:64%"></div>
-            <div class="g" style="top:310px;width:78%"></div>
+            <div class="g g1"></div>
+            <div class="g g2"></div>
+            <div class="g g3"></div>
+            <div class="g g4"></div>
+            <div class="g g5"></div>
+            <div class="g g6"></div>
             <div class="s3d">
               <div class="r"><b>Novo pedido</b><svg><use href="#i-wa"/></svg></div>
               <div class="t">2 bolos de pote · 16h</div>
@@ -412,7 +413,7 @@
               <li><svg aria-hidden="true"><use href="#i-check"/></svg>Backup, monitoramento e pequenas alterações todo mês</li>
             </ul>
           </div>
-          <div class="card sup pres glow-hover rv" style="--d:.08s">
+          <div class="card sup pres glow-hover rv" data-d=".08s">
             <div class="kicker"><i></i>Presencial</div>
             <h3>Visita na sua empresa</h3>
             <p>Algumas coisas se resolvem melhor pessoalmente, e a gente vai até você.</p>
@@ -476,7 +477,7 @@
           <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VITRINE da ConectaByte.">Quero o Vitrine <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <p class="prazo">Entrega em 7 dias úteis</p>
         </article>
-        <article class="card plan pop rv" style="--d:.06s" data-plan="presenca">
+        <article class="card plan pop rv" data-d=".06s" data-plan="presenca">
           <span class="glow-b" aria-hidden="true"></span>
           <div class="tags"><span class="ptag">Mais escolhido</span><span class="ptag rec">Recomendado</span></div>
           <h3>Presença</h3>
@@ -494,7 +495,7 @@
           <a class="btn btn-primary btn-block" href="#" data-wa="Olá! Tenho interesse no pacote PRESENÇA da ConectaByte.">Quero o Presença <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <p class="prazo">Entrega em 14 dias</p>
         </article>
-        <article class="card plan glow-hover rv" style="--d:.12s" data-plan="vendas">
+        <article class="card plan glow-hover rv" data-d=".12s" data-plan="vendas">
           <div class="tags"><span class="ptag rec">Recomendado</span></div>
           <h3>Vendas</h3>
           <p class="for">Para lojas, doceiras, restaurantes e distribuidores</p>
@@ -511,7 +512,7 @@
           <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VENDAS da ConectaByte.">Quero o Vendas <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <p class="prazo">Entrega em 21 dias</p>
         </article>
-        <article class="card plan glow-hover rv" style="--d:.18s" data-plan="sistema">
+        <article class="card plan glow-hover rv" data-d=".18s" data-plan="sistema">
           <div class="tags"><span class="ptag rec">Recomendado</span></div>
           <h3>Sob medida</h3>
           <p class="for">Para quem ainda controla agenda, estoque ou pedidos no papel</p>
@@ -541,13 +542,13 @@
   </section>
 
   <!-- CLIENTES FUNDADORES -->
-  <section id="fundadores" style="padding-top:0">
+  <section class="pt-0" id="fundadores">
     <div class="wrap">
       <div class="card pilot rv">
         <div>
           <span class="label">Lançamento</span>
           <h2>Seja um dos 3 clientes fundadores</h2>
-          <p>Estamos abrindo <strong>3 vagas com 40% de desconto</strong> para empresas que topem gravar um depoimento e deixar o projeto aparecer no nosso portfólio. Queremos uma vaga para comércio, uma para saúde e uma para o terceiro setor.</p>
+          <p>Estamos abrindo <strong>3 vagas com 40% de desconto</strong> para empresas que topem gravar um depoimento e deixar o projeto aparecer no nosso portfólio.</p>
         </div>
         <div class="pilot-side">
           <div class="seats" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -559,7 +560,7 @@
   </section>
 
   <!-- MODELOS -->
-  <section id="modelos" style="padding-top:0">
+  <section class="pt-0" id="modelos">
     <div class="wrap">
       <div class="head center rv">
         <span class="label">Modelos</span>
@@ -595,7 +596,7 @@
           <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
           <span class="cap"><b>Doceria</b><small><span>Cardápio online e pedido pelo WhatsApp</span></small></span>
         </a>
-        <a class="port rv" style="--d:.08s" href="#" data-wa="Olá! Gostei do modelo de site para clínica da ConectaByte.">
+        <a class="port rv" data-d=".08s" href="#" data-wa="Olá! Gostei do modelo de site para clínica da ConectaByte.">
           <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <defs>
               <linearGradient id="c-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E1E9ED"/><stop offset="1" stop-color="#C3D0D7"/></linearGradient>
@@ -620,7 +621,7 @@
           <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
           <span class="cap"><b>Clínica</b><small><span>Agendamento online e mapa de acesso</span></small></span>
         </a>
-        <a class="port rv" style="--d:.16s" href="#" data-wa="Olá! Gostei do modelo de site para oficina da ConectaByte.">
+        <a class="port rv" data-d=".16s" href="#" data-wa="Olá! Gostei do modelo de site para oficina da ConectaByte.">
           <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <defs>
               <linearGradient id="o-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFEDE6"/><stop offset="1" stop-color="#D9D6CB"/></linearGradient>
@@ -656,7 +657,7 @@
   </section>
 
   <!-- PROCESSO -->
-  <section id="como-funciona" style="padding-top:0">
+  <section class="pt-0" id="como-funciona">
     <div class="wrap">
       <div class="head center rv">
         <span class="label">Como funciona</span>
@@ -665,11 +666,11 @@
       </div>
       <ol class="steps" id="steps">
         <li class="step rv"><div class="dot">1</div><h3>Contato</h3><p>Você chama no WhatsApp e respondemos no mesmo dia.</p></li>
-        <li class="step rv" style="--d:.06s"><div class="dot">2</div><h3>Diagnóstico</h3><p>Conversa de 30 a 45 min na sua empresa ou por vídeo.</p></li>
-        <li class="step rv" style="--d:.12s"><div class="dot">3</div><h3>Proposta</h3><p>Escopo, prazo e valor em até 2 dias, com assinatura digital.</p></li>
-        <li class="step rv" style="--d:.18s"><div class="dot">4</div><h3>Conteúdo</h3><p>Juntamos logo, fotos e textos com um checklist simples.</p></li>
-        <li class="step rv" style="--d:.24s"><div class="dot">5</div><h3>Desenvolvimento</h3><p>Você acompanha tudo por um link de prévia e aprova.</p></li>
-        <li class="step rv" style="--d:.3s"><div class="dot">6</div><h3>Entrega e suporte</h3><p>Publicamos, treinamos sua equipe e seguimos juntos.</p></li>
+        <li class="step rv" data-d=".06s"><div class="dot">2</div><h3>Diagnóstico</h3><p>Conversa de 30 a 45 min na sua empresa ou por vídeo.</p></li>
+        <li class="step rv" data-d=".12s"><div class="dot">3</div><h3>Proposta</h3><p>Escopo, prazo e valor em até 2 dias, com assinatura digital.</p></li>
+        <li class="step rv" data-d=".18s"><div class="dot">4</div><h3>Conteúdo</h3><p>Juntamos logo, fotos e textos com um checklist simples.</p></li>
+        <li class="step rv" data-d=".24s"><div class="dot">5</div><h3>Desenvolvimento</h3><p>Você acompanha tudo por um link de prévia e aprova.</p></li>
+        <li class="step rv" data-d=".3s"><div class="dot">6</div><h3>Entrega e suporte</h3><p>Publicamos, treinamos sua equipe e seguimos juntos.</p></li>
       </ol>
     </div>
   </section>
@@ -688,17 +689,17 @@
           <div>
             <h3>Giovanni Anicezio Andrade</h3>
             <div class="role">Sócio · Direção técnica e produto</div>
-            <p>Estudante de Ciência da Computação, cuida da arquitetura, do desenvolvimento, da entrega e da segurança dos projetos. Já desenvolveu sistemas como uma plataforma de rastreamento logístico.</p>
+            <p>Estudante de Ciência da Computação, cuida da arquitetura, do desenvolvimento, da entrega e da segurança dos projetos. Já desenvolveu sistemas de agendamento, catálogos com carrinho integrado a Pix e cartão, e painéis de gestão sob medida para pequenos negócios.</p>
             <div class="skills"><span>Desenvolvimento</span><span>Sistemas</span><span>Segurança</span><span>Qualidade</span></div>
           </div>
         </article>
-        <article class="card member glow-hover rv" style="--d:.08s">
+        <article class="card member glow-hover rv" data-d=".08s">
           <div class="avatar" aria-hidden="true">AL</div>
           <div>
             <h3>Anthony Gabriel Schirato Lourenço</h3>
             <div class="role">Sócio · Direção comercial e relacionamento</div>
-            <p>É quem recebe você, entende o que o seu negócio precisa, prepara a proposta e acompanha o projeto do início ao pós-venda.</p>
-            <div class="skills"><span>Atendimento</span><span>Propostas</span><span>Parcerias</span><span>Pós-venda</span></div>
+            <p>Estudante de Ciência da Computação, cuida de você do primeiro contato ao pós-venda e é especialista em plataformas e eventos digitais.</p>
+            <div class="skills"><span>Atendimento</span><span>Propostas</span><span>Eventos digitais</span><span>Pós-venda</span></div>
           </div>
         </article>
       </div>
@@ -706,19 +707,19 @@
   </section>
 
   <!-- REGIÃO -->
-  <section id="regiao" style="padding-top:0">
+  <section class="pt-0" id="regiao">
     <div class="wrap region-grid">
       <div class="rv">
         <span class="label">Onde atendemos</span>
         <h2>De Agudos para toda a região</h2>
         <p class="lead">O atendimento online funciona em qualquer lugar, e a visita presencial cobre as cidades abaixo. Passe o mouse para ver no mapa.</p>
         <ul class="cities" id="cities">
-          <li class="city" data-city="agudos"><span class="dot" style="background:var(--orange)"></span><span><b>Agudos</b><small>Nossa base. A visita de implantação já vem nos pacotes.</small></span></li>
-          <li class="city" data-city="bauru"><span class="dot" style="background:#F8FAFC"></span><span><b>Bauru</b><small>Visitas agendadas às terças e quintas à tarde.</small></span></li>
-          <li class="city" data-city="lencois pederneiras piratininga"><span class="dot" style="background:#6B7280"></span><span><b>Lençóis Paulista · Pederneiras · Piratininga</b><small>Atendimento por vídeo e WhatsApp, com visita na implantação e nos planos presenciais.</small></span></li>
+          <li class="city" data-city="agudos"><span class="dot dot-1"></span><span><b>Agudos</b><small>Nossa base. A visita de implantação já vem nos pacotes.</small></span></li>
+          <li class="city" data-city="bauru"><span class="dot dot-2"></span><span><b>Bauru</b><small>Visitas agendadas às terças e quintas à tarde.</small></span></li>
+          <li class="city" data-city="lencois pederneiras piratininga"><span class="dot dot-3"></span><span><b>Lençóis Paulista · Pederneiras · Piratininga</b><small>Atendimento por vídeo e WhatsApp, com visita na implantação e nos planos presenciais.</small></span></li>
         </ul>
       </div>
-      <div class="card map rv" style="--d:.1s" role="img" aria-label="Mapa esquemático: Agudos no centro, ligada a Bauru, Pederneiras, Lençóis Paulista e Piratininga">
+      <div class="card map rv" data-d=".1s" role="img" aria-label="Mapa esquemático: Agudos no centro, ligada a Bauru, Pederneiras, Lençóis Paulista e Piratininga">
         <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
           <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#262B36"/></pattern></defs>
           <rect width="480" height="380" rx="12" fill="url(#dots)"/>
@@ -748,7 +749,7 @@
   </section>
 
   <!-- FAQ -->
-  <section id="duvidas" style="padding-top:0">
+  <section class="pt-0" id="duvidas">
     <div class="wrap">
       <div class="head center rv">
         <span class="label">Dúvidas frequentes</span>
@@ -767,7 +768,7 @@
   </section>
 
   <!-- CONTATO -->
-  <section class="contact" id="contato" style="padding-top:0">
+  <section class="pt-0 contact" id="contato">
     <div class="wrap">
       <div class="cta-panel rv">
         <div class="contact-grid">
@@ -779,19 +780,19 @@
               <li><a class="channel" href="#" data-wa="Olá! Vim pelo site da ConectaByte."><span class="ic"><svg aria-hidden="true"><use href="#i-wa"/></svg></span><span><b>WhatsApp</b><small>Resposta em até 2 horas úteis</small></span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
               <li><button class="channel" type="button" id="copyEmail" data-email="contato@conectabyte.com.br"><span class="ic"><svg aria-hidden="true"><use href="#i-mail"/></svg></span><span><b>contato@conectabyte.com.br</b><small>Clique para copiar o e-mail</small></span><svg class="go" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
               <li><a class="channel" href="https://instagram.com/conectabyte" target="_blank" rel="noopener"><span class="ic"><svg aria-hidden="true"><use href="#i-ig"/></svg></span><span><b>@conectabyte</b><small>Bastidores, dicas e projetos</small></span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
-              <li><div class="channel" style="cursor:default"><span class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></span><span><b id="openStatus">Seg. a sex., 8h às 18h</b><small>Agudos/SP · atendimento em toda a região</small></span></div></li>
+              <li><div class="channel static"><span class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></span><span><b id="openStatus">Seg. a sex., 8h às 18h</b><small>Agudos/SP · atendimento em toda a região</small></span></div></li>
             </ul>
           </div>
 
           <form class="form" id="leadForm" novalidate>
             <div class="field" id="fNome">
               <label for="f-nome">Seu nome</label>
-              <input class="input" id="f-nome" name="nome" autocomplete="name" placeholder="Como podemos te chamar?">
+              <input class="input" id="f-nome" name="nome" autocomplete="name" maxlength="80" placeholder="Como podemos te chamar?">
               <span class="err">Informe seu nome para continuarmos.</span>
             </div>
             <div class="field">
               <label for="f-empresa">Empresa</label>
-              <input class="input" id="f-empresa" name="empresa" autocomplete="organization" placeholder="Nome do seu negócio">
+              <input class="input" id="f-empresa" name="empresa" autocomplete="organization" maxlength="100" placeholder="Nome do seu negócio">
             </div>
             <div class="field full">
               <label for="f-cidade">Cidade</label>
@@ -844,7 +845,7 @@
         <a class="logo" href="#inicio" aria-label="ConectaByte, voltar ao início"><svg aria-hidden="true"><use href="#logo"/></svg><span>Conecta<b>Byte</b></span></a>
         <p class="slogan">No topo da sua presença digital.</p>
       </div>
-      <nav aria-label="Rodapé" class="rv" style="--d:.08s">
+      <nav aria-label="Rodapé" class="rv" data-d=".08s">
         <h6>Navegação</h6>
         <a href="#servicos">Serviços</a><a href="#pacotes">Pacotes</a><a href="#equipe">Equipe</a><a href="#regiao">Região</a><a href="#duvidas">Dúvidas</a><a href="#contato">Contato</a>
       </nav>

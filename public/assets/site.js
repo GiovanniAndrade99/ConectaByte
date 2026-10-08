@@ -3,7 +3,7 @@
 (() => {
   'use strict';
 
-  // TODO: trocar pelo número real do WhatsApp Business (55 + DDD + número, só dígitos)
+  // Número do WhatsApp Business no formato internacional, somente dígitos.
   const WHATSAPP = '5514998709872';
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -22,6 +22,15 @@
     inOutSine: p => -(Math.cos(Math.PI * p) - 1) / 2,
     outBack: p => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); },
   };
+  // Parametros de teste (?introAt=) so valem na maquina de quem desenvolve, nunca no site publicado.
+  const isLocal = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const icon = id => { const s = document.createElementNS(svgNS, 'svg'), u = document.createElementNS(svgNS, 'use'); s.setAttribute('aria-hidden', 'true'); u.setAttribute('href', '#' + id); s.append(u); return s; };
+
+  // Atrasos e alturas vem de data- (a CSP proibe style="..." no HTML)
+  $$('[data-d]').forEach(el => el.style.setProperty('--d', el.dataset.d));
+  $$('[data-h]').forEach(el => { el.style.height = clamp(+el.dataset.h, 0, 100) + '%'; });
+
   const waLink = msg => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   const brl = n => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
   const fmt = (v, dec) => v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
@@ -322,9 +331,14 @@
     else if (sel.includes('paginas')) rec = 'presenca';
     else if (sel.length) rec = 'vitrine';
     $$('.plan').forEach(p => p.classList.toggle('is-rec', p.dataset.plan === rec));
-    finderOut.innerHTML = rec
-      ? `Indicamos o <b>${names[rec]}</b>. <a class="link" href="#contato" data-pick="${rec}">Pedir este <svg><use href="#i-arrow"/></svg></a>`
-      : 'Marque as opções e indicamos um pacote.';
+    // Montado com DOM (sem innerHTML): compativel com Trusted Types
+    if (!rec) { finderOut.textContent = 'Marque as opções e indicamos um pacote.'; return; }
+    const b = document.createElement('b');
+    b.textContent = names[rec];
+    const a = document.createElement('a');
+    a.className = 'link'; a.href = '#contato'; a.dataset.pick = rec;
+    a.append('Pedir este ', icon('i-arrow'));
+    finderOut.replaceChildren('Indicamos o ', b, '. ', a);
   });
   finderOut.addEventListener('click', e => {
     const a = e.target.closest('[data-pick]');
@@ -377,9 +391,10 @@
   /* ---------- Aberto agora? ---------- */
   const now = new Date(), wd = now.getDay(), hr = now.getHours();
   const open = wd >= 1 && wd <= 5 && hr >= 8 && hr < 18;
-  $('#openStatus').innerHTML = open
-    ? 'Seg. a sex., 8h às 18h · <span style="color:#4ADE80">aberto agora</span>'
-    : 'Seg. a sex., 8h às 18h · <span style="color:#9CA3AF">fechado agora</span>';
+  const openTag = document.createElement('span');
+  openTag.className = open ? 'open-now' : 'closed-now';
+  openTag.textContent = open ? 'aberto agora' : 'fechado agora';
+  $('#openStatus').replaceChildren('Seg. a sex., 8h às 18h · ', openTag);
 
   /* ---------- Formulario -> WhatsApp ---------- */
   const form = $('#leadForm'), nome = $('#f-nome'), fNome = $('#fNome'), msg = $('#f-msg'), counter = $('#counter'), sendBtn = $('#sendBtn');
@@ -438,8 +453,11 @@
     ];
     const touched = [arc, ...Object.values(P), tint, beam, glow, ambient, dashWrap, ...seq.map(s => s[0])];
     const END = 3.35;
-    let t = +(new URLSearchParams(location.search).get('introAt') || 0), speed = 1, last = performance.now(), finished = false;
-    const frozen = new URLSearchParams(location.search).has('introAt');
+    // ?introAt=1.3 congela a introducao num instante: so para testes locais e so com numero valido.
+    // No site publicado o parametro e ignorado (antes, um link com ?introAt=abc deixava a pagina preta).
+    const at = isLocal ? Number(new URLSearchParams(location.search).get('introAt')) : NaN;
+    const frozen = isLocal && new URLSearchParams(location.search).has('introAt') && Number.isFinite(at);
+    let t = frozen ? clamp(at, 0, END) : 0, speed = 1, last = performance.now(), finished = false;
     const skip = () => { speed = 5; };
     const evs = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
     evs.forEach(ev => addEventListener(ev, skip, { passive: true }));

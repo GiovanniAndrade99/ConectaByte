@@ -70,6 +70,35 @@ section { position: relative; padding: 124px 0; }
 .grad { background: linear-gradient(92deg, #FED7AA 0%, #FB923C 36%, #EA580C 68%, #FBBF24 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .ico { width: 1em; height: 1em; }
 
+/* Utilitarios que substituem estilos inline (a CSP do site proibe style="...") */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.pt-0 { padding-top: 0 !important; }
+.chart .gl-0 { top: 0; }
+.chart .gl-33 { top: 33%; }
+.chart .gl-66 { top: 66%; }
+.chart .gl-100 { top: 100%; }
+.lg-cur { background: #EA580C; }
+.lg-prev { background: rgba(255,255,255,.2); }
+.av-1 { background: linear-gradient(135deg, #F97316, #C2410C); }
+.av-2 { background: linear-gradient(135deg, #FBBF24, #D97706); }
+.av-3 { background: linear-gradient(135deg, #475569, #1E293B); }
+.sparkles .sp1 { left: 20px; top: 30px; width: 58px; height: 58px; color: #F8FAFC; }
+.sparkles .sp2 { left: 92px; top: 4px; width: 30px; height: 30px; color: #FBBF24; }
+.sparkles .sp3 { left: 100px; top: 96px; width: 24px; height: 24px; color: #F97316; }
+.sparkles .sp4 { left: 0; top: 110px; width: 16px; height: 16px; color: #F8FAFC; }
+.plane .g1 { top: 0; width: 60%; }
+.plane .g2 { top: 62px; width: 82%; }
+.plane .g3 { top: 124px; width: 70%; }
+.plane .g4 { top: 186px; width: 90%; }
+.plane .g5 { top: 248px; width: 64%; }
+.plane .g6 { top: 310px; width: 78%; }
+.dot-1 { background: var(--orange); }
+.dot-2 { background: #F8FAFC; }
+.dot-3 { background: #6B7280; }
+.channel.static { cursor: default; }
+.open-now { color: #4ADE80; }
+.closed-now { color: #9CA3AF; }
+
 /* Brilho ambiente e granulacao */
 .ambient {
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
@@ -295,7 +324,7 @@ header.top.hide { transform: translateY(-100%); }
 .bars { position: absolute; left: 56px; right: 8px; top: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; }
 .bar-col { position: relative; display: flex; gap: 5px; align-items: flex-end; height: 100%; }
 .bar { width: 14px; border-radius: 5px 5px 2px 2px; transform-origin: 50% 100%; transform: scaleY(0); transition: transform 1s var(--ease-out) var(--d, 0s); }
-.dash.on .bar, .cta-dash.on .bar { transform: scaleY(1); }
+.dash.on .bar { transform: scaleY(1); }
 .bar.prev { background: rgba(255,255,255,.13); }
 .bar.cur { background: linear-gradient(180deg, #FDBA74, #EA580C); box-shadow: 0 0 16px -4px rgba(234,88,12,.7); }
 .bar-col em { position: absolute; left: 50%; bottom: -24px; transform: translateX(-50%); font: normal .7rem Inter; color: var(--ink-3); }
