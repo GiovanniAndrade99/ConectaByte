@@ -1,0 +1,37 @@
+# Segredos e credenciais: nunca devem ir para o repositório
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+credentials*.json
+service-account*.json
+
+# Backups e cópias temporárias (costumam vazar código e dados)
+*.bak
+*.backup
+*.old
+*.orig
+*.swp
+*~
+backup*/
+*.zip
+*.sql
+*.sqlite
+*.db
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Dependências e artefatos de deploy
+node_modules/
+.wrangler/
+.netlify/
+.vercel/
