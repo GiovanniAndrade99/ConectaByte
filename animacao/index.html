@@ -1,0 +1,1594 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ConectaByte · Reel</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050608;
+    --panel: #0B0D12;
+    --card: #10131A;
+    --line: rgba(255,255,255,.07);
+    --line-2: rgba(255,255,255,.12);
+    --ink: #F5F6F8;
+    --ink-2: #A9AEB9;
+    --ink-3: #6B7180;
+    --orange: #EA580C;
+    --orange-2: #F97316;
+    --amber: #FBBF24;
+    --ember: #C2410C;
+    --green: #4ADE80;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  body { font-family: Inter, system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  /* ---------- Palco 9:16 (1080x1920), escalado para caber na janela ---------- */
+  .stage {
+    position: absolute; left: 50%; top: 50%; width: 1080px; height: 1920px;
+    overflow: hidden; background: var(--bg); transform-origin: 50% 50%;
+  }
+  .layer { position: absolute; inset: 0; pointer-events: none; }
+
+  /* Eco: copia ampliada, desfocada e escurecida do site, atras da moldura */
+  .echo { opacity: 0; }
+  /* So a faixa central (640px do site) aparece no palco: a camada e estreita de proposito,
+     para nao rasterizar e desfocar 2.5x mais pixels do que os visiveis a cada quadro. */
+  .echo-view {
+    position: absolute; left: 50%; top: 50%; width: 640px; height: 1068px; overflow: hidden;
+    transform: translate(-50%, -50%) scale(1.72); filter: blur(7px) brightness(.5) saturate(1.15);
+  }
+  .echo-view > .scroller, .echo-view > .nav { left: -400px; }
+  .vignette {
+    background:
+      radial-gradient(70% 34% at 50% 50%, rgba(5,6,8,.0) 40%, rgba(5,6,8,.55) 100%),
+      linear-gradient(to bottom, rgba(5,6,8,.92) 0%, rgba(5,6,8,.30) 16%, rgba(5,6,8,.30) 84%, rgba(5,6,8,.94) 100%);
+  }
+  .underglow {
+    opacity: 0;
+    background: radial-gradient(42% 9% at 50% 69.5%, rgba(234,88,12,.42), rgba(234,88,12,0) 100%);
+  }
+
+  /* Moldura do "navegador" */
+  .frame { position: absolute; left: 45px; top: 593px; width: 990px; height: 734px; border-radius: 26px; }
+  .frame-bg {
+    position: absolute; inset: 0; border-radius: inherit; opacity: 0;
+    background: var(--panel);
+    box-shadow: 0 60px 140px -30px rgba(0,0,0,.9), 0 30px 120px -50px rgba(234,88,12,.45);
+  }
+  .frame-tint { position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(120% 90% at 50% 0%, #17203A, #0C1222 70%); opacity: 0; }
+  .frame-clip { position: absolute; inset: 0; border-radius: inherit; clip-path: inset(var(--ci, 0%) round 26px); }
+  .frame-rim {
+    position: absolute; inset: 0; border-radius: inherit; padding: 1px; opacity: 0; pointer-events: none;
+    background: linear-gradient(140deg, rgba(255,255,255,.38), rgba(255,255,255,.06) 28%, rgba(255,255,255,.03) 64%, rgba(249,115,22,.45));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+  .view { position: absolute; left: 0; top: 0; width: 1440px; height: 1068px; transform-origin: 0 0; transform: scale(.6875); }
+  .scroller { position: absolute; left: 0; top: 0; width: 1440px; will-change: transform; }
+
+  /* Logo final (encerramento) */
+  .end { opacity: 0; display: grid; place-items: center; }
+  .end-wrap { position: absolute; left: 0; right: 0; top: 640px; text-align: center; }
+  .end-logo { width: 300px; height: 300px; overflow: visible; }
+  .end-word { font: 600 104px/1 Poppins, sans-serif; letter-spacing: -.045em; margin-top: 34px; color: #fff; }
+  .end-word span { display: inline-block; }
+  .end-word .o { color: var(--orange); }
+  .end-slogan { margin-top: 26px; font: 500 34px/1.3 Inter, sans-serif; color: var(--ink-2); letter-spacing: -.01em; }
+
+  /* Cursor */
+  .cursor { position: absolute; left: 0; top: 0; width: 34px; height: 34px; opacity: 0; will-change: transform; filter: drop-shadow(0 6px 10px rgba(0,0,0,.55)); }
+  .ripple { position: absolute; left: 0; top: 0; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; border: 2px solid rgba(251,191,36,.9); opacity: 0; }
+
+  .grain { position: absolute; inset: -60px; opacity: .06; mix-blend-mode: overlay; background-size: 220px 220px; }
+
+  /* ---------- Controles (fora do palco) ---------- */
+  .ui {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 10;
+    display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 999px;
+    background: rgba(17,19,26,.86); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px);
+    font: 500 13px/1 Inter, sans-serif; color: #D7DAE1; transition: opacity .4s, transform .4s;
+  }
+  .ui.hide { opacity: 0; transform: translate(-50%, 12px); pointer-events: none; }
+  .ui button {
+    all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px;
+    border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+  }
+  .ui button:hover { background: rgba(255,255,255,.12); }
+  .ui button.rec { background: rgba(234,88,12,.9); border-color: transparent; color: #fff; }
+  .ui button.rec.on { background: #DC2626; }
+  .ui input[type=range] { width: 260px; accent-color: #EA580C; }
+  .ui .time { font-variant-numeric: tabular-nums; min-width: 86px; text-align: center; color: #9EA3AE; }
+  .ui kbd { font: 500 11px Inter; color: #6B7180; }
+
+  /* =====================================================================
+     SITE (desenhado a 1440px de largura, como um desktop real)
+     ===================================================================== */
+  .site { position: relative; width: 1440px; color: var(--ink); font-size: 20px; line-height: 1.55; }
+  .site h1, .site h2, .site h3, .site h4, .site h5 { font-family: Poppins, Inter, sans-serif; font-weight: 600; letter-spacing: -.03em; margin: 0; }
+  .site p { margin: 0; }
+  .site svg { display: block; }
+  .ico { width: 1em; height: 1em; }
+  [data-rv] { opacity: 0; }
+
+  /* hover/press guiados pela linha do tempo (--h, --p) */
+  .hov { position: relative; }
+  .hov::after {
+    content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+    border: 1px solid rgba(249,115,22,.55);
+    box-shadow: 0 0 0 1px rgba(249,115,22,.12), 0 24px 70px -24px rgba(234,88,12,.65);
+    opacity: var(--h, 0);
+  }
+
+  .btn {
+    position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    height: 58px; padding: 0 28px; border-radius: 999px; font: 500 18px/1 Inter, sans-serif;
+    color: #fff; text-decoration: none; white-space: nowrap;
+    transform: translateY(calc(var(--h, 0) * -3px)); scale: calc(1 - var(--p, 0) * .06);
+  }
+  .btn::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #fff; opacity: calc(var(--h, 0) * .1 + var(--p, 0) * .18); pointer-events: none; }
+  .btn .ico { width: 18px; height: 18px; }
+  .btn.primary {
+    background: linear-gradient(180deg, #F47A2E, #EA580C 55%, #C2410C);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 12px 32px -10px rgba(234,88,12,.85), 0 0 calc(var(--h, 0) * 40px) rgba(249,115,22,.45);
+  }
+  .btn.ghost { color: #E7E9EE; background: rgba(255,255,255,.04); box-shadow: inset 0 0 0 1px var(--line-2); }
+  .btn.sm { height: 48px; padding: 0 22px; font-size: 16px; }
+  .btn.block { width: 100%; }
+
+  /* ---------- Navbar fixa dentro da moldura ---------- */
+  .nav {
+    position: absolute; left: 0; top: 0; width: 1440px; height: 104px; z-index: 20;
+    display: flex; align-items: center; padding: 0 56px; gap: 24px;
+  }
+  .nav::before { content: ""; position: absolute; inset: 0; background: linear-gradient(#0B0D12 58%, rgba(11,13,18,0)); opacity: var(--nb, 0); }
+  .brand { display: inline-flex; align-items: center; gap: 12px; font: 600 28px/1 Poppins, sans-serif; letter-spacing: -.035em; color: #fff; }
+  .brand svg { width: 44px; height: 44px; color: #F8FAFC; }
+  .brand b { color: var(--orange); font-weight: 600; }
+  .links { position: relative; display: flex; gap: 2px; margin: 0 auto; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.03); box-shadow: inset 0 0 0 1px var(--line); }
+  .links a { position: relative; z-index: 1; font-size: 16px; color: var(--ink-2); padding: 11px 19px; border-radius: 999px; text-decoration: none; }
+  .links .pill { position: absolute; top: 6px; bottom: 6px; left: 0; width: 0; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+  .nav .line { position: absolute; left: 0; right: 0; bottom: 14px; height: 1px; background: var(--line); opacity: 0; }
+  .nav .prog { position: absolute; left: 0; bottom: 13px; height: 2px; width: 1440px; transform-origin: 0 0; transform: scaleX(0); background: linear-gradient(90deg, var(--ember), var(--orange-2), var(--amber)); }
+
+  /* ---------- Hero ---------- */
+  .s-hero { position: relative; height: 930px; }
+  .hero-beam {
+    position: absolute; left: -330px; top: -420px; width: 560px; height: 1600px; transform: rotate(-36deg); opacity: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.05) 38%, rgba(255,255,255,.11) 50%, rgba(255,255,255,.05) 62%, transparent);
+    filter: blur(26px);
+  }
+  .hero-glow {
+    position: absolute; left: 170px; top: 533px; width: 1100px; height: 620px; opacity: 0;
+    background: radial-gradient(50% 50% at 50% 55%, rgba(234,88,12,.42), rgba(234,88,12,0) 72%);
+    filter: blur(10px);
+  }
+  .hero-arc {
+    position: absolute; left: -144px; top: 406px; width: 1728px; height: 1728px; overflow: visible; z-index: 1;
+    transform-origin: 50% 50%;
+    -webkit-mask-image: linear-gradient(#000 var(--m0, 100%), transparent var(--m1, 100%));
+    mask-image: linear-gradient(#000 var(--m0, 100%), transparent var(--m1, 100%));
+  }
+  /* --ao/--co escondem as pontas arredondadas enquanto o traco ainda tem comprimento zero */
+  .hero-arc .arc { fill: none; stroke-linecap: round; stroke-dasharray: 1 1; opacity: var(--ao, 0); }
+  .hero-arc .up { stroke-dashoffset: var(--du, 1); }
+  .hero-arc .dn { stroke-dashoffset: var(--dd, 1); }
+  .hero-arc .band { stroke-width: calc(var(--bw, 7) * 1px); }
+  .hero-arc .glowband { stroke-width: calc(var(--bw, 7) * 2.2px); }
+  .hero-arc .con { fill: none; stroke-linecap: round; stroke-width: calc(var(--cw, 3) * 1px); stroke-dasharray: 1 1; stroke-dashoffset: var(--dc, 1); opacity: var(--co, 0); }
+  .hero-arc .n-top { r: calc(var(--rt, 0) * 1px); }
+  .hero-arc .n-bot { r: calc(var(--rb, 0) * 1px); }
+  .hero-arc .n-left { r: calc(var(--rl, 0) * 1px); }
+  .hero-arc .n-halo { r: calc(var(--rh, 0) * 1px); }
+  .hero-copy { position: absolute; left: 0; right: 0; top: 152px; text-align: center; z-index: 2; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 12px; padding: 6px 18px 6px 6px; border-radius: 999px;
+    background: rgba(255,255,255,.04); box-shadow: inset 0 0 0 1px var(--line-2); font-size: 16px; color: #D6D9E0;
+  }
+  .badge b { background: linear-gradient(180deg, #F47A2E, #C2410C); color: #fff; padding: 7px 14px; border-radius: 999px; font-weight: 600; font-size: 14px; }
+  .badge .ico { width: 15px; height: 15px; color: var(--ink-3); }
+  .hero-title { font-size: 98px; line-height: 1.03; margin-top: 30px !important; letter-spacing: -.045em !important; }
+  .hero-title .w { display: inline-block; }
+  .hero-title .hl { background: linear-gradient(92deg, #FED7AA 0%, #FB923C 38%, #EA580C 70%, #FBBF24 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .06em; }
+  .hero-sub { max-width: 760px; margin: 28px auto 0 !important; font-size: 21px; color: var(--ink-2); }
+  .ctas { display: flex; gap: 16px; justify-content: center; margin-top: 40px; }
+
+  /* ---------- Painel (dashboard) ---------- */
+  .s-dash { position: relative; z-index: 3; padding-bottom: 120px; }
+  .dash-panel {
+    position: relative; width: 1220px; margin: 0 auto; border-radius: 26px; overflow: hidden;
+    background: linear-gradient(180deg, #12151C, #0C0E13); box-shadow: inset 0 0 0 1px var(--line-2), 0 -34px 90px -34px rgba(234,88,12,.55), 0 40px 80px -20px rgba(0,0,0,.6);
+  }
+  .dp-top { height: 80px; display: flex; align-items: center; gap: 28px; padding: 0 30px; border-bottom: 1px solid var(--line); }
+  .dp-top .brand { font-size: 21px; gap: 10px; }
+  .dp-top .brand svg { width: 32px; height: 32px; }
+  .dp-tabs { display: flex; gap: 6px; margin: 0 auto; }
+  .dp-tabs span { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink-3); padding: 9px 16px; border-radius: 10px; }
+  .dp-tabs span.on { color: #fff; background: rgba(255,255,255,.06); }
+  .dp-tabs .ico { width: 17px; height: 17px; }
+  .dp-ic { display: flex; align-items: center; gap: 18px; color: var(--ink-2); }
+  .dp-ic .ico { width: 22px; height: 22px; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font: 600 14px Inter; color: #fff; background: linear-gradient(135deg, #FBBF24, #EA580C); }
+  .dp-body { padding: 30px; }
+  .dp-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+  .dp-head h3 { font-size: 32px; }
+  .dp-head small { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink-3); margin-top: 6px; }
+  .live { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(74,222,128,.15); }
+  .dp-chip { font-size: 15px; padding: 11px 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink-2); }
+  .dp-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat { position: relative; padding: 20px 22px; border-radius: 18px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); height: 122px; }
+  .stat small { font-size: 12.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+  .stat .v { font: 600 34px/1 Poppins, sans-serif; margin-top: 14px; letter-spacing: -.02em; }
+  .stat .d { display: inline-block; margin-top: 10px; font-size: 13.5px; color: var(--green); }
+  .stat .d.n { color: var(--amber); }
+  .stat .spark { position: absolute; right: 18px; bottom: 22px; width: 112px; height: 44px; overflow: visible; }
+  .spark .ln { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 1 1; }
+  .dp-grid { display: grid; grid-template-columns: 1.22fr 1fr; gap: 16px; margin-top: 16px; }
+  .dp-card { position: relative; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); border-radius: 18px; padding: 22px 24px; height: 420px; }
+  .dp-card h4 { font-size: 20px; }
+  .dp-card .sub { font-size: 14px; color: var(--ink-3); margin-top: 4px; }
+  .ord { display: flex; align-items: center; gap: 16px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .ord:first-of-type { margin-top: 18px; }
+  .ord .av { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font: 600 16px Inter; color: #fff; flex: none; }
+  .ord b { display: block; font-size: 17px; font-weight: 500; }
+  .ord small { font-size: 14px; color: var(--ink-3); }
+  .ord .val { margin-left: auto; font-size: 17px; font-weight: 500; }
+  .tag { font-size: 13px; padding: 7px 12px; border-radius: 999px; white-space: nowrap; }
+  .tag.o { color: #FDBA74; background: rgba(234,88,12,.14); box-shadow: inset 0 0 0 1px rgba(234,88,12,.35); }
+  .tag.a { color: #FDE68A; background: rgba(251,191,36,.12); box-shadow: inset 0 0 0 1px rgba(251,191,36,.3); }
+  .tag.g { color: #86EFAC; background: rgba(74,222,128,.1); box-shadow: inset 0 0 0 1px rgba(74,222,128,.28); }
+  .chart { position: relative; height: 270px; margin-top: 26px; padding-left: 48px; }
+  .chart .gl { position: absolute; left: 48px; right: 0; height: 1px; background: var(--line); }
+  .chart .gl span { position: absolute; left: -48px; top: -9px; font-size: 12px; color: var(--ink-3); }
+  .bars { position: absolute; left: 62px; right: 10px; bottom: 0; top: 0; display: flex; justify-content: space-between; align-items: flex-end; }
+  .bar-col { position: relative; display: flex; gap: 6px; align-items: flex-end; height: 100%; }
+  .bar { width: 17px; border-radius: 6px 6px 2px 2px; transform-origin: 50% 100%; transform: scaleY(0); }
+  .bar.prev { background: rgba(255,255,255,.13); }
+  .bar.cur { background: linear-gradient(180deg, #FDBA74, #EA580C); box-shadow: 0 0 18px -4px rgba(234,88,12,.7); }
+  .bar-col em { position: absolute; left: 50%; bottom: -30px; transform: translateX(-50%); font: normal 12.5px Inter; color: var(--ink-3); }
+  .legend { position: absolute; right: 24px; top: 26px; display: flex; gap: 16px; font-size: 13px; color: var(--ink-3); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+  /* ---------- Cidades ---------- */
+  .s-marquee { padding: 10px 0 44px; text-align: center; }
+  .mq-cap { font-size: 17px; color: var(--ink-3); margin-bottom: 30px !important; }
+  .mq { width: 1220px; margin: 0 auto; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .mq-track { display: flex; gap: 72px; width: max-content; }
+  .mq-item { display: flex; align-items: center; gap: 12px; font: 600 36px/1 Poppins, sans-serif; color: #585D69; letter-spacing: -.025em; white-space: nowrap; }
+  .mq-item .ico { width: 30px; height: 30px; color: #6B5248; }
+
+  /* ---------- Bento ---------- */
+  .s-bento { padding: 0 0 130px; }
+  .bento { width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1.08fr; grid-template-rows: 430px 400px; gap: 22px; }
+  .bc { position: relative; border-radius: 24px; overflow: hidden; padding: 34px; background: linear-gradient(180deg, #12151C, #0D0F14); box-shadow: inset 0 0 0 1px var(--line); }
+  .bc h3 { font-size: 29px; }
+  .bc p { font-size: 17px; color: var(--ink-2); margin-top: 10px !important; max-width: 330px; }
+  .bc-a .chips { position: absolute; left: 34px; right: -40px; bottom: 34px; display: grid; gap: 12px; }
+  .chip { display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 18px; border-radius: 15px; background: #171B24; box-shadow: inset 0 0 0 1px var(--line); font-size: 17px; color: #D9DCE3; }
+  .chip .ico { width: 21px; height: 21px; color: var(--orange-2); }
+  .chip.hot { background: linear-gradient(90deg, #EA580C, #F97316 70%, #FB923C); color: #fff; box-shadow: 0 14px 34px -12px rgba(234,88,12,.9), inset 0 1px 0 rgba(255,255,255,.25); }
+  .chip.hot .ico { color: #fff; }
+  .chip .ok { margin-left: auto; margin-right: 40px; font-size: 13px; color: rgba(255,255,255,.7); }
+  .bc-b { text-align: center; }
+  .bc-b p { margin-left: auto !important; margin-right: auto !important; }
+  .order-stack { position: absolute; left: 34px; right: 34px; bottom: 34px; text-align: left; }
+  .order-back { height: 60px; margin: 0 24px -42px; border-radius: 16px; background: #141821; box-shadow: inset 0 0 0 1px var(--line); }
+  .order { position: relative; padding: 20px 22px; border-radius: 18px; background: #181C25; box-shadow: inset 0 0 0 1px var(--line-2), 0 20px 40px -20px rgba(0,0,0,.6); }
+  .order .r1 { display: flex; justify-content: space-between; align-items: baseline; }
+  .order .r1 b { font-weight: 500; font-size: 17px; }
+  .order .r1 span { font: 600 22px Poppins; }
+  .order small { display: block; font-size: 14px; color: var(--ink-3); margin-top: 4px; }
+  .order .st { position: relative; display: inline-grid; margin-top: 14px; }
+  .order .st > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; padding: 9px 14px; border-radius: 999px; }
+  .order .st .w8 { color: var(--ink-2); background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px var(--line-2); }
+  .order .st .ok { color: #fff; background: linear-gradient(90deg, #EA580C, #F97316); box-shadow: 0 8px 22px -8px rgba(234,88,12,.9); opacity: 0; }
+  .order .st .ico { width: 15px; height: 15px; }
+  .bc-c { grid-row: span 2; }
+  .beam {
+    position: absolute; left: 50%; top: -10px; width: 470px; height: 470px; transform: translateX(-50%);
+    clip-path: polygon(0 0, 100% 0, 63% 100%, 37% 100%);
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0) 0 18px, rgba(255,255,255,.10) 18px 20px, rgba(255,255,255,0) 20px 44px),
+      linear-gradient(180deg, #F97316 0%, #EA580C 38%, rgba(234,88,12,.0) 100%);
+  }
+  .beam-glow { position: absolute; left: 50%; top: 300px; width: 380px; height: 240px; transform: translateX(-50%); background: radial-gradient(50% 50% at 50% 50%, rgba(249,115,22,.55), transparent 70%); filter: blur(16px); }
+  .tile {
+    position: absolute; left: 50%; top: 392px; width: 150px; height: 150px; margin-left: -75px; border-radius: 34px;
+    display: grid; place-items: center;
+    background: linear-gradient(180deg, #2B303B, #15181F);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2), inset 0 0 0 1px rgba(255,255,255,.06), 0 34px 60px -10px rgba(0,0,0,.7), 0 -14px 70px -6px rgba(249,115,22,.6);
+  }
+  .tile svg { width: 84px; height: 84px; color: #F8FAFC; }
+  .bc-c .txt { position: absolute; left: 34px; right: 34px; bottom: 34px; }
+  .bc-d { grid-column: span 2; }
+  .bc-d .txt { width: 340px; }
+  .chat { position: absolute; right: 30px; top: 30px; bottom: 30px; width: 372px; border-radius: 20px; padding: 18px 20px; background: #0F1218; box-shadow: inset 0 0 0 1px var(--line-2); }
+  .chat-h { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .chat-h .lg { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: #1B1F29; }
+  .chat-h .lg svg { width: 28px; height: 28px; color: #fff; }
+  .chat-h b { display: block; font-size: 16px; font-weight: 500; }
+  .chat-h small { font-size: 13px; color: var(--green); }
+  .msgs { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+  .bub { max-width: 300px; padding: 13px 16px; border-radius: 18px; font-size: 15.5px; line-height: 1.4; }
+  .bub small { display: block; margin-top: 4px; font-size: 11.5px; opacity: .6; text-align: right; }
+  .bub.in { background: #1B1F29; border-bottom-left-radius: 6px; color: #E6E8EE; }
+  .bub.out { margin-left: auto; color: #fff; background: linear-gradient(180deg, #F47A2E, #EA580C); border-bottom-right-radius: 6px; }
+  .typing { display: inline-flex; gap: 6px; padding: 16px 18px; border-radius: 18px; border-bottom-left-radius: 6px; background: #1B1F29; width: max-content; }
+  .typing i { width: 8px; height: 8px; border-radius: 50%; background: #8B909C; }
+  .sparkles { position: absolute; left: 70px; top: 196px; width: 220px; height: 180px; }
+  .sparkles svg { position: absolute; }
+
+  /* ---------- Vantagens (anel + escudo) ---------- */
+  .s-features { padding: 20px 0 130px; }
+  .sec-head { text-align: center; max-width: 920px; margin: 0 auto; }
+  .sec-head h2 { font-size: 62px; line-height: 1.08; }
+  .sec-head p { font-size: 20px; color: var(--ink-2); margin-top: 20px !important; }
+  .f-row { width: 1220px; margin: 72px auto 0; display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: center; }
+  .f-copy h3 { font-size: 44px; line-height: 1.12; }
+  .f-copy p { font-size: 19px; color: var(--ink-2); margin-top: 18px !important; }
+  .f-copy .btn { margin-top: 28px; }
+  .checks { display: grid; gap: 16px; margin-top: 34px; }
+  .ck { display: flex; align-items: center; gap: 14px; font-size: 18px; color: #D9DCE3; }
+  .ck i { width: 28px; height: 28px; flex: none; border-radius: 8px; display: grid; place-items: center; background: linear-gradient(180deg, #F47A2E, #C2410C); box-shadow: 0 6px 16px -6px rgba(234,88,12,.8); }
+  .ck i svg { width: 16px; height: 16px; color: #fff; }
+  .f-card { position: relative; height: 580px; border-radius: 26px; overflow: hidden; padding: 30px; background: linear-gradient(180deg, #12151C, #0D0F14); box-shadow: inset 0 0 0 1px var(--line); }
+  .f-item { position: relative; display: flex; gap: 18px; align-items: center; width: 440px; padding: 20px 22px; border-radius: 18px; }
+  .f-item.active { background: #161A22; box-shadow: inset 0 0 0 1px var(--line-2), 0 20px 40px -24px rgba(0,0,0,.7); }
+  .f-item .fi { width: 54px; height: 54px; flex: none; border-radius: 50%; display: grid; place-items: center; background: #171B24; box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink-3); }
+  .f-item.active .fi { background: linear-gradient(180deg, #F47A2E, #C2410C); color: #fff; box-shadow: 0 10px 26px -8px rgba(234,88,12,.9); }
+  .f-item .fi svg { width: 24px; height: 24px; }
+  .f-item h5 { font-size: 20px; }
+  .f-item p { font-size: 15px; color: var(--ink-3); margin-top: 2px !important; }
+  .f-item:not(.active) h5 { color: #9CA1AC; }
+  .ring { position: absolute; right: -190px; bottom: -250px; width: 640px; height: 640px; }
+  .shield { position: absolute; right: 70px; bottom: 30px; width: 190px; height: 210px; filter: drop-shadow(0 30px 40px rgba(0,0,0,.6)); }
+
+  /* ---------- Suporte (cartao 3D) ---------- */
+  .s-support { padding: 10px 0 130px; }
+  .s-row { width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 1.06fr 1fr; gap: 72px; align-items: center; }
+  .s-card { position: relative; height: 580px; border-radius: 26px; overflow: hidden; background: linear-gradient(180deg, #12151C, #0D0F14); box-shadow: inset 0 0 0 1px var(--line); perspective: 1400px; }
+  .s-top { position: absolute; left: 30px; right: 30px; top: 30px; z-index: 2; display: flex; gap: 16px; align-items: center; padding: 18px 20px; border-radius: 18px; background: #161A22; box-shadow: inset 0 0 0 1px var(--line-2); }
+  .s-top .fi { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(180deg, #F47A2E, #C2410C); color: #fff; box-shadow: 0 10px 26px -8px rgba(234,88,12,.9); }
+  .s-top .fi svg { width: 24px; height: 24px; }
+  .s-top b { display: block; font-size: 19px; font-weight: 500; }
+  .s-top small { font-size: 15px; color: var(--ink-3); }
+  .plane { position: absolute; left: 70px; top: 190px; width: 520px; height: 440px; transform-style: preserve-3d; transform: rotateX(54deg) rotateZ(-30deg); }
+  .plane .g { position: absolute; left: 0; right: 0; height: 48px; border-radius: 12px; background: rgba(255,255,255,.035); box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
+  .s3d {
+    position: absolute; left: 90px; top: 120px; width: 330px; height: 190px; border-radius: 24px; padding: 24px 26px; color: #fff;
+    background: linear-gradient(135deg, #FB923C, #EA580C 55%, #C2410C);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 50px 70px -20px rgba(0,0,0,.7), 0 0 80px -10px rgba(249,115,22,.55);
+  }
+  .s3d .r { display: flex; justify-content: space-between; align-items: center; }
+  .s3d b { font: 600 15px Inter; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+  .s3d .ico { width: 26px; height: 26px; }
+  .s3d .t { font: 600 25px/1.2 Poppins; margin-top: 18px; letter-spacing: -.02em; }
+  .s3d .p { font: 600 20px Inter; margin-top: 8px; opacity: .9; }
+  .s3d svg.wv { position: absolute; right: 22px; bottom: 22px; width: 110px; height: 40px; }
+
+  /* ---------- Pacotes ---------- */
+  .s-pricing { padding: 10px 0 130px; }
+  .plans { width: 1220px; margin: 64px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; align-items: start; }
+  .plan { position: relative; border-radius: 26px; padding: 34px; background: linear-gradient(180deg, #12151C, #0D0F14); box-shadow: inset 0 0 0 1px var(--line); }
+  .plan.feat { margin-top: -16px; background: linear-gradient(180deg, #171A22, #0E1015); box-shadow: inset 0 0 0 1px rgba(234,88,12,.65), 0 30px 90px -34px rgba(234,88,12,.7); }
+  .plan .glow-b { position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px; pointer-events: none; background: conic-gradient(from var(--ga, 0deg), transparent 0 62%, #FBBF24 72%, #F97316 78%, transparent 88%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  .plan .nm { display: flex; justify-content: space-between; align-items: center; }
+  .plan .nm h4 { font-size: 24px; }
+  .plan .nm .tag { font-size: 12.5px; }
+  .plan .for { font-size: 15.5px; color: var(--ink-3); margin-top: 6px !important; }
+  .plan .price { font: 600 58px/1 Poppins, sans-serif; letter-spacing: -.04em; margin-top: 26px; }
+  .plan .mo { font-size: 17px; color: var(--ink-2); margin-top: 10px !important; }
+  .plan .mo b { color: #fff; font-weight: 600; }
+  .plan .btn { margin-top: 26px; }
+  .plan hr { border: 0; height: 1px; background: var(--line); margin: 28px 0 24px; }
+  .plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 15px; }
+  .plan li { display: flex; gap: 12px; align-items: center; font-size: 16px; color: #CDD1D9; }
+  .plan li i { width: 22px; height: 22px; flex: none; border-radius: 6px; display: grid; place-items: center; background: linear-gradient(180deg, #F47A2E, #C2410C); }
+  .plan li i svg { width: 13px; height: 13px; color: #fff; }
+
+  /* ---------- Modelos ---------- */
+  .s-portfolio { padding: 10px 0 120px; }
+  .ports { width: 1220px; margin: 64px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+  .port { position: relative; height: 500px; border-radius: 24px; overflow: hidden; }
+  .port .art { position: absolute; left: 0; top: -40px; width: 100%; height: calc(100% + 80px); transform-origin: 50% 50%; }
+  .port .go { position: absolute; right: 18px; top: 18px; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: rgba(13,15,20,.82); color: #fff; }
+  .port .go svg { width: 20px; height: 20px; transform: rotate(-45deg) translateX(calc(var(--h, 0) * 3px)); }
+  .port .cap {
+    position: absolute; left: 16px; right: 16px; bottom: 16px; padding: 18px 20px; border-radius: 16px;
+    background: rgba(12,14,19,.84); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .port .cap b { display: block; font: 600 22px Poppins; letter-spacing: -.02em; }
+  .port .cap small { display: block; font-size: 15px; color: var(--ink-2); margin-top: 4px; max-height: calc(var(--h, 0) * 30px); opacity: var(--h, 0); overflow: hidden; }
+
+  /* ---------- CTA + rodape ---------- */
+  .s-cta { padding: 0 0 40px; }
+  .cta {
+    position: relative; width: 1220px; height: 540px; margin: 0 auto; border-radius: 30px; overflow: hidden;
+    background: radial-gradient(90% 70% at 72% 118%, rgba(234,88,12,.55), rgba(234,88,12,0) 62%), linear-gradient(180deg, #12151C, #0B0D12);
+    box-shadow: inset 0 0 0 1px var(--line-2);
+  }
+  .cta::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 9px; background: linear-gradient(90deg, #9A3412, #EA580C 30%, #FBBF24 50%, #EA580C 70%, #9A3412); }
+  .cta-copy { position: absolute; left: 64px; top: 96px; width: 520px; }
+  .cta-copy h2 { font-size: 58px; line-height: 1.06; }
+  .cta-copy p { font-size: 19px; color: var(--ink-2); margin-top: 18px !important; }
+  .field { display: flex; align-items: center; height: 68px; margin-top: 36px; padding: 0 7px 0 24px; border-radius: 999px; background: rgba(0,0,0,.4); box-shadow: inset 0 0 0 1px var(--line-2); }
+  .field .typed { flex: 1; font-size: 17px; color: #fff; white-space: nowrap; overflow: hidden; }
+  .field .typed.ph { color: var(--ink-3); }
+  .field .caret { display: inline-block; width: 2px; height: 22px; background: var(--orange-2); vertical-align: -4px; margin-left: 2px; }
+  .field .btn { height: 54px; }
+  .cta-dash { position: absolute; right: -70px; top: 74px; width: 640px; height: 540px; border-radius: 22px; padding: 26px; background: #0F1218; box-shadow: inset 0 0 0 1px var(--line-2), 0 40px 80px -30px rgba(0,0,0,.8); }
+  .cta-dash .dp-stats { grid-template-columns: repeat(2, 1fr); }
+  .cta-dash .chart { height: 200px; margin-top: 34px; }
+  .footer { width: 1220px; margin: 0 auto; padding: 50px 0 60px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+  .footer .brand { font-size: 34px; }
+  .footer .brand svg { width: 50px; height: 50px; }
+  .footer h3 { font-size: 34px; line-height: 1.15; margin-top: 26px !important; max-width: 420px; }
+  .footer h6 { margin: 0 0 18px; font: 600 13px Inter; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; font-size: 17px; color: var(--ink-2); }
+  .foot-b { width: 1220px; margin: 0 auto; padding: 26px 0 70px; display: flex; justify-content: space-between; font-size: 15px; color: var(--ink-3); border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<!-- Icones (a logo e a mesma do site da ConectaByte) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 64 64">
+      <path d="M46.85 17.15 A21 21 0 1 0 46.85 46.85" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M46.85 17.15 H54 M46.85 46.85 H54" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="54" cy="17.15" r="5.5" fill="#FBBF24"/>
+      <circle cx="54" cy="46.85" r="5.5" fill="#EA580C"/>
+      <circle cx="11" cy="32" r="4.2" fill="#FBBF24"/>
+    </symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.06c-.24.68-1.42 1.3-1.95 1.35-.5.05-.97.23-3.28-.68-2.78-1.1-4.54-3.95-4.68-4.13-.13-.18-1.12-1.49-1.12-2.84 0-1.35.71-2.02.96-2.29.25-.28.55-.35.73-.35l.52.01c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.28-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.11.6-.07.16-.18.69-.8.88-1.08.18-.27.37-.23.62-.14.25.09 1.6.76 1.87.9.28.13.46.2.53.32.07.11.07.66-.17 1.33Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18h2"/></g></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></g></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4A6.5 6.5 0 0 1 21.5 20"/></g></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></g></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9S14.6 18.4 12 21c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3Z"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M12 2.8 4.5 5.6v6c0 4.6 3.1 8.2 7.5 9.6 4.4-1.4 7.5-5 7.5-9.6v-6L12 2.8Z"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.7"/></g></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z"/></symbol>
+  </defs>
+</svg>
+
+<div class="stage" id="stage">
+  <div class="layer echo" id="echo"><div class="echo-view" id="echoView"></div></div>
+  <div class="layer vignette" id="vignette" style="opacity:0"></div>
+  <div class="layer underglow" id="underglow"></div>
+
+  <div class="frame" id="frame">
+    <div class="frame-bg" id="frameBg"></div>
+    <div class="frame-tint" id="frameTint"></div>
+    <div class="frame-clip" id="frameClip"><div class="view" id="view"></div></div>
+    <div class="frame-rim" id="frameRim"></div>
+  </div>
+
+  <div class="layer end" id="end">
+    <div class="end-wrap">
+      <svg class="end-logo" id="endLogo" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <filter id="f-endglow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter>
+        </defs>
+        <g filter="url(#f-endglow)" opacity=".55">
+          <path class="e-up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" fill="none" stroke="#EA580C" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 1"/>
+          <path class="e-dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" fill="none" stroke="#EA580C" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 1"/>
+        </g>
+        <path class="e-up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" fill="none" stroke="#F8FAFC" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 1"/>
+        <path class="e-dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" fill="none" stroke="#F8FAFC" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 1"/>
+        <path class="e-con" d="M46.85 17.15 H54" pathLength="1" stroke="#F8FAFC" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 1"/>
+        <path class="e-con" d="M46.85 46.85 H54" pathLength="1" stroke="#F8FAFC" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 1"/>
+        <circle class="e-nt" cx="54" cy="17.15" r="5.5" fill="#FBBF24"/>
+        <circle class="e-nb" cx="54" cy="46.85" r="5.5" fill="#EA580C"/>
+        <circle class="e-nl" cx="11" cy="32" r="4.2" fill="#FBBF24"/>
+      </svg>
+      <div class="end-word" id="endWord"></div>
+      <div class="end-slogan" id="endSlogan">No topo da sua presença digital.</div>
+    </div>
+  </div>
+
+  <div class="ripple" id="ripple"></div>
+  <div class="cursor" id="cursor">
+    <svg viewBox="0 0 24 24" width="34" height="34"><path d="M4.6 2.2v17.6l4.7-4.5 3.1 6.8 3.2-1.4-3.1-6.7h6.6L4.6 2.2Z" fill="#fff" stroke="#0B0D12" stroke-width="1.3" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="layer"><div class="grain" id="grain"></div></div>
+</div>
+
+<div class="ui" id="ui">
+  <button id="bPlay" title="Play/pausa (espaço)">❚❚</button>
+  <span class="time" id="tLabel">0,0 / 25,0 s</span>
+  <input type="range" id="scrub" min="0" max="25" step="0.01" value="0" aria-label="Linha do tempo">
+  <button id="bRestart" title="Reiniciar (0)">↺</button>
+  <button id="bRec" class="rec" title="Gravar a aba em vídeo (Chrome/Edge)">● Gravar</button>
+  <kbd>H oculta</kbd>
+</div>
+
+<!-- ===================== NAVBAR ===================== -->
+<template id="tpl-nav">
+  <div class="nav">
+    <div class="brand" data-rv="down" data-at="1.55"><svg><use href="#logo"/></svg><span>Conecta<b>Byte</b></span></div>
+    <div class="links" data-rv="down" data-at="1.62">
+      <span class="pill"></span>
+      <a>Início</a><a>Serviços</a><a>Vantagens</a><a>Suporte</a><a>Pacotes</a><a>Modelos</a>
+    </div>
+    <span class="btn primary sm" data-rv="down" data-at="1.7">Pedir orçamento <svg class="ico"><use href="#i-arrow"/></svg></span>
+    <span class="line"></span><span class="prog"></span>
+  </div>
+</template>
+
+<!-- ===================== SITE ===================== -->
+<template id="tpl-site">
+  <div class="site">
+
+    <section class="s-hero">
+      <div class="hero-beam"></div>
+      <div class="hero-glow"></div>
+      <svg class="hero-arc" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="g-fire" gradientUnits="userSpaceOnUse" x1="10" y1="44" x2="52" y2="12">
+            <stop offset="0" stop-color="#7C2D12"/><stop offset=".34" stop-color="#C2410C"/><stop offset=".6" stop-color="#EA580C"/><stop offset=".84" stop-color="#FB923C"/><stop offset="1" stop-color="#FBBF24"/>
+          </linearGradient>
+          <radialGradient id="g-haze" cx="32" cy="32" r="22" gradientUnits="userSpaceOnUse">
+            <stop offset=".5" stop-color="#EA580C" stop-opacity="0"/><stop offset=".82" stop-color="#EA580C" stop-opacity=".22"/><stop offset=".95" stop-color="#FB923C" stop-opacity=".5"/><stop offset="1" stop-color="#FBBF24" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="g-rim" gradientUnits="userSpaceOnUse" x1="9" y1="0" x2="50" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".04"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/>
+          </linearGradient>
+          <filter id="f-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.4"/></filter>
+          <filter id="f-tip" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation=".9"/></filter>
+        </defs>
+        <circle class="a-haze" cx="32" cy="32" r="22" fill="url(#g-haze)" opacity="0"/>
+        <g class="a-glow" filter="url(#f-glow)" opacity="0">
+          <path class="arc glowband up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="arc glowband dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="url(#g-fire)"/>
+        </g>
+        <g class="a-white">
+          <path class="arc band up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="#F8FAFC"/>
+          <path class="arc band dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="#F8FAFC"/>
+          <path class="con" d="M46.85 17.15 H54" pathLength="1" stroke="#F8FAFC"/>
+          <path class="con" d="M46.85 46.85 H54" pathLength="1" stroke="#F8FAFC"/>
+        </g>
+        <g class="a-fire" opacity="0">
+          <path class="arc band up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="arc band dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="con" d="M46.85 17.15 H54" pathLength="1" stroke="#FB923C"/>
+          <path class="con" d="M46.85 46.85 H54" pathLength="1" stroke="#EA580C"/>
+        </g>
+        <path class="a-rim" d="M9.4 32 A22.6 22.6 0 0 1 47.98 16.02" fill="none" stroke="url(#g-rim)" stroke-width=".22" opacity="0"/>
+        <path class="a-sweep" d="M9.4 32 A22.6 22.6 0 0 1 47.98 16.02" pathLength="1" fill="none" stroke="#fff" stroke-width=".42" stroke-linecap="round" stroke-dasharray=".2 1.4" stroke-dashoffset=".2" opacity="0"/>
+        <circle class="n-halo" cx="54" cy="17.15" fill="#FBBF24" opacity="0" filter="url(#f-glow)"/>
+        <circle class="n-ring nr-l" cx="11" cy="32" r="4" fill="none" stroke="#FBBF24" stroke-width=".5" opacity="0"/>
+        <circle class="n-ring nr-t" cx="54" cy="17.15" r="5" fill="none" stroke="#FBBF24" stroke-width=".5" opacity="0"/>
+        <circle class="n-ring nr-b" cx="54" cy="46.85" r="5" fill="none" stroke="#EA580C" stroke-width=".5" opacity="0"/>
+        <circle class="n-top" cx="54" cy="17.15" fill="#FBBF24"/>
+        <circle class="n-bot" cx="54" cy="46.85" fill="#EA580C"/>
+        <circle class="n-left" cx="11" cy="32" fill="#FBBF24"/>
+        <circle class="a-tip tip-up" r="1.5" fill="#FFF7E6" filter="url(#f-tip)" opacity="0"/>
+        <circle class="a-tip tip-dn" r="1.5" fill="#FFF7E6" filter="url(#f-tip)" opacity="0"/>
+      </svg>
+
+      <div class="hero-copy">
+        <span class="badge" data-rv="up" data-at="1.62"><b>Novo</b> 3 vagas para clientes fundadores <svg class="ico"><use href="#i-chev"/></svg></span>
+        <h1 class="hero-title">
+          <span class="w" data-rv="blur" data-at="1.70">No</span>
+          <span class="w" data-rv="blur" data-at="1.76">topo</span>
+          <span class="w" data-rv="blur" data-at="1.82">da</span>
+          <span class="w" data-rv="blur" data-at="1.88">sua</span><br>
+          <span class="w hl" data-rv="blur" data-at="1.96">presença</span>
+          <span class="w hl" data-rv="blur" data-at="2.04">digital.</span>
+        </h1>
+        <p class="hero-sub" data-rv="up" data-at="2.12">Sites, lojas virtuais e sistemas sob medida para empresas de Agudos e região, com suporte pelo WhatsApp e visita presencial.</p>
+        <div class="ctas" data-rv="up" data-at="2.2">
+          <span class="btn ghost hero-ghost" data-hover>Ver pacotes <svg class="ico"><use href="#i-arrow"/></svg></span>
+          <span class="btn primary hero-wa" data-hover><svg class="ico"><use href="#i-wa"/></svg> Falar no WhatsApp</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-dash">
+      <div class="dash-panel" data-rv="up" data-min="2.28" data-dur="1.1">
+        <div class="dp-top">
+          <div class="brand"><svg><use href="#logo"/></svg><span>Painel</span></div>
+          <div class="dp-tabs">
+            <span class="on"><svg class="ico"><use href="#i-grid"/></svg>Visão geral</span>
+            <span><svg class="ico"><use href="#i-bag"/></svg>Pedidos</span>
+            <span><svg class="ico"><use href="#i-globe"/></svg>Site</span>
+            <span><svg class="ico"><use href="#i-users"/></svg>Clientes</span>
+            <span><svg class="ico"><use href="#i-gear"/></svg>Ajustes</span>
+          </div>
+          <div class="dp-ic"><svg class="ico"><use href="#i-bell"/></svg><span class="avatar">DB</span></div>
+        </div>
+        <div class="dp-body">
+          <div class="dp-head">
+            <div><h3>Doceria do Bairro</h3><small><i class="live"></i> docerianoseubairro.com.br · no ar</small></div>
+            <span class="dp-chip">Últimos 30 dias</span>
+          </div>
+          <div class="dp-stats">
+            <div class="stat hov" data-hover><small>Visitas no site</small><div class="v" data-count="2418">0</div><span class="d">↑ 18%</span>
+              <svg class="spark" viewBox="0 0 112 44"><path class="ln" pathLength="1" stroke="#4ADE80" d="M2 36 C14 34 18 26 28 28 S42 38 54 28 S70 12 80 16 S98 10 110 4"/></svg></div>
+            <div class="stat hov" data-hover><small>Pedidos no WhatsApp</small><div class="v" data-count="186">0</div><span class="d">↑ 24%</span>
+              <svg class="spark" viewBox="0 0 112 44"><path class="ln" pathLength="1" stroke="#FB923C" d="M2 34 C12 36 20 30 30 30 S44 20 56 24 S72 30 82 18 S100 8 110 6"/></svg></div>
+            <div class="stat hov" data-hover><small>Posição no Google</small><div class="v">1º</div><span class="d n">“doceria em Agudos”</span>
+              <svg class="spark" viewBox="0 0 112 44"><path class="ln" pathLength="1" stroke="#FBBF24" d="M2 40 C16 38 22 34 32 30 S48 30 58 22 S76 16 86 10 S102 6 110 4"/></svg></div>
+            <div class="stat hov" data-hover><small>Carregamento</small><div class="v" data-count="0.8" data-dec="1" data-suffix=" s">0</div><span class="d">↓ 62% mais rápido</span>
+              <svg class="spark" viewBox="0 0 112 44"><path class="ln" pathLength="1" stroke="#4ADE80" d="M2 6 C14 8 20 14 30 16 S46 26 58 28 S76 36 88 36 S102 38 110 40"/></svg></div>
+          </div>
+          <div class="dp-grid">
+            <div class="dp-card">
+              <h4>Pedidos recentes</h4>
+              <div class="sub">Chegaram pelo site nas últimas horas</div>
+              <div class="ord" data-rv="up" data-d=".35"><span class="av" style="background:linear-gradient(135deg,#F97316,#C2410C)">MS</span><div><b>Mariana S.</b><small>2 bolos de pote · entrega 16h</small></div><span class="val">R$ 24,00</span><span class="tag o">Pix aprovado</span></div>
+              <div class="ord" data-rv="up" data-d=".45"><span class="av" style="background:linear-gradient(135deg,#FBBF24,#D97706)">CR</span><div><b>Carlos R.</b><small>Torta doce · retirada</small></div><span class="val">R$ 65,00</span><span class="tag a">Novo</span></div>
+              <div class="ord" data-rv="up" data-d=".55"><span class="av" style="background:linear-gradient(135deg,#475569,#1E293B)">AP</span><div><b>Ana P.</b><small>50 brigadeiros · festa</small></div><span class="val">R$ 90,00</span><span class="tag g">Entregue</span></div>
+            </div>
+            <div class="dp-card">
+              <h4>Visitas por mês</h4>
+              <div class="sub">Este ano comparado ao anterior</div>
+              <div class="legend"><span><i style="background:#EA580C"></i>2026</span><span><i style="background:rgba(255,255,255,.2)"></i>2025</span></div>
+              <div class="chart">
+                <div class="gl" style="top:0"><span>3 mil</span></div><div class="gl" style="top:33%"><span>2 mil</span></div><div class="gl" style="top:66%"><span>1 mil</span></div><div class="gl" style="top:100%"><span>0</span></div>
+                <div class="bars">
+                  <div class="bar-col"><i class="bar prev" style="height:34%"></i><i class="bar cur" style="height:46%"></i><em>Jan</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:40%"></i><i class="bar cur" style="height:58%"></i><em>Fev</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:37%"></i><i class="bar cur" style="height:52%"></i><em>Mar</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:48%"></i><i class="bar cur" style="height:70%"></i><em>Abr</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:44%"></i><i class="bar cur" style="height:79%"></i><em>Mai</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:52%"></i><i class="bar cur" style="height:94%"></i><em>Jun</em></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-marquee">
+      <p class="mq-cap" data-rv="up">Atendimento local em Agudos e região</p>
+      <div class="mq" data-rv="up" data-d=".1">
+        <div class="mq-track">
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Agudos</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Bauru</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Lençóis Paulista</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Pederneiras</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Piratininga</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Agudos</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Bauru</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Lençóis Paulista</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Pederneiras</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Piratininga</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Agudos</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Bauru</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Lençóis Paulista</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Pederneiras</span>
+          <span class="mq-item"><svg class="ico"><use href="#i-pin"/></svg>Piratininga</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-bento">
+      <div class="bento">
+        <div class="bc bc-a hov" data-hover data-rv="up">
+          <h3>Sites profissionais</h3>
+          <p>Rápidos, bonitos no celular e preparados para aparecer no Google.</p>
+          <div class="chips">
+            <div class="chip hot" data-rv="left" data-d=".35"><svg class="ico"><use href="#i-bolt"/></svg>Carrega em menos de 1 s<span class="ok">ativo</span></div>
+            <div class="chip" data-rv="left" data-d=".47"><svg class="ico"><use href="#i-phone"/></svg>Perfeito no celular</div>
+            <div class="chip" data-rv="left" data-d=".59"><svg class="ico"><use href="#i-search"/></svg>Pronto para o Google</div>
+          </div>
+        </div>
+        <div class="bc bc-b hov" data-hover data-rv="up" data-d=".08">
+          <h3>Lojas virtuais</h3>
+          <p>Catálogo com carrinho. O pedido chega no WhatsApp ou é pago por Pix e cartão.</p>
+          <div class="order-stack" data-rv="up" data-d=".4">
+            <div class="order-back"></div>
+            <div class="order">
+              <div class="r1"><b>Pedido #0142</b><span>R$ 89,00</span></div>
+              <small>2 bolos de pote + 1 torta doce</small>
+              <div class="st"><span class="w8">Aguardando Pix</span><span class="ok"><svg class="ico"><use href="#i-check"/></svg>Pix aprovado</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="bc bc-c hov" data-hover data-rv="up" data-d=".16">
+          <div class="beam"></div>
+          <div class="beam-glow"></div>
+          <div class="tile"><svg><use href="#logo"/></svg></div>
+          <div class="txt">
+            <h3>Sistemas sob medida</h3>
+            <p>Agenda, estoque, ordens de serviço e painéis feitos para o seu processo.</p>
+          </div>
+        </div>
+        <div class="bc bc-d hov" data-hover data-rv="up" data-d=".12">
+          <div class="txt">
+            <h3>Suporte que responde</h3>
+            <p>Texto, áudio ou print pelo WhatsApp. Primeira resposta em até 2 horas úteis.</p>
+          </div>
+          <div class="sparkles">
+            <svg class="sp sp1" viewBox="0 0 24 24" style="left:40px;top:40px;width:64px;height:64px;color:#F8FAFC"><use href="#i-spark"/></svg>
+            <svg class="sp sp2" viewBox="0 0 24 24" style="left:118px;top:10px;width:34px;height:34px;color:#FBBF24"><use href="#i-spark"/></svg>
+            <svg class="sp sp3" viewBox="0 0 24 24" style="left:120px;top:120px;width:26px;height:26px;color:#F97316"><use href="#i-spark"/></svg>
+            <svg class="sp sp4" viewBox="0 0 24 24" style="left:10px;top:140px;width:18px;height:18px;color:#F8FAFC"><use href="#i-spark"/></svg>
+          </div>
+          <div class="chat">
+            <div class="chat-h"><span class="lg"><svg><use href="#logo"/></svg></span><div><b>ConectaByte</b><small>● online</small></div></div>
+            <div class="msgs">
+              <div class="bub in m1">Oi! Consegue trocar o preço da torta no site?<small>14:02</small></div>
+              <div class="typing m2"><i></i><i></i><i></i></div>
+              <div class="bub out m3">Claro! Já está no ar ✓<small>14:06</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-features">
+      <div class="sec-head">
+        <h2 data-rv="up">Sem surpresa na fatura e sem ficar preso a ninguém</h2>
+        <p data-rv="up" data-d=".1">Preço fechado na criação, mensalidade transparente e tudo registrado no nome da sua empresa.</p>
+      </div>
+      <div class="f-row">
+        <div class="f-copy">
+          <h3 data-rv="up">Tudo incluso na mensalidade</h3>
+          <p data-rv="up" data-d=".08">Hospedagem, certificado de segurança, backup, monitoramento e suporte pelo WhatsApp, sem letra miúda.</p>
+          <span class="btn ghost sm" data-rv="up" data-d=".16">Ver o que está incluso <svg class="ico"><use href="#i-arrow"/></svg></span>
+          <div class="checks">
+            <div class="ck" data-rv="up" data-d=".24"><i><svg><use href="#i-check"/></svg></i>Hospedagem e SSL inclusos</div>
+            <div class="ck" data-rv="up" data-d=".3"><i><svg><use href="#i-check"/></svg></i>Backup e monitoramento</div>
+            <div class="ck" data-rv="up" data-d=".36"><i><svg><use href="#i-check"/></svg></i>Pequenas alterações todo mês</div>
+          </div>
+        </div>
+        <div class="f-card" data-rv="up" data-d=".1">
+          <div class="f-item active hov" data-hover data-rv="right" data-d=".3"><span class="fi"><svg><use href="#i-globe"/></svg></span><div><h5>Domínio no seu nome</h5><p>Registrado no CNPJ da sua empresa.</p></div></div>
+          <div class="f-item" data-rv="right" data-d=".4"><span class="fi"><svg><use href="#i-shield"/></svg></span><div><h5>30 dias de garantia</h5><p>Corrigimos qualquer erro sem custo.</p></div></div>
+          <div class="f-item" data-rv="right" data-d=".5"><span class="fi"><svg><use href="#i-unlock"/></svg></span><div><h5>Sem ficar preso</h5><p>Documentação entregue. O site é seu.</p></div></div>
+          <svg class="ring" viewBox="0 0 640 640" aria-hidden="true">
+            <defs>
+              <linearGradient id="g-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".45" stop-color="#EA580C"/><stop offset="1" stop-color="#7C2D12"/></linearGradient>
+              <radialGradient id="g-ring-in" cx=".5" cy=".5" r=".5"><stop offset=".6" stop-color="#0D0F14"/><stop offset=".92" stop-color="#3A1A0C"/><stop offset="1" stop-color="#EA580C" stop-opacity=".6"/></radialGradient>
+              <filter id="f-ring" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+            </defs>
+            <circle cx="320" cy="320" r="296" fill="none" stroke="#14171E" stroke-width="44"/>
+            <circle cx="320" cy="320" r="296" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <circle cx="320" cy="320" r="244" fill="none" stroke="url(#g-ring)" stroke-width="26" filter="url(#f-ring)" opacity=".85"/>
+            <circle cx="320" cy="320" r="244" fill="none" stroke="url(#g-ring)" stroke-width="12"/>
+            <circle cx="320" cy="320" r="236" fill="url(#g-ring-in)"/>
+            <g class="ring-sweep" style="transform-origin:320px 320px">
+              <circle cx="320" cy="320" r="250" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" pathLength="1" stroke-dasharray=".1 .9" opacity=".9"/>
+            </g>
+          </svg>
+          <svg class="shield" viewBox="0 0 190 210" aria-hidden="true">
+            <defs>
+              <linearGradient id="g-sh-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E5E7EB"/></linearGradient>
+              <linearGradient id="g-sh-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D1D5DB"/><stop offset="1" stop-color="#9CA3AF"/></linearGradient>
+            </defs>
+            <path d="M95 8 L172 36 V98 C172 150 138 186 95 202 C52 186 18 150 18 98 V36 Z" fill="url(#g-sh-l)"/>
+            <path d="M95 8 L172 36 V98 C172 150 138 186 95 202 Z" fill="url(#g-sh-r)"/>
+            <path class="sh-check" d="M60 104 L86 130 L134 80" fill="none" stroke="#EA580C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-support">
+      <div class="s-row">
+        <div class="s-card" data-rv="up">
+          <div class="s-top" data-rv="up" data-d=".2"><span class="fi"><svg><use href="#i-chat"/></svg></span><div><b>Respostas em até 2h úteis</b><small>Texto, áudio, foto ou print.</small></div></div>
+          <div class="plane">
+            <div class="g" style="top:0;width:60%"></div>
+            <div class="g" style="top:64px;width:82%"></div>
+            <div class="g" style="top:128px;width:70%"></div>
+            <div class="g" style="top:192px;width:90%"></div>
+            <div class="g" style="top:256px;width:64%"></div>
+            <div class="g" style="top:320px;width:78%"></div>
+            <div class="s3d hov" data-hover>
+              <div class="r"><b>Novo pedido</b><svg class="ico"><use href="#i-wa"/></svg></div>
+              <div class="t">2 bolos de pote · 16h</div>
+              <div class="p">R$ 24,00</div>
+              <svg class="wv" viewBox="0 0 110 40"><path class="wv-ln" pathLength="1" d="M2 30 C14 30 16 12 28 14 S44 34 56 26 S72 4 84 10 S100 26 108 20" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 1"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="f-copy">
+          <h3 data-rv="up">Uma mensagem de distância e, quando precisar, na sua porta</h3>
+          <p data-rv="up" data-d=".08">Suporte pelo WhatsApp no dia a dia e visita presencial para implantar, treinar a equipe e resolver no local.</p>
+          <span class="btn primary sm" data-rv="up" data-d=".16"><svg class="ico"><use href="#i-wa"/></svg> Falar no WhatsApp</span>
+          <div class="checks">
+            <div class="ck" data-rv="up" data-d=".24"><i><svg><use href="#i-check"/></svg></i>Primeira resposta em até 2 horas úteis</div>
+            <div class="ck" data-rv="up" data-d=".3"><i><svg><use href="#i-check"/></svg></i>Urgências atendidas em até 1 hora útil</div>
+            <div class="ck" data-rv="up" data-d=".36"><i><svg><use href="#i-check"/></svg></i>Visita de implantação em Agudos</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-pricing">
+      <div class="sec-head">
+        <h2 data-rv="up">Escolha o ponto de partida</h2>
+        <p data-rv="up" data-d=".1">Preço fechado para criar e uma mensalidade com hospedagem, suporte e manutenção.</p>
+      </div>
+      <div class="plans">
+        <div class="plan hov" data-hover data-rv="up" data-d=".1">
+          <div class="nm"><h4>Vitrine</h4></div>
+          <p class="for">Para ser encontrado no Google</p>
+          <div class="price" data-count="1490" data-prefix="R$ ">R$ 0</div>
+          <p class="mo">+ <b>R$ 99</b>/mês</p>
+          <span class="btn ghost block plan-btn" data-hover>Quero o Vitrine <svg class="ico"><use href="#i-arrow"/></svg></span>
+          <hr>
+          <ul>
+            <li><i><svg><use href="#i-check"/></svg></i>Site de 1 página, responsivo</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Botão de WhatsApp e formulário</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Google Meu Negócio configurado</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Domínio .com.br, SSL e hospedagem</li>
+            <li><i><svg><use href="#i-check"/></svg></i>1 visita de implantação em Agudos</li>
+          </ul>
+        </div>
+        <div class="plan feat" data-rv="up" data-d=".2">
+          <span class="glow-b"></span>
+          <div class="nm"><h4>Presença</h4><span class="tag o">Mais completo</span></div>
+          <p class="for">Para quem quer mais páginas e contatos</p>
+          <div class="price" data-count="3200" data-prefix="R$ ">R$ 0</div>
+          <p class="mo">+ <b>R$ 149</b>/mês</p>
+          <span class="btn primary block plan-btn" data-hover>Quero o Presença <svg class="ico"><use href="#i-arrow"/></svg></span>
+          <hr>
+          <ul>
+            <li><i><svg><use href="#i-check"/></svg></i>Até 6 páginas, com galeria e blog</li>
+            <li><i><svg><use href="#i-check"/></svg></i>SEO local e Google Analytics</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Integração com Instagram e WhatsApp</li>
+            <li><i><svg><use href="#i-check"/></svg></i>3 e-mails profissionais</li>
+            <li><i><svg><use href="#i-check"/></svg></i>2 rodadas de ajustes e treinamento</li>
+          </ul>
+        </div>
+        <div class="plan hov" data-hover data-rv="up" data-d=".3">
+          <div class="nm"><h4>Vendas</h4></div>
+          <p class="for">Para vender online com carrinho</p>
+          <div class="price" data-count="4900" data-prefix="R$ ">R$ 0</div>
+          <p class="mo">+ <b>R$ 199</b>/mês</p>
+          <span class="btn ghost block plan-btn" data-hover>Quero o Vendas <svg class="ico"><use href="#i-arrow"/></svg></span>
+          <hr>
+          <ul>
+            <li><i><svg><use href="#i-check"/></svg></i>Catálogo ou loja com carrinho</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Pedido pelo WhatsApp ou Pix e cartão</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Painel para cadastrar produtos</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Até 100 produtos cadastrados por nós</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Treinamento da equipe</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-portfolio">
+      <div class="sec-head">
+        <h2 data-rv="up">Um site pensado para cada negócio</h2>
+        <p data-rv="up" data-d=".1">Modelos que adaptamos à sua marca, aos seus produtos e à sua cidade.</p>
+      </div>
+      <div class="ports">
+        <div class="port" data-hover data-rv="up" data-d=".1">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="d-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7F0E8"/><stop offset="1" stop-color="#E6D9CB"/></linearGradient>
+              <linearGradient id="d-body" x1="0" x2="1"><stop offset="0" stop-color="#FBE3C8"/><stop offset=".55" stop-color="#F2C9A0"/><stop offset="1" stop-color="#D99A68"/></linearGradient>
+              <linearGradient id="d-top" x1="0" x2="1"><stop offset="0" stop-color="#FB923C"/><stop offset="1" stop-color="#C2410C"/></linearGradient>
+              <radialGradient id="d-sh"><stop offset="0" stop-color="#6B4C33" stop-opacity=".32"/><stop offset="1" stop-color="#6B4C33" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#d-bg)"/>
+            <circle cx="330" cy="120" r="150" fill="#fff" opacity=".4"/>
+            <ellipse cx="200" cy="438" rx="168" ry="40" fill="url(#d-sh)"/>
+            <ellipse cx="200" cy="414" rx="150" ry="38" fill="#fff"/>
+            <ellipse cx="200" cy="409" rx="134" ry="31" fill="#F1ECE6"/>
+            <path d="M90 290 v104 a110 28 0 0 0 220 0 v-104 z" fill="url(#d-body)"/>
+            <path d="M90 344 a110 28 0 0 0 220 0" fill="none" stroke="#E2A877" stroke-width="6"/>
+            <ellipse cx="200" cy="288" rx="113" ry="30" fill="url(#d-top)"/>
+            <g fill="#EA580C">
+              <rect x="96" y="290" width="18" height="40" rx="9"/><rect x="128" y="300" width="18" height="30" rx="9"/><rect x="160" y="305" width="18" height="52" rx="9"/>
+              <rect x="196" y="307" width="18" height="34" rx="9"/><rect x="232" y="305" width="18" height="46" rx="9"/><rect x="266" y="300" width="18" height="28" rx="9"/><rect x="290" y="292" width="16" height="38" rx="8"/>
+            </g>
+            <ellipse cx="200" cy="283" rx="104" ry="24" fill="#F97316"/>
+            <ellipse cx="176" cy="276" rx="56" ry="8" fill="#FED7AA" opacity=".55"/>
+            <g fill="#FFF7ED"><rect x="150" y="282" width="10" height="4" rx="2" transform="rotate(25 155 284)"/><rect x="236" y="288" width="10" height="4" rx="2" transform="rotate(-30 241 290)"/><rect x="214" y="272" width="10" height="4" rx="2" transform="rotate(60 219 274)"/><rect x="128" y="292" width="10" height="4" rx="2" transform="rotate(-10 133 294)"/></g>
+            <path d="M201 244 q6 -26 26 -34" fill="none" stroke="#4B3A2A" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="200" cy="262" r="22" fill="#B91C1C"/>
+            <circle cx="192" cy="254" r="6" fill="#FECACA" opacity=".85"/>
+            <circle cx="88" cy="168" r="9" fill="#FBBF24"/><circle cx="318" cy="214" r="6" fill="#EA580C"/><circle cx="120" cy="104" r="5" fill="#EA580C"/><rect x="290" y="300" width="0" height="0"/>
+          </svg>
+          <span class="go"><svg><use href="#i-arrow"/></svg></span>
+          <div class="cap"><b>Doceria</b><small>Cardápio online e pedido pelo WhatsApp</small></div>
+        </div>
+        <div class="port" data-hover data-rv="up" data-d=".2">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="c-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E1E9ED"/><stop offset="1" stop-color="#C3D0D7"/></linearGradient>
+              <radialGradient id="c-sh"><stop offset="0" stop-color="#2C3E4A" stop-opacity=".3"/><stop offset="1" stop-color="#2C3E4A" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#c-bg)"/>
+            <circle cx="70" cy="110" r="140" fill="#fff" opacity=".35"/>
+            <ellipse cx="200" cy="452" rx="150" ry="30" fill="url(#c-sh)"/>
+            <g transform="rotate(-8 200 300)">
+              <rect x="86" y="196" width="230" height="230" rx="28" fill="#fff"/>
+              <path d="M86 224 a28 28 0 0 1 28 -28 h174 a28 28 0 0 1 28 28 v32 h-230z" fill="#EA580C"/>
+              <rect x="134" y="180" width="12" height="34" rx="6" fill="#1F2937"/><rect x="256" y="180" width="12" height="34" rx="6" fill="#1F2937"/>
+              <g fill="#D7DEE3">
+                <circle cx="124" cy="290" r="9"/><circle cx="164" cy="290" r="9"/><circle cx="204" cy="290" r="9"/><circle cx="244" cy="290" r="9"/><circle cx="284" cy="290" r="9"/>
+                <circle cx="124" cy="330" r="9"/><circle cx="164" cy="330" r="9"/><circle cx="244" cy="330" r="9"/><circle cx="284" cy="330" r="9"/>
+                <circle cx="124" cy="370" r="9"/><circle cx="164" cy="370" r="9"/><circle cx="204" cy="370" r="9"/><circle cx="244" cy="370" r="9"/>
+              </g>
+              <rect x="186" y="312" width="36" height="36" rx="10" fill="#EA580C"/>
+              <path d="M195 330 l7 7 l12 -13" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <circle cx="304" cy="176" r="50" fill="#fff"/>
+            <rect x="296" y="150" width="16" height="52" rx="5" fill="#EA580C"/><rect x="278" y="168" width="52" height="16" rx="5" fill="#EA580C"/>
+            <rect x="60" y="430" width="120" height="44" rx="22" fill="#fff"/>
+            <circle cx="84" cy="452" r="8" fill="#4ADE80"/><text x="100" y="458" font-family="Inter, sans-serif" font-size="17" font-weight="600" fill="#1F2937">09:30</text>
+          </svg>
+          <span class="go"><svg><use href="#i-arrow"/></svg></span>
+          <div class="cap"><b>Clínica</b><small>Agendamento online e mapa de acesso</small></div>
+        </div>
+        <div class="port" data-hover data-rv="up" data-d=".3">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="o-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFEDE6"/><stop offset="1" stop-color="#D9D6CB"/></linearGradient>
+              <linearGradient id="o-metal" x1="0" x2="1"><stop offset="0" stop-color="#F3F4F6"/><stop offset=".5" stop-color="#C9CDD4"/><stop offset="1" stop-color="#9CA3AF"/></linearGradient>
+              <radialGradient id="o-sh"><stop offset="0" stop-color="#3B3A33" stop-opacity=".3"/><stop offset="1" stop-color="#3B3A33" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#o-bg)"/>
+            <circle cx="320" cy="90" r="130" fill="#fff" opacity=".4"/>
+            <ellipse cx="200" cy="450" rx="160" ry="30" fill="url(#o-sh)"/>
+            <g transform="translate(200 300)">
+              <circle r="104" fill="none" stroke="#1F2430" stroke-width="36" stroke-dasharray="22.3 18.5"/>
+              <circle r="92" fill="#2A303C"/>
+              <circle r="88" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="2"/>
+              <circle r="40" fill="#EA580C"/>
+              <circle r="40" fill="none" stroke="#FB923C" stroke-width="3"/>
+              <circle r="16" fill="#1F2430"/>
+            </g>
+            <g transform="rotate(-38 200 300)">
+              <rect x="186" y="150" width="28" height="250" rx="14" fill="url(#o-metal)"/>
+              <path d="M200 96 a46 46 0 1 1 -0.1 0 z M186 92 h28 v40 h-28 z" fill="url(#o-metal)" fill-rule="evenodd"/>
+              <circle cx="200" cy="138" r="22" fill="#EFEDE6"/>
+              <rect x="190" y="96" width="20" height="44" fill="#EFEDE6"/>
+            </g>
+            <g fill="#1F2430"><polygon points="74,180 86,173 98,180 98,194 86,201 74,194"/><polygon points="314,420 324,414 334,420 334,432 324,438 314,432"/></g>
+            <circle cx="330" cy="200" r="8" fill="#FBBF24"/><circle cx="70" cy="420" r="6" fill="#EA580C"/>
+          </svg>
+          <span class="go"><svg><use href="#i-arrow"/></svg></span>
+          <div class="cap"><b>Oficina</b><small>Orçamento online e ordem de serviço</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s-cta">
+      <div class="cta" data-rv="up">
+        <div class="cta-copy">
+          <h2 data-rv="up" data-d=".15">Vamos colocar sua empresa no topo?</h2>
+          <p data-rv="up" data-d=".22">Conte o que você precisa. A primeira resposta chega em até 2 horas úteis.</p>
+          <div class="field" data-rv="up" data-d=".3">
+            <span class="typed ph" id="typed">Conte o que você precisa</span>
+            <span class="btn primary cta-btn" data-hover>Pedir orçamento <svg class="ico"><use href="#i-arrow"/></svg></span>
+          </div>
+        </div>
+        <div class="cta-dash" data-rv="right" data-d=".25">
+          <div class="dp-stats">
+            <div class="stat"><small>Visitas no site</small><div class="v">2.418</div><span class="d">↑ 18%</span></div>
+            <div class="stat"><small>Pedidos no WhatsApp</small><div class="v">186</div><span class="d">↑ 24%</span></div>
+          </div>
+          <div class="chart">
+            <div class="gl" style="top:0"><span>3 mil</span></div><div class="gl" style="top:50%"><span>1,5 mil</span></div><div class="gl" style="top:100%"><span>0</span></div>
+            <div class="bars">
+              <div class="bar-col"><i class="bar prev" style="height:34%"></i><i class="bar cur" style="height:46%"></i><em>Jan</em></div>
+              <div class="bar-col"><i class="bar prev" style="height:40%"></i><i class="bar cur" style="height:58%"></i><em>Fev</em></div>
+              <div class="bar-col"><i class="bar prev" style="height:37%"></i><i class="bar cur" style="height:52%"></i><em>Mar</em></div>
+              <div class="bar-col"><i class="bar prev" style="height:48%"></i><i class="bar cur" style="height:70%"></i><em>Abr</em></div>
+              <div class="bar-col"><i class="bar prev" style="height:44%"></i><i class="bar cur" style="height:79%"></i><em>Mai</em></div>
+              <div class="bar-col"><i class="bar prev" style="height:52%"></i><i class="bar cur" style="height:94%"></i><em>Jun</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer">
+        <div data-rv="up">
+          <div class="brand"><svg><use href="#logo"/></svg><span>Conecta<b>Byte</b></span></div>
+          <h3>No topo da sua presença digital.</h3>
+        </div>
+        <div data-rv="up" data-d=".08"><h6>Navegação</h6><ul><li>Serviços</li><li>Suporte</li><li>Pacotes</li><li>Modelos</li></ul></div>
+        <div data-rv="up" data-d=".16"><h6>Atendimento</h6><ul><li>WhatsApp</li><li>Instagram</li><li>E-mail</li><li>Seg a sex, 8h às 18h</li></ul></div>
+        <div data-rv="up" data-d=".24"><h6>Região</h6><ul><li>Agudos</li><li>Bauru</li><li>Lençóis Paulista</li><li>Pederneiras</li><li>Piratininga</li></ul></div>
+      </div>
+      <div class="foot-b"><span>© 2026 ConectaByte</span><span>Agudos, SP</span></div>
+    </footer>
+
+  </div>
+</template>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ===================================================================
+     Linha do tempo deterministica: tudo e funcao do tempo t (segundos).
+     Isso permite pausar, voltar, pular para qualquer instante (?t=7.5)
+     e gravar sem variacao entre execucoes.
+     =================================================================== */
+  const DUR = 25;
+  const FRAME = { x: 45, y: 593, w: 990, h: 734 };
+  const S = FRAME.w / 1440;           // escala do site dentro da moldura
+  const VIEW_H = FRAME.h / S;         // altura visivel do site, em px do site
+  const RATE = 240;                   // amostras/s da tabela de rolagem
+  const LAMBDA = 6.4;                 // suavizacao do scroll (estilo Lenis)
+
+  // Gestos de rolagem, no ritmo medido no video de referencia: [inicio, destino]
+  const GESTURES = [
+    [2.75, 'teaser'], [3.70, 0], [4.50, 'dash'], [6.60, 'mq'], [9.40, 'feat'],
+    [11.80, 'sup'], [13.90, 'price'], [16.80, 'port'], [19.40, 'end'],
+  ];
+  // Cada gesto = varios "ticks" de roda do mouse (offset em s, fracao da distancia)
+  const TICKS = [[0, .10], [.09, .16], [.18, .21], [.28, .22], [.38, .18], [.50, .13]];
+
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, p) => a + (b - a) * p;
+  const seg = (t, a, b) => clamp((t - a) / (b - a));
+  const E = {
+    outExpo: p => (p >= 1 ? 1 : 1 - Math.pow(2, -10 * p)),
+    outQuart: p => 1 - Math.pow(1 - p, 4),
+    outCubic: p => 1 - Math.pow(1 - p, 3),
+    inOutCubic: p => (p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2),
+    inOutQuint: p => (p < .5 ? 16 * p ** 5 : 1 - Math.pow(-2 * p + 2, 5) / 2),
+    inOutSine: p => -(Math.cos(Math.PI * p) - 1) / 2,
+    outBack: p => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); },
+  };
+  const bump = (x, w) => (x < 0 || x > w ? 0 : Math.sin(Math.PI * x / w));
+  const fmt = (v, dec) => v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  const stage = $('#stage');
+  const params = new URLSearchParams(location.search);
+
+  /* ---------- Monta o site duas vezes: na moldura e no eco de fundo ---------- */
+  function mount(view) {
+    const scroller = document.createElement('div');
+    scroller.className = 'scroller';
+    scroller.appendChild($('#tpl-site').content.firstElementChild.cloneNode(true));
+    const nav = $('#tpl-nav').content.firstElementChild.cloneNode(true);
+    view.append(scroller, nav);
+    return { view, scroller, nav, site: scroller.firstElementChild };
+  }
+  const M = mount($('#view'));
+  const C = mount($('#echoView'));
+  const both = sel => { const a = $$(sel, M.view), b = $$(sel, C.view); return a.map((el, i) => [el, b[i]]); };
+  const setVar = (pair, k, v) => { for (const el of pair) if (el) el.style.setProperty(k, v); };
+  const setSt = (pair, k, v) => { for (const el of pair) if (el) el.style[k] = v; };
+
+  // Palavra final "ConectaByte" letra por letra
+  $('#endWord').innerHTML = [...'Conecta'].map(c => `<span>${c}</span>`).join('') + [...'Byte'].map(c => `<span class="o">${c}</span>`).join('');
+
+  // Textura de granulacao (gerada uma vez)
+  (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 220;
+    const g = c.getContext('2d'); const img = g.createImageData(220, 220);
+    let s = 1234567;
+    for (let i = 0; i < img.data.length; i += 4) { s = (s * 16807) % 2147483647; const v = s & 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+    g.putImageData(img, 0, 0);
+    $('#grain').style.backgroundImage = `url(${c.toDataURL()})`;
+  })();
+
+  /* ---------- Medidas (offsets em px do site, ignorando transforms) ---------- */
+  function offsetIn(el, root = M.site) {
+    let x = 0, y = 0;
+    while (el && el !== root) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; }
+    return { x, y };
+  }
+
+  let scrollTab, maxScroll, stops, reveals, counters, hovers, cursorKeys, navAnchors, linkBoxes, mqWidth, clicks;
+
+  function buildScroll() {
+    const ticks = [];
+    let cur = 0;
+    for (const [t0, key] of GESTURES) {
+      const to = typeof key === 'number' ? key : stops[key];
+      for (const [o, w] of TICKS) ticks.push([t0 + o, (to - cur) * w]);
+      cur = to;
+    }
+    ticks.sort((a, b) => a[0] - b[0]);
+    const N = Math.ceil(DUR * RATE) + 2, sub = 4, dt = 1 / (RATE * sub), k = 1 - Math.exp(-LAMBDA * dt);
+    const tab = new Float32Array(N);
+    let pos = 0, target = 0, ti = 0;
+    for (let i = 0; i < N; i++) {
+      tab[i] = pos;
+      for (let s = 0; s < sub; s++) {
+        const tt = (i * sub + s) * dt;
+        while (ti < ticks.length && ticks[ti][0] <= tt) target += ticks[ti++][1];
+        pos += (target - pos) * k;
+      }
+    }
+    return tab;
+  }
+  const scrollAt = t => {
+    const x = clamp(t, 0, DUR) * RATE, i = Math.floor(x), f = x - i;
+    return clamp(lerp(scrollTab[i], scrollTab[Math.min(i + 1, scrollTab.length - 1)], f), 0, maxScroll);
+  };
+  const velAt = t => (scrollAt(t + 1 / 120) - scrollAt(t - 1 / 120)) * 60;
+  // Primeiro instante em que um ponto do site (y) entra na area visivel
+  const enterTime = y => {
+    for (let i = 0; i < scrollTab.length; i++) if (scrollTab[i] + VIEW_H * .9 >= y + 40) return i / RATE;
+    return DUR;
+  };
+
+  // Posicao (em px do palco) de um elemento do site no instante t
+  function stagePos(el, t, ox = .5, oy = .5) {
+    const o = offsetIn(el);
+    return [FRAME.x + (o.x + el.offsetWidth * ox) * S, FRAME.y + (o.y + el.offsetHeight * oy - scrollAt(t)) * S];
+  }
+  function stageRect(el, t) {
+    const o = offsetIn(el), sc = scrollAt(t);
+    const x = FRAME.x + o.x * S, y = FRAME.y + (o.y - sc) * S;
+    return [x, y, x + el.offsetWidth * S, y + el.offsetHeight * S];
+  }
+
+  /* ---------- Cursor: trajetos guiados por elementos reais da pagina ---------- */
+  const CURSOR = [
+    { at: 2.30, pos: [860, 1250], dur: 0 },
+    { at: 3.10, el: '.hero-wa', ox: .62, oy: .64, dur: .7 },
+    { at: 5.75, el: '.dp-stats .stat:nth-child(2)', ox: .7, oy: .6, dur: .6 },
+    { at: 6.35, el: '.dp-stats .stat:nth-child(3)', ox: .55, oy: .62, dur: .45 },
+    { at: 8.10, el: '.bc-b .order', ox: .62, oy: .5, dur: .65 },
+    { at: 8.95, el: '.bc-c .tile', ox: .58, oy: .58, dur: .55 },
+    { at: 11.05, el: '.f-item.active', ox: .42, oy: .55, dur: .65 },
+    { at: 13.35, el: '.s3d', ox: .5, oy: .55, dur: .6 },
+    { at: 15.40, el: '.plan:nth-child(1) .plan-btn', ox: .5, oy: .5, dur: .55 },
+    { at: 16.15, el: '.plan:nth-child(2) .plan-btn', ox: .48, oy: .55, dur: .5, click: true },
+    { at: 18.20, el: '.port:nth-child(1)', ox: .62, oy: .58, dur: .6 },
+    { at: 18.95, el: '.port:nth-child(2)', ox: .55, oy: .56, dur: .5 },
+    { at: 21.2, el: '.cta-btn', ox: .5, oy: .52, dur: .55, click: true },
+  ];
+  function cursorAt(t) {
+    const K = cursorKeys;
+    if (t <= K[0].at) return K[0].p;
+    for (let i = 1; i < K.length; i++) {
+      const k = K[i], start = k.at - k.dur;
+      if (t < start) return K[i - 1].p;
+      if (t < k.at) {
+        const a = K[i - 1].p, b = k.p, p = E.inOutCubic(seg(t, start, k.at));
+        const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1;
+        const bend = Math.sin(Math.PI * p) * Math.min(60, len * .12);   // trajeto levemente curvo, como uma mao
+        return [lerp(a[0], b[0], p) - dy / len * bend, lerp(a[1], b[1], p) + dx / len * bend];
+      }
+    }
+    return K[K.length - 1].p;
+  }
+
+  function measure() {
+    const top = sel => offsetIn($(sel, M.site)).y;
+    maxScroll = M.site.offsetHeight - VIEW_H;
+    stops = {
+      teaser: 300,
+      dash: top('.dash-panel') - 112,
+      mq: top('.mq') - 112,
+      feat: top('.s-features') - 104,
+      sup: top('.s-support') - 150,
+      price: top('.s-pricing') - 104,
+      port: top('.s-portfolio') - 104,
+      end: Math.min(maxScroll, top('.s-cta') - 122),
+    };
+    scrollTab = buildScroll();
+
+    // Revelacoes: hora absoluta (data-at) ou quando o elemento entra na tela
+    reveals = both('[data-rv]').map(([a, b]) => {
+      const d = +(a.dataset.d || 0);
+      const t0 = a.dataset.at ? +a.dataset.at : Math.max(+(a.dataset.min || 0), enterTime(offsetIn(a).y)) + d;
+      return { els: [a, b], type: a.dataset.rv, t0, dur: +(a.dataset.dur || (a.dataset.rv === 'blur' ? .75 : .95)), last: -1 };
+    });
+    const revealOf = el => { const r = reveals.find(r => r.els[0] === el.closest('[data-rv]')); return r ? r.t0 : enterTime(offsetIn(el).y); };
+
+    counters = both('[data-count]').map(([a, b]) => ({
+      els: [a, b], to: +a.dataset.count, dec: +(a.dataset.dec || 0), pre: a.dataset.prefix || '', suf: a.dataset.suffix || '',
+      t0: revealOf(a) + .1, dur: a.closest('.plan') ? .95 : 1.6, last: '',
+    }));
+
+    // Tempos-base de cada bloco animado
+    T.dash = revealOf($('.dash-panel', M.site));
+    // numeros do painel so contam quando a pagina "pousa" nele (na espiada aparecem zerados)
+    T.dashLand = (() => { for (let i = Math.round(4 * RATE); i < scrollTab.length; i++) if (scrollTab[i] >= stops.dash * .82) return i / RATE; return T.dash; })();
+    for (const c of counters) if (c.els[0].closest('.s-dash')) c.t0 = T.dashLand;
+    T.bars = T.dashLand + .15;
+    T.chips = revealOf($('.bc-a', M.site));
+    T.order = revealOf($('.bc-b', M.site));
+    T.chat = revealOf($('.bc-d', M.site));
+    T.shield = revealOf($('.f-card', M.site));
+    T.s3d = revealOf($('.s-card', M.site));
+    T.cta = revealOf($('.field', M.site));
+    T.ctaBars = revealOf($('.cta-dash', M.site));
+
+    T.type0 = T.cta + .25;
+    T.type1 = Math.min(T.type0 + .8, CURSOR[CURSOR.length - 1].at - .15);
+
+    cursorKeys = CURSOR.map(k => ({ ...k, p: k.pos || stagePos($(k.el, M.site), k.at, k.ox, k.oy) }));
+    clicks = cursorKeys.filter(k => k.click).map(k => ({ t: k.at + .14, p: k.p, el: $(k.el, M.site) }));
+
+    // Hover: pre-calcula, quadro a quadro, se o cursor esta sobre cada elemento (suavizado)
+    const step = 1 / 60, n = Math.ceil(DUR / step) + 1;
+    hovers = both('[data-hover]').map(([a, b]) => {
+      const h = new Float32Array(n);
+      let v = 0;
+      for (let i = 0; i < n; i++) {
+        const t = i * step, [cx, cy] = cursorAt(t), [x0, y0, x1, y1] = stageRect(a, t);
+        const vis = cursorOpacity(t) > .5 && cx > x0 && cx < x1 && cy > y0 && cy < y1;
+        v += ((vis ? 1 : 0) - v) * (1 - Math.exp(-step * 13));
+        h[i] = v;
+      }
+      return { els: [a, b], h, last: -1 };
+    });
+
+    // Navbar: pilula que acompanha a secao atual
+    linkBoxes = $$('.links a', M.nav).map(a => [a.offsetLeft, a.offsetWidth]);
+    navAnchors = [[0, 0], [stops.dash, 0], [stops.mq, 1], [stops.feat, 2], [stops.sup, 3], [stops.price, 4], [stops.port, 5]];
+    mqWidth = $('.mq-track', M.site).scrollWidth / 3;
+  }
+  const T = {};
+  const cursorOpacity = t => seg(t, 2.3, 2.65) * (1 - seg(t, 21.65, 21.95));
+
+  /* ---------- Gancho: a logo vira o horizonte incandescente do hero ---------- */
+  const arcPair = both('.hero-arc')[0];
+  const arcParts = {
+    white: both('.a-white')[0], fire: both('.a-fire')[0], glow: both('.a-glow')[0], haze: both('.a-haze')[0],
+    rim: both('.a-rim')[0], sweep: both('.a-sweep')[0], halo: both('.n-halo')[0],
+    tipU: both('.tip-up')[0], tipD: both('.tip-dn')[0],
+    rl: both('.nr-l')[0], rt: both('.nr-t')[0], rb: both('.nr-b')[0],
+  };
+  const heroGlow = both('.hero-glow')[0], heroBeam = both('.hero-beam')[0];
+  const K_ARC = 27;                              // px do site por unidade da logo (viewBox 64)
+  const S0 = (210 / S) / (64 * K_ARC);           // escala inicial: logo com ~210px no palco
+  const ARC_CY = 1270;                           // centro do circulo do "C" no hero (px do site)
+  const TY0 = VIEW_H / 2 - ARC_CY;               // comeca com a logo no centro da moldura
+  const TX0 = 21 * K_ARC * S0;                   // comeca com o ponto ambar exatamente no centro
+
+  function hook(t) {
+    // desenho da logo (0 a 1.05s)
+    const pl = E.outBack(seg(t, .02, .32));
+    const draw = E.inOutCubic(seg(t, .2, .78));
+    const con = E.outCubic(seg(t, .7, .9));
+    const nodes = E.outBack(seg(t, .78, 1.02));
+    // mergulho da camera (1.05 a 2.05s)
+    const push = E.inOutQuint(seg(t, 1.05, 2.05));
+    const sc = Math.exp(lerp(Math.log(S0), 0, push));
+    const tx = lerp(TX0, 0, E.inOutCubic(seg(t, .15, .9))) * (1 - push);
+    const ty = lerp(TY0, 0, push);
+
+    const vars = {
+      '--du': 1 - draw, '--dd': 1 - draw, '--dc': 1 - con, '--ao': draw > .001 ? 1 : 0, '--co': con > .001 ? 1 : 0,
+      '--bw': lerp(7, 3, push), '--cw': lerp(3, .7, push),
+      '--rt': lerp(5.5, 1.3, push) * nodes, '--rb': lerp(5.5, 1.3, push) * nodes, '--rl': lerp(4.2, 1.1, push) * pl * (1 - seg(push, .2, .55)),
+      '--rh': lerp(0, 3.4, seg(t, 1.6, 2.4)),
+      '--m0': lerp(100, 30.9, push) + '%', '--m1': lerp(100, 37.8, push) + '%',
+    };
+    for (const k in vars) setVar(arcPair, k, vars[k]);
+    setSt(arcPair, 'transform', `translate(${tx}px, ${ty}px) scale(${sc})`);
+
+    // "aquece": o laranja entra por cima e so depois o branco sai (evita o tom rosado da mistura)
+    setSt(arcParts.fire, 'opacity', E.inOutSine(seg(t, 1.12, 1.42)));
+    setSt(arcParts.white, 'opacity', 1 - seg(t, 1.3, 1.55));
+    setSt(arcParts.glow, 'opacity', seg(t, 1.25, 2.1) * (.75 + .25 * Math.sin(t * 1.7)));
+    setSt(arcParts.haze, 'opacity', seg(t, 1.45, 2.4));
+    setSt(arcParts.rim, 'opacity', seg(t, 1.9, 2.5));
+    setSt(arcParts.halo, 'opacity', seg(t, 1.6, 2.4) * (.55 + .2 * Math.sin(t * 2.3)));
+
+    // faiscas nas pontas do traco
+    const tipA = seg(t, .2, .3) * (1 - seg(t, .72, .84));
+    const ang = Math.PI - draw * (135 * Math.PI / 180);
+    for (const [pair, dir] of [[arcParts.tipU, 1], [arcParts.tipD, -1]]) {
+      const a = Math.PI + (ang - Math.PI) * dir;
+      for (const el of pair) { el.setAttribute('cx', 32 + 21 * Math.cos(a)); el.setAttribute('cy', 32 - 21 * Math.sin(a)); el.style.opacity = tipA; }
+    }
+    // ondas de conexao nos nos
+    const ring = (pair, t0, r0, r1) => { const q = seg(t, t0, t0 + .6); for (const el of pair) { el.setAttribute('r', lerp(r0, r1, E.outCubic(q))); el.style.opacity = q > 0 && q < 1 ? (1 - q) * .8 : 0; } };
+    ring(arcParts.rl, .06, 4, 13);
+    ring(arcParts.rt, .86, 5, 13);
+    ring(arcParts.rb, .9, 5, 13);
+
+    // feixe de luz percorrendo a borda do horizonte (efeito "lighting")
+    const sw = t - 2.15, cyc = sw >= 0 ? (sw % 4.6) / 1.7 : 2;
+    const sweepOp = cyc < 1 ? Math.sin(Math.PI * cyc) : 0;
+    for (const el of arcParts.sweep) { el.style.opacity = sweepOp; el.setAttribute('stroke-dashoffset', lerp(.2, -1.25, E.inOutSine(clamp(cyc)))); }
+
+    setSt(heroGlow, 'opacity', seg(t, 1.5, 2.5) * (.85 + .15 * Math.sin(t * 1.3)));
+    setSt(heroBeam, 'opacity', seg(t, 1.75, 2.6));
+
+    // moldura se materializa em volta da luz
+    const fr = E.outCubic(seg(t, 1.2, 1.85));
+    $('#frameClip').style.setProperty('--ci', lerp(-24, 0, fr) + '%');
+    $('#frameBg').style.opacity = seg(t, 1.2, 1.7);
+    $('#frameRim').style.opacity = seg(t, 1.35, 1.9);
+    $('#frameTint').style.opacity = seg(t, 1.2, 1.55) * (1 - seg(t, 1.9, 2.8)) * .9;
+    setVar([M.nav, C.nav], '--nb', seg(t, 1.2, 1.7));
+  }
+
+  /* ---------- Encerramento: volta para a logo (loop sem emenda) ---------- */
+  const endPaths = { up: $$('#endLogo .e-up'), dn: $$('#endLogo .e-dn'), con: $$('#endLogo .e-con') };
+  const endLetters = $$('#endWord span');
+  function outro(t) {
+    const out = E.inOutCubic(seg(t, 21.7, 22.5));
+    const frame = $('#frame');
+    frame.style.opacity = 1 - out;
+    frame.style.transform = `scale(${lerp(1, .93, out)})`;
+    const amb = seg(t, 1.6, 2.6) * (1 - seg(t, 21.6, 22.4));
+    $('#echo').style.opacity = amb;
+    $('#vignette').style.opacity = amb;
+
+    const end = $('#end');
+    const fadeAll = 1 - E.inOutSine(seg(t, 24.35, 24.95));
+    end.style.opacity = (t > 22 ? 1 : 0) * fadeAll;
+    if (t < 22) return;
+    const d = E.inOutCubic(seg(t, 22.35, 22.95)), dc = E.outCubic(seg(t, 22.85, 23.05));
+    for (const p of [...endPaths.up, ...endPaths.dn]) { p.style.strokeDashoffset = 1 - d; p.style.opacity = d > .001 ? 1 : 0; }
+    for (const p of endPaths.con) { p.style.strokeDashoffset = 1 - dc; p.style.opacity = dc > .001 ? 1 : 0; }
+    const nb = E.outBack(seg(t, 22.95, 23.25));
+    $('#endLogo .e-nt').setAttribute('r', 5.5 * nb);
+    $('#endLogo .e-nb').setAttribute('r', 5.5 * nb);
+    $('#endLogo .e-nl').setAttribute('r', 4.2 * E.outBack(seg(t, 22.2, 22.45)));
+    const lg = $('#endLogo');
+    lg.style.transform = `scale(${lerp(.86, 1, E.outCubic(seg(t, 22.2, 23.4)))})`;
+    endLetters.forEach((el, i) => {
+      const q = E.outQuart(seg(t, 23.0 + i * .035, 23.7 + i * .035));
+      el.style.opacity = q; el.style.transform = `translateY(${(1 - q) * 40}px)`; el.style.filter = `blur(${(1 - q) * 10}px)`;
+    });
+    const sq = E.outQuart(seg(t, 23.45, 24.1));
+    const sl = $('#endSlogan'); sl.style.opacity = sq; sl.style.transform = `translateY(${(1 - sq) * 20}px)`;
+  }
+
+  /* ---------- Micro-animacoes por secao ---------- */
+  const fx = {
+    sparks: both('.s-dash .spark .ln'), bars: both('.s-dash .bar'), ctaBars: both('.cta-dash .bar'),
+    mq: both('.mq-track')[0], beam: both('.beam')[0], tile: both('.tile')[0],
+    stOk: both('.order .st .ok')[0], stW: both('.order .st .w8')[0],
+    m1: both('.m1')[0], m2: both('.m2')[0], m3: both('.m3')[0], dots: both('.typing i'),
+    sp: both('.sp'), ring: both('.ring-sweep')[0], check: both('.sh-check')[0],
+    s3d: both('.s3d')[0], wave: both('.wv-ln')[0], glowB: both('.glow-b')[0],
+    arts: both('.port .art'), navPill: both('.links .pill')[0], navLine: both('.nav .line')[0], navProg: both('.nav .prog')[0],
+  };
+  const typedEls = both('#typed')[0];
+  const TYPED = 'Quero um site novo';
+
+  function sections(t, sc) {
+    // sparklines e barras do painel
+    fx.sparks.forEach((pair, i) => setSt(pair, 'strokeDashoffset', 1 - E.outCubic(seg(t, T.dashLand + .1 + i * .1, T.dashLand + 1.3 + i * .1))));
+    fx.bars.forEach((pair, i) => setSt(pair, 'transform', `scaleY(${E.outQuart(seg(t, T.bars + (i >> 1) * .07, T.bars + .9 + (i >> 1) * .07))})`));
+    fx.ctaBars.forEach((pair, i) => setSt(pair, 'transform', `scaleY(${E.outQuart(seg(t, T.ctaBars + .3 + (i >> 1) * .07, T.ctaBars + 1.2 + (i >> 1) * .07))})`));
+
+    // cidades em movimento continuo
+    setSt(fx.mq, 'transform', `translateX(${-((t * 64) % mqWidth)}px)`);
+
+    // feixe laranja + bloco da logo
+    setSt(fx.beam, 'backgroundPosition', `${t * 26}px 0, 0 0`);
+    setSt(fx.beam, 'opacity', .86 + .14 * Math.sin(t * 2.1));
+    setSt(fx.tile, 'transform', `translateY(${Math.sin(t * 1.4) * 6}px)`);
+
+    // status do pedido: aguardando -> Pix aprovado
+    const ok = E.outCubic(seg(t, T.order + 1.25, T.order + 1.6));
+    setSt(fx.stOk, 'opacity', ok); setSt(fx.stOk, 'transform', `scale(${lerp(.86, 1, E.outBack(seg(t, T.order + 1.25, T.order + 1.6)))})`);
+    setSt(fx.stW, 'opacity', 1 - ok);
+
+    // conversa no WhatsApp
+    const m = (pair, a) => { const q = E.outQuart(seg(t, a, a + .5)); setSt(pair, 'opacity', q); setSt(pair, 'transform', `translateY(${(1 - q) * 16}px) scale(${lerp(.96, 1, q)})`); };
+    m(fx.m1, T.chat + .5);
+    const ty = seg(t, T.chat + 1.05, T.chat + 1.25) * (1 - seg(t, T.chat + 1.95, T.chat + 2.05));
+    setSt(fx.m2, 'opacity', ty); setSt(fx.m2, 'display', ty > 0 ? '' : 'none');
+    fx.dots.forEach((pair, i) => setSt(pair, 'transform', `translateY(${-Math.max(0, Math.sin(t * 9 - i * .9)) * 5}px)`));
+    m(fx.m3, T.chat + 2.05);
+    fx.sp.forEach((pair, i) => {
+      const tw = .75 + .25 * Math.sin(t * (1.6 + i * .37) + i * 1.3);
+      setSt(pair, 'transform', `scale(${tw}) rotate(${Math.sin(t * .8 + i) * 12}deg)`);
+      setSt(pair, 'opacity', seg(t, T.chat + .3 + i * .1, T.chat + .9 + i * .1) * (.6 + .4 * tw));
+    });
+
+    // anel com brilho girando + escudo
+    setSt(fx.ring, 'transform', `rotate(${t * 46}deg)`);
+    setSt(fx.check, 'strokeDashoffset', 1 - E.outCubic(seg(t, T.shield + .8, T.shield + 1.4)));
+
+    // cartao 3D flutuando
+    const fl = E.outQuart(seg(t, T.s3d + .3, T.s3d + 1.3));
+    setSt(fx.s3d, 'transform', `translateZ(${lerp(0, 60, fl) + Math.sin(t * 1.5) * 10}px) translateY(${(1 - fl) * 60}px)`);
+    setSt(fx.s3d, 'opacity', fl);
+    setSt(fx.wave, 'strokeDashoffset', 1 - E.outCubic(seg(t, T.s3d + .9, T.s3d + 1.8)));
+
+    // borda luminosa girando no plano em destaque
+    setVar(fx.glowB, '--ga', `${(t * 70) % 360}deg`);
+
+    // imagens dos modelos com paralaxe interna
+    fx.arts.forEach(pair => setSt(pair, 'transform', `translateY(${(sc - stops.port) * -.06}px)`));
+
+    // digitacao no formulario final (termina antes do clique do cursor)
+    const n = Math.floor(seg(t, T.type0, T.type1) * TYPED.length);
+    const caret = Math.floor(t * 2.2) % 2 === 0 ? '<span class="caret"></span>' : '';
+    const html = n ? TYPED.slice(0, n) + caret : 'Conte o que você precisa';
+    for (const el of typedEls) { if (el._h !== html) { el.innerHTML = html; el._h = html; el.classList.toggle('ph', !n); } }
+
+    // navbar: linha, progresso e pilula da secao atual
+    setSt(fx.navLine, 'opacity', seg(sc, 10, 120));
+    setSt(fx.navProg, 'transform', `scaleX(${sc / maxScroll})`);
+    let idx = 0;
+    for (let i = 1; i < navAnchors.length; i++) {
+      const [s0, i0] = navAnchors[i - 1], [s1, i1] = navAnchors[i];
+      if (sc >= s0) idx = sc >= s1 ? i1 : lerp(i0, i1, E.inOutSine(seg(sc, lerp(s0, s1, .45), s1)));
+    }
+    const a = Math.floor(idx), b = Math.min(a + 1, linkBoxes.length - 1), f = idx - a;
+    setSt(fx.navPill, 'left', lerp(linkBoxes[a][0], linkBoxes[b][0], f) + 'px');
+    setSt(fx.navPill, 'width', lerp(linkBoxes[a][1], linkBoxes[b][1], f) + 'px');
+    setSt(fx.navPill, 'opacity', seg(t, 1.7, 2.1));
+  }
+
+  /* ---------- Revelacoes e contadores ---------- */
+  function applyReveal(r, t) {
+    const p = E.outQuart(seg(t, r.t0, r.t0 + r.dur));
+    if (p === r.last) return;
+    r.last = p;
+    const q = 1 - p;
+    for (const el of r.els) {
+      if (!el) continue;
+      const s = el.style;
+      s.opacity = p;
+      switch (r.type) {
+        case 'up': s.translate = `0 ${q * 48}px`; break;
+        case 'down': s.translate = `0 ${-q * 22}px`; break;
+        case 'left': s.translate = `${q * 70}px 0`; break;
+        case 'right': s.translate = `${q * 60}px 0`; break;
+        case 'blur': s.translate = `0 ${q * 34}px`; s.filter = q > .001 ? `blur(${q * 14}px)` : ''; break;
+      }
+    }
+  }
+
+  /* ---------- Quadro ---------- */
+  const cursorEl = $('#cursor'), rippleEl = $('#ripple');
+  function render(t) {
+    const sc = scrollAt(t), vel = velAt(t);
+    const tr = `translate3d(0, ${-sc}px, 0)`;
+    M.scroller.style.transform = tr;
+    C.scroller.style.transform = tr;
+
+    hook(t);
+    for (const r of reveals) applyReveal(r, t);
+    for (const c of counters) {
+      const v = c.to * E.outExpo(seg(t, c.t0, c.t0 + c.dur));
+      const s = c.pre + fmt(v, c.dec) + c.suf;
+      if (s !== c.last) { c.last = s; for (const el of c.els) el.textContent = s; }
+    }
+    const hi = Math.min(hovers[0].h.length - 1, Math.round(t * 60));
+    for (const h of hovers) { const v = +h.h[hi].toFixed(3); if (v !== h.last) { h.last = v; for (const el of h.els) el.style.setProperty('--h', v); } }
+    sections(t, sc);
+
+    // brilho sob a moldura reage a velocidade da rolagem
+    $('#underglow').style.opacity = seg(t, 1.6, 2.6) * (1 - seg(t, 21.6, 22.3)) * clamp(.55 + Math.abs(vel) / 2600, 0, 1);
+
+    // cursor + clique
+    const [cx, cy] = cursorAt(t);
+    let press = 0, rip = null;
+    for (const c of clicks) {
+      press = Math.max(press, bump(t - c.t, .26));
+      if (t >= c.t && t < c.t + .7) rip = [c, (t - c.t) / .7];
+      const pr = bump(t - c.t, .3);
+      for (const el of [c.el]) el.style.setProperty('--p', pr.toFixed(3));
+    }
+    cursorEl.style.opacity = cursorOpacity(t);
+    cursorEl.style.transform = `translate(${cx - 6}px, ${cy - 3}px) scale(${1 - press * .16})`;
+    if (rip) {
+      rippleEl.style.opacity = (1 - rip[1]) * .9;
+      rippleEl.style.transform = `translate(${rip[0].p[0]}px, ${rip[0].p[1]}px) scale(${lerp(.15, 1, E.outCubic(rip[1]))})`;
+    } else rippleEl.style.opacity = 0;
+
+    outro(t);
+
+    const fi = Math.floor(t * 24);
+    $('#grain').style.transform = `translate(${(fi * 37) % 60 - 30}px, ${(fi * 53) % 60 - 30}px)`;
+  }
+
+  /* ---------- Reproducao, controles e gravacao ---------- */
+  const ui = $('#ui'), scrub = $('#scrub'), tLabel = $('#tLabel'), bPlay = $('#bPlay'), bRec = $('#bRec');
+  let t = 0, playing = true, last = 0, recording = null, loop = params.get('loop') !== '0';
+
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+  }
+  function setT(v) { t = clamp(v, 0, DUR); }
+  function tick(now) {
+    const dt = last ? Math.min(.1, (now - last) / 1000) : 0;
+    last = now;
+    if (playing) {
+      t += dt;
+      if (t >= DUR) {
+        if (recording) { stopRec(); t = DUR; playing = false; }
+        else if (loop) t -= DUR; else { t = DUR; playing = false; }
+      }
+    }
+    render(t);
+    scrub.value = t;
+    tLabel.textContent = `${fmt(t, 1)} / ${fmt(DUR, 1)} s`;
+    bPlay.textContent = playing ? '❚❚' : '▶';
+    requestAnimationFrame(tick);
+  }
+
+  bPlay.onclick = () => { playing = !playing; if (playing && t >= DUR) t = 0; };
+  $('#bRestart').onclick = () => { setT(0); playing = true; };
+  scrub.oninput = () => { setT(+scrub.value); playing = false; };
+  addEventListener('keydown', e => {
+    if (e.code === 'Space') { e.preventDefault(); bPlay.onclick(); }
+    else if (e.key === 'ArrowRight') setT(t + (e.shiftKey ? .1 : 1));
+    else if (e.key === 'ArrowLeft') setT(t - (e.shiftKey ? .1 : 1));
+    else if (e.key === '0') { setT(0); playing = true; }
+    else if (e.key.toLowerCase() === 'h') ui.classList.toggle('hide');
+  });
+  let idle;
+  const wake = () => {
+    if (params.get('ui') === '0' || recording) return;
+    ui.classList.remove('hide'); clearTimeout(idle); idle = setTimeout(() => ui.classList.add('hide'), 2600);
+  };
+  addEventListener('mousemove', wake);
+  wake();
+
+  // Grava a propria aba (Chrome/Edge): escolha "Esta aba" no dialogo do navegador.
+  async function startRec() {
+    if (!navigator.mediaDevices?.getDisplayMedia) { alert('Este navegador não permite gravar a aba. Use o Chrome ou o Edge.'); return; }
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 60 }, audio: false, preferCurrentTab: true, selfBrowserSurface: 'include' });
+    } catch { return; }
+    const [track] = stream.getVideoTracks();
+    try { if ('CropTarget' in window && track.cropTo) await track.cropTo(await CropTarget.fromElement(stage)); } catch {}
+    const mime = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m));
+    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 16e6 });
+    const chunks = [];
+    rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+    rec.onstop = () => {
+      stream.getTracks().forEach(tr => tr.stop());
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(chunks, { type: 'video/webm' }));
+      a.download = 'conectabyte-reel.webm'; a.click();
+      bRec.classList.remove('on'); bRec.textContent = '● Gravar'; recording = null;
+    };
+    ui.classList.add('hide');
+    await new Promise(r => setTimeout(r, 400));
+    recording = rec; setT(0); playing = true; rec.start(250);
+    bRec.classList.add('on'); bRec.textContent = '■ Gravando';
+  }
+  function stopRec() { if (recording && recording.state !== 'inactive') recording.stop(); }
+  bRec.onclick = () => (recording ? stopRec() : startRec());
+
+  addEventListener('resize', fit);
+  fit();
+
+  /* ---------- Inicio: espera as fontes para medir o layout com precisao ---------- */
+  const fontsReady = Promise.all([
+    document.fonts.load('600 98px Poppins'), document.fonts.load('500 18px Inter'), document.fonts.load('400 20px Inter'),
+  ]).catch(() => {}).then(() => document.fonts.ready);
+  Promise.race([fontsReady, new Promise(r => setTimeout(r, 2500))]).then(() => {
+    measure();
+    if (params.get('ui') === '0') ui.style.display = 'none';
+    if (params.has('t')) { setT(+params.get('t')); playing = false; }
+    window.seek = v => { setT(v); playing = false; render(t); };
+    if (params.has('debug')) {
+      const r2 = v => Math.round(v * 100) / 100;
+      const out = { T: Object.fromEntries(Object.entries(T).map(([k, v]) => [k, r2(v)])), stops, maxScroll: r2(maxScroll),
+        counters: counters.map(c => [c.to, r2(c.t0), r2(c.t0 + c.dur)]), scrollAt: [5, 8, 11, 13, 15, 18, 21].map(x => [x, r2(scrollAt(x))]) };
+      const pre = document.createElement('pre'); pre.id = 'debug'; pre.textContent = JSON.stringify(out); document.body.append(pre);
+    }
+    window.__ready = true;
+    requestAnimationFrame(tick);
+  });
+})();
+</script>
+</body>
+</html>
