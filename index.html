@@ -3,600 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>ConectaByte | Sites e sistemas em Agudos e região</title>
 <meta name="description" content="ConectaByte: sites, lojas virtuais e sistemas sob medida para empresas de Agudos, Bauru, Lençóis Paulista, Pederneiras e Piratininga. Suporte por WhatsApp e visita presencial.">
 <meta property="og:title" content="ConectaByte | No topo da sua presença digital.">
 <meta property="og:description" content="Sites e sistemas para o comércio de Agudos e região, com suporte por WhatsApp e visita presencial.">
 <meta property="og:locale" content="pt_BR">
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#07080B">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
-<style>
-  /* ============ Tokens ============ */
-  :root {
-    /* Neutros (base do layout) */
-    --bg: #FFFFFF;
-    --soft: #F8FAFC;        /* Gelo */
-    --ink: #111827;         /* Grafite */
-    --ink-2: #374151;
-    --muted: #6B7280;
-    --line: #E5E7EB;
-    --line-2: #D1D5DB;
-    /* Acento único (Laranja Escuro, contraste AA com branco) */
-    --accent: #C2410C;
-    --accent-h: #9A3412;
-    --accent-tint: #FFF7ED;
-    /* Cores do logo, só em detalhes */
-    --orange: #EA580C;
-    --amber: #FBBF24;
-
-    --r-sm: 10px;
-    --r: 14px;
-    --r-lg: 20px;
-    --ease: cubic-bezier(.2, .8, .2, 1);
-    --ease-io: cubic-bezier(.7, 0, .2, 1);
-    --max: 1140px;
-    --header: 68px;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header) + 12px); }
-  body {
-    margin: 0; background: linear-gradient(135deg, #FFFFFF 0%, #FFFCF8 52%, #FFF7ED 100%); color: var(--ink);
-    font: 400 16.5px/1.65 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
-  }
-  h1, h2, h3 { font-family: Poppins, Inter, sans-serif; font-weight: 600; line-height: 1.1; letter-spacing: -.025em; margin: 0 0 .5em; }
-  h1 { font-size: clamp(2.5rem, 6vw, 4.3rem); letter-spacing: -.035em; }
-  h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
-  h3 { font-size: 1.08rem; letter-spacing: -.01em; }
-  p { margin: 0 0 1em; }
-  a { color: inherit; }
-  svg { display: block; }
-  ::selection { background: var(--accent); color: #fff; }
-
-  .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
-  section { padding: 112px 0; }
-  .soft { background: var(--soft); }
-  .label {
-    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px;
-    font: 500 .78rem/1 Inter, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
-  }
-  .label::before { content: ""; width: 18px; height: 1.5px; background: var(--accent); }
-  .lead { font-size: 1.12rem; color: var(--muted); max-width: 600px; }
-  .head { max-width: 680px; margin-bottom: 56px; }
-  .head.center { margin-inline: auto; text-align: center; }
-  .head.center .lead { margin-inline: auto; }
-  .head.center .label::after { content: ""; width: 18px; height: 1.5px; background: var(--accent); }
-  .accent { color: var(--accent); }
-
-  /* ============ Botões ============ */
-  .btn {
-    --mx: 0px; --my: 0px;
-    position: relative; isolation: isolate; overflow: hidden;
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    height: 50px; padding: 0 22px; border-radius: 12px; border: 1px solid transparent;
-    font: 600 .95rem/1 Inter, sans-serif; letter-spacing: -.005em; text-decoration: none; white-space: nowrap;
-    cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
-    translate: var(--mx) var(--my);
-    transition: background-color .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease),
-                box-shadow .25s var(--ease), transform .2s var(--ease), translate .35s var(--ease);
-  }
-  .btn svg { width: 18px; height: 18px; flex: none; }
-  .btn:active { transform: scale(.965); }
-  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .btn .arrow { transition: transform .3s var(--ease); }
-  .btn:hover .arrow { transform: translateX(4px); }
-
-  /* Primário: preenchido, sombra em camadas e brilho que atravessa no hover */
-  .btn-primary {
-    background: var(--accent); color: #fff;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 1px 2px rgba(17,24,39,.18), 0 6px 16px -8px rgba(194,65,12,.55);
-  }
-  .btn-primary::after {
-    content: ""; position: absolute; inset: 0; z-index: -1;
-    background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%);
-    transform: translateX(-120%); transition: transform .7s var(--ease);
-  }
-  .btn-primary:hover { background: var(--accent-h); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 2px 4px rgba(17,24,39,.18), 0 12px 24px -10px rgba(194,65,12,.6); }
-  .btn-primary:hover::after { transform: translateX(120%); }
-
-  /* Escuro */
-  .btn-dark { background: var(--ink); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 6px 16px -8px rgba(17,24,39,.5); }
-  .btn-dark:hover { background: #000; }
-
-  /* Contorno: preenchimento que “varre” da esquerda para a direita */
-  .btn-outline { background: var(--bg); color: var(--ink); border-color: var(--line-2); }
-  .btn-outline::before {
-    content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ink);
-    transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease-io);
-  }
-  .btn-outline:hover { color: #fff; border-color: var(--ink); }
-  .btn-outline:hover::before { transform: scaleX(1); transform-origin: left; }
-  .on-dark .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,.25); }
-  .on-dark .btn-outline::before { background: #fff; }
-  .on-dark .btn-outline:hover { color: var(--ink); border-color: #fff; }
-
-  /* WhatsApp */
-  .btn-wa { background: var(--accent); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 6px 16px -8px rgba(194,65,12,.45); }
-  .btn-wa:hover { background: var(--accent-h); }
-
-  /* Link com sublinhado animado */
-  .link {
-    position: relative; display: inline-flex; align-items: center; gap: 6px;
-    font-weight: 600; color: var(--ink); text-decoration: none; padding: 2px 0;
-  }
-  .link::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1.5px; background: currentColor;
-    transform: scaleX(.3); transform-origin: left; opacity: .35; transition: transform .35s var(--ease), opacity .35s;
-  }
-  .link:hover::after { transform: scaleX(1); opacity: 1; }
-  .link svg { width: 16px; height: 16px; transition: transform .3s var(--ease); }
-  .link:hover svg { transform: translateX(3px); }
-
-  .btn-sm { height: 40px; padding: 0 16px; font-size: .88rem; border-radius: 10px; }
-  .btn-block { width: 100%; }
-
-  /* Ripple (criado via JS) */
-  .ripple {
-    position: absolute; border-radius: 50%; pointer-events: none; z-index: -1;
-    background: currentColor; opacity: .22; transform: scale(0); animation: ripple .65s var(--ease) forwards;
-  }
-  @keyframes ripple { to { transform: scale(1); opacity: 0; } }
-
-  /* Estado de carregamento */
-  .btn.loading { pointer-events: none; color: transparent !important; }
-  .btn.loading::before {
-    content: ""; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px; z-index: 1;
-    border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%;
-    animation: spin .7s linear infinite; transform: none; background: none;
-  }
-  @keyframes spin { to { rotate: 360deg; } }
-
-  /* ============ Barra de progresso e cabeçalho ============ */
-  .progress { position: fixed; top: 0; left: 0; height: 2px; width: 100%; z-index: 100; background: var(--accent); transform-origin: left; transform: scaleX(0); }
-
-  header.top {
-    position: fixed; inset: 0 0 auto; z-index: 50; height: var(--header);
-    background: rgba(255,255,255,0); border-bottom: 1px solid transparent;
-    transition: background-color .3s, border-color .3s, transform .4s var(--ease), backdrop-filter .3s;
-  }
-  header.top.scrolled { background: rgba(255,255,255,.82); backdrop-filter: saturate(180%) blur(14px); border-color: var(--line); }
-  header.top.hide { transform: translateY(-100%); }
-  .nav { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-
-  .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
-  .logo svg { width: 34px; height: 34px; transition: transform .6s var(--ease); }
-  .logo:hover svg { transform: rotate(-12deg); }
-  .logo span { font: 600 1.2rem/1 Poppins, sans-serif; letter-spacing: -.03em; }
-  .logo b { font-weight: 600; color: var(--orange); }
-  .on-dark .logo { color: #fff; }
-
-  .menu { position: relative; display: flex; gap: 4px; list-style: none; margin: 0; padding: 4px; }
-  .menu a {
-    position: relative; z-index: 1; display: block; padding: 8px 14px; border-radius: 8px;
-    font-size: .92rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s;
-  }
-  .menu a:hover, .menu a.active { color: var(--ink); }
-  .menu-pill {
-    position: absolute; top: 4px; left: 0; height: calc(100% - 8px); border-radius: 8px; background: var(--soft);
-    box-shadow: inset 0 0 0 1px var(--line); opacity: 0; pointer-events: none;
-    transition: transform .35s var(--ease), width .35s var(--ease), opacity .2s;
-  }
-  .menu-toggle { display: none; width: 44px; height: 44px; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; cursor: pointer; place-items: center; color: var(--ink); }
-  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after { display: block; width: 18px; height: 1.5px; background: currentColor; border-radius: 2px; transition: transform .3s var(--ease), background-color .2s; position: relative; }
-  .menu-toggle span::before, .menu-toggle span::after { content: ""; position: absolute; left: 0; }
-  .menu-toggle span::before { top: -6px; }
-  .menu-toggle span::after { top: 6px; }
-  .nav.open .menu-toggle span { background: transparent; }
-  .nav.open .menu-toggle span::before { transform: translateY(6px) rotate(45deg); }
-  .nav.open .menu-toggle span::after { transform: translateY(-6px) rotate(-45deg); }
-
-  /* ============ Hero ============ */
-  .hero { position: relative; padding: calc(var(--header) + 72px) 0 104px; overflow: hidden; }
-  .hero::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background-image: radial-gradient(var(--line-2) 1px, transparent 1px); background-size: 22px 22px;
-    -webkit-mask-image: radial-gradient(ellipse 60% 70% at 75% 35%, #000 10%, transparent 70%);
-            mask-image: radial-gradient(ellipse 60% 70% at 75% 35%, #000 10%, transparent 70%);
-  }
-  .hero-grid { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: 64px; align-items: center; }
-  .pill-badge {
-    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 28px; padding: 6px 14px 6px 6px;
-    border: 1px solid var(--line); border-radius: 999px; font-size: .85rem; color: var(--ink-2); background: var(--bg); text-decoration: none;
-    transition: border-color .2s, box-shadow .2s;
-  }
-  .pill-badge:hover { border-color: var(--line-2); box-shadow: 0 4px 14px -8px rgba(17,24,39,.25); }
-  .pill-badge b { font-weight: 600; font-size: .75rem; background: var(--accent-tint); color: var(--accent); padding: 4px 9px; border-radius: 999px; }
-  .pill-badge svg { width: 14px; height: 14px; color: var(--muted); transition: transform .3s var(--ease); }
-  .pill-badge:hover svg { transform: translateX(3px); }
-
-  .hl { position: relative; white-space: nowrap; color: var(--accent); }
-  .hl svg { position: absolute; left: -2%; bottom: -.18em; width: 104%; height: .32em; overflow: visible; }
-  .hl path { fill: none; stroke: var(--amber); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 320; stroke-dashoffset: 320; animation: draw 1.1s .5s var(--ease) forwards; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-
-  .rotator-line { font-size: 1.15rem; color: var(--muted); margin: 26px 0 36px; max-width: 540px; }
-  .rotator { display: inline-grid; vertical-align: bottom; overflow: hidden; height: 1.65em; color: var(--ink); font-weight: 600; }
-  .rotator span { grid-area: 1 / 1; }
-  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; }
-  .trust { display: flex; flex-wrap: wrap; gap: 10px 26px; list-style: none; padding: 0; margin: 0; font-size: .9rem; color: var(--muted); }
-  .trust li { display: flex; align-items: center; gap: 8px; }
-  .trust svg { width: 16px; height: 16px; color: var(--accent); }
-
-  /* Mockup com inclinação 3D */
-  .mock { position: relative; perspective: 1200px; }
-  .browser {
-    background: var(--bg); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
-    box-shadow: 0 1px 2px rgba(17,24,39,.06), 0 24px 48px -24px rgba(17,24,39,.25);
-    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s var(--ease); transform-style: preserve-3d;
-  }
-  .browser-bar { display: flex; align-items: center; gap: 6px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
-  .browser-bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
-  .browser-bar .url { margin-left: 10px; flex: 1; background: var(--soft); border-radius: 6px; padding: 4px 10px; font-size: .72rem; color: var(--muted); }
-  .site { padding: 22px; }
-  .site-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .site-nav strong { font: 600 .92rem Poppins, sans-serif; }
-  .site-nav span { display: flex; gap: 8px; }
-  .site-nav span i { width: 30px; height: 5px; border-radius: 3px; background: var(--line); }
-  .site-hero { background: var(--soft); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
-  .site-hero b { display: block; font: 600 1.1rem/1.25 Poppins, sans-serif; margin-bottom: 6px; }
-  .site-hero small { display: block; color: var(--muted); font-size: .78rem; margin-bottom: 14px; }
-  .site-hero em { display: inline-block; font-style: normal; background: var(--ink); color: #fff; font-size: .72rem; font-weight: 600; padding: 7px 12px; border-radius: 8px; }
-  .site-prods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .site-prods div { border: 1px solid var(--line); border-radius: 10px; padding: 8px; font-size: .72rem; color: var(--ink-2); }
-  .site-prods div::before { content: ""; display: block; height: 50px; border-radius: 6px; margin-bottom: 6px; background: #F3F4F6; }
-  .site-prods div:first-child::before { background: var(--accent-tint); }
-  .site-prods b { display: block; color: var(--ink); font-weight: 600; }
-  .float {
-    position: absolute; display: flex; gap: 10px; align-items: center; padding: 10px 14px 10px 10px;
-    background: var(--bg); border: 1px solid var(--line); border-radius: 14px; font-size: .82rem;
-    box-shadow: 0 12px 30px -14px rgba(17,24,39,.3); animation: bob 6s ease-in-out infinite;
-  }
-  .float small { display: block; color: var(--muted); font-size: .72rem; }
-  .float .av { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; flex: none; }
-  .float-a { right: -22px; top: 54px; }
-  .float-a .av { background: var(--accent-tint); color: var(--accent); font-weight: 700; }
-  .float-b { left: -30px; bottom: -24px; animation-delay: -3s; }
-  .float-b .av { background: #DCFCE7; color: #15803D; }
-  @keyframes bob { 50% { transform: translateY(-8px); } }
-
-  /* ============ Números ============ */
-  .stats { border-block: 1px solid var(--line); }
-  .stats .wrap { display: grid; grid-template-columns: repeat(3, 1fr); }
-  .stat { padding: 44px 32px; border-left: 1px solid var(--line); }
-  .stat:first-child { border-left: 0; padding-left: 0; }
-  .stat strong { display: block; font: 600 clamp(2.2rem, 4vw, 3rem)/1 Poppins, sans-serif; letter-spacing: -.04em; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
-  .stat p { margin: 0; color: var(--muted); font-size: .95rem; max-width: 260px; }
-  .stat small { display: block; margin-top: 8px; font-size: .72rem; color: #9CA3AF; letter-spacing: .04em; text-transform: uppercase; }
-
-  /* ============ Grade com linhas finas (serviços / diferenciais) ============ */
-  .grid-lines { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
-  .grid-lines > * { background: var(--bg); }
-  .services { grid-template-columns: repeat(3, 1fr); }
-  .service { position: relative; padding: 36px 32px 40px; overflow: hidden; }
-  .service::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s;
-    background: radial-gradient(360px circle at var(--x, 50%) var(--y, 50%), rgba(194,65,12,.07), transparent 60%);
-  }
-  .service:hover::before { opacity: 1; }
-  .service .ico {
-    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 26px;
-    border: 1px solid var(--line); color: var(--ink); transition: color .3s, border-color .3s, background-color .3s, transform .4s var(--ease);
-  }
-  .service:hover .ico { color: var(--accent); border-color: #FED7AA; background: var(--accent-tint); transform: translateY(-3px); }
-  .service .ico svg { width: 22px; height: 22px; }
-  .service p { margin: 0; color: var(--muted); font-size: .95rem; }
-  .service .num { position: absolute; top: 34px; right: 30px; font-size: .75rem; color: #9CA3AF; font-variant-numeric: tabular-nums; }
-
-  /* ============ Suporte ============ */
-  .support-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .support-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 40px; transition: box-shadow .35s var(--ease), transform .35s var(--ease); }
-  .support-card:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -28px rgba(17,24,39,.35); }
-  .support-card .kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; font-size: .82rem; color: var(--muted); }
-  .support-card .kicker i { width: 8px; height: 8px; border-radius: 50%; background: #16A34A; box-shadow: 0 0 0 4px #DCFCE7; }
-  .support-card.pres .kicker i { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-tint); }
-  .support-card h3 { font-size: 1.45rem; margin-bottom: 10px; }
-  .support-card > p { color: var(--muted); }
-  .checks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
-  .checks li { display: flex; gap: 12px; align-items: flex-start; font-size: .95rem; color: var(--ink-2); }
-  .checks svg { width: 18px; height: 18px; flex: none; margin-top: 3px; color: var(--accent); }
-
-  /* ============ Diferenciais ============ */
-  .diffs { grid-template-columns: repeat(4, 1fr); }
-  .diff { padding: 30px 26px; transition: background-color .3s; }
-  .diff:hover { background: var(--soft); }
-  .diff .n { display: block; margin-bottom: 18px; font-size: .78rem; color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .diff h3 { font-size: 1rem; margin-bottom: 6px; }
-  .diff p { margin: 0; color: var(--muted); font-size: .9rem; }
-
-  /* ============ Pacotes ============ */
-  .finder {
-    display: grid; grid-template-columns: auto 1fr auto; gap: 20px 28px; align-items: center;
-    padding: 22px 24px; margin-bottom: 28px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--bg);
-  }
-  .finder > strong { font: 600 .95rem Poppins, sans-serif; white-space: nowrap; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    position: relative; display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px;
-    border: 1px solid var(--line-2); border-radius: 999px; background: var(--bg); color: var(--ink-2);
-    font: 500 .86rem Inter, sans-serif; cursor: pointer; user-select: none;
-    transition: background-color .2s, color .2s, border-color .2s, transform .15s var(--ease);
-  }
-  .chip:hover { border-color: var(--ink); }
-  .chip:active { transform: scale(.96); }
-  .chip input { position: absolute; opacity: 0; pointer-events: none; }
-  .chip .tick { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--line-2); display: grid; place-items: center; transition: all .2s; }
-  .chip .tick svg { width: 10px; height: 10px; color: #fff; opacity: 0; transform: scale(.4); transition: all .2s var(--ease); }
-  .chip:has(input:checked) { background: var(--ink); border-color: var(--ink); color: #fff; }
-  .chip:has(input:checked) .tick { border-color: #fff; background: var(--accent); }
-  .chip:has(input:checked) .tick svg { opacity: 1; transform: none; }
-  .chip:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .finder-out { font-size: .9rem; color: var(--muted); min-width: 190px; text-align: right; }
-  .finder-out b { color: var(--accent); }
-
-  .plans-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
-  .plans-bar p { margin: 0; font-size: .9rem; color: var(--muted); }
-  .seg { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 4px; border-radius: 12px; background: var(--soft); border: 1px solid var(--line); }
-  .seg button { position: relative; z-index: 1; border: 0; background: none; height: 36px; padding: 0 16px; font: 600 .86rem Inter, sans-serif; color: var(--muted); cursor: pointer; border-radius: 9px; transition: color .25s; white-space: nowrap; }
-  .seg button[aria-pressed="true"] { color: var(--ink); }
-  .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .seg .thumb { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 9px; background: var(--bg); box-shadow: 0 1px 2px rgba(17,24,39,.12), 0 0 0 1px var(--line); transition: transform .35s var(--ease); }
-  .seg.right .thumb { transform: translateX(100%); }
-  .seg .save { font-size: .7rem; color: var(--accent); margin-left: 4px; }
-
-  .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .plan {
-    position: relative; display: flex; flex-direction: column; padding: 30px 26px 26px;
-    background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-lg);
-    transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s, outline-color .3s;
-    outline: 2px solid transparent; outline-offset: 4px;
-  }
-  .plan:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -28px rgba(17,24,39,.35); }
-  .plan.pop { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .plan.is-rec { outline-color: var(--accent); }
-  .plan .tags { position: absolute; top: -12px; left: 22px; display: flex; gap: 6px; }
-  .tag { font: 600 .68rem/1 Inter, sans-serif; letter-spacing: .06em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); color: var(--ink-2); }
-  .tag.rec { display: none; background: var(--accent); border-color: var(--accent); color: #fff; }
-  .plan.is-rec .tag.rec { display: inline-block; animation: pop .4s var(--ease); }
-  @keyframes pop { from { transform: scale(.6); opacity: 0; } }
-  .plan h3 { font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
-  .plan .for { font-size: .88rem; color: var(--muted); min-height: 2.9em; margin-bottom: 22px; }
-  .plan.pop .for, .plan.pop .from, .plan.pop .prazo, .plan.pop li { color: #9CA3AF; }
-  .plan .from { font-size: .78rem; color: var(--muted); margin-bottom: 4px; }
-  .price { font: 600 2rem/1 Poppins, sans-serif; letter-spacing: -.035em; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
-  .monthly { font-size: .88rem; font-weight: 600; color: var(--accent); margin-bottom: 22px; font-variant-numeric: tabular-nums; }
-  .plan.pop .monthly { color: var(--amber); }
-  .monthly small { font-weight: 400; color: var(--muted); }
-  .plan ul { list-style: none; padding: 22px 0 0; margin: 0 0 26px; border-top: 1px solid var(--line); display: grid; gap: 10px; font-size: .88rem; flex: 1; }
-  .plan.pop ul { border-color: rgba(255,255,255,.12); }
-  .plan li { display: flex; gap: 10px; color: var(--ink-2); }
-  .plan li svg { width: 16px; height: 16px; flex: none; margin-top: 3px; color: var(--accent); }
-  .plan.pop li svg { color: var(--amber); }
-  .plan.pop li { color: #D1D5DB; }
-  .prazo { font-size: .78rem; color: var(--muted); margin: 12px 0 0; text-align: center; }
-
-  .extras { margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
-  .extra { background: var(--bg); padding: 22px 24px; }
-  .extra b { display: block; font: 600 .92rem Poppins, sans-serif; }
-  .extra .v { display: block; margin: 4px 0 8px; font: 600 1.05rem Poppins, sans-serif; color: var(--accent); font-variant-numeric: tabular-nums; }
-  .extra p { margin: 0; font-size: .84rem; color: var(--muted); }
-  .terms { margin: 22px 0 0; text-align: center; font-size: .84rem; color: var(--muted); }
-
-  /* ============ Clientes fundadores ============ */
-  .pilot { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: center; padding: 48px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--bg); position: relative; overflow: hidden; }
-  .pilot::after { content: ""; position: absolute; right: -80px; top: -80px; width: 260px; height: 260px; border-radius: 50%; border: 1px solid var(--line); box-shadow: 0 0 0 40px var(--soft), 0 0 0 41px var(--line); pointer-events: none; }
-  .pilot h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); }
-  .pilot p { color: var(--muted); margin: 0; }
-  .pilot-side { position: relative; z-index: 1; }
-  .seats { display: flex; gap: 6px; margin-bottom: 10px; }
-  .seats i { flex: 1; height: 6px; border-radius: 3px; background: var(--accent); }
-  .seats-label { font-size: .82rem; color: var(--muted); margin-bottom: 20px; }
-
-  /* ============ Como funciona ============ */
-  .steps { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; list-style: none; padding: 0; margin: 0; }
-  .steps::before, .steps::after { content: ""; position: absolute; top: 19px; left: 20px; right: 20px; height: 1px; background: var(--line); }
-  .steps::after { background: var(--accent); right: auto; width: calc((100% - 40px) * var(--fill, 0)); transition: width .8s var(--ease); }
-  .step { position: relative; z-index: 1; }
-  .step .dot {
-    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 20px;
-    background: var(--bg); border: 1px solid var(--line-2); font: 600 .85rem Poppins, sans-serif; color: var(--muted);
-    transition: background-color .4s, border-color .4s, color .4s, transform .4s var(--ease);
-  }
-  .step.on .dot { background: var(--ink); border-color: var(--ink); color: #fff; transform: scale(1.05); }
-  .step h3 { font-size: .98rem; margin-bottom: 6px; }
-  .step p { font-size: .87rem; color: var(--muted); margin: 0; }
-
-  /* ============ Equipe ============ */
-  .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .member { display: flex; gap: 24px; padding: 32px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--bg); transition: box-shadow .35s var(--ease), transform .35s var(--ease); }
-  .member:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -28px rgba(17,24,39,.35); }
-  .avatar { position: relative; width: 72px; height: 72px; flex: none; border-radius: 18px; display: grid; place-items: center; background: var(--soft); border: 1px solid var(--line); font: 600 1.35rem Poppins, sans-serif; color: var(--ink); }
-  .avatar::after { content: ""; position: absolute; right: -4px; bottom: -4px; width: 14px; height: 14px; border-radius: 50%; background: var(--amber); border: 3px solid var(--bg); }
-  .member:nth-child(2) .avatar::after { background: var(--orange); }
-  .member h3 { font-size: 1.1rem; margin-bottom: 4px; }
-  .role { font-size: .85rem; color: var(--accent); font-weight: 600; margin-bottom: 12px; }
-  .member p { color: var(--muted); font-size: .94rem; }
-  .skills { display: flex; flex-wrap: wrap; gap: 6px; }
-  .skills span { font-size: .76rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-2); }
-
-  /* ============ Região ============ */
-  .region-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 56px; align-items: center; }
-  .cities { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-  .city {
-    display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: var(--r);
-    border: 1px solid var(--line); background: var(--bg); cursor: default; transition: border-color .25s, box-shadow .25s, transform .25s var(--ease);
-  }
-  .city:hover, .city.hot { border-color: var(--ink); transform: translateX(4px); }
-  .city .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; margin-top: 8px; }
-  .city b { font: 600 .98rem Poppins, sans-serif; }
-  .city small { display: block; color: var(--muted); font-size: .86rem; }
-  .map { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--soft); padding: 12px; }
-  .map svg { width: 100%; height: auto; }
-  .map .node { transition: transform .35s var(--ease); transform-box: fill-box; transform-origin: center; }
-  .map .node.hot { transform: scale(1.5); }
-  .map .route { transition: stroke .3s, stroke-width .3s; }
-  .map .route.hot { stroke: var(--accent); stroke-width: 2; stroke-dasharray: none; }
-  .map .pulse { transform-box: fill-box; transform-origin: center; animation: pulse 2.4s var(--ease) infinite; }
-  @keyframes pulse { from { transform: scale(.6); opacity: .6; } to { transform: scale(2.4); opacity: 0; } }
-
-  /* ============ FAQ ============ */
-  .faq { max-width: 780px; margin: 0 auto; border-top: 1px solid var(--line); }
-  .faq details { border-bottom: 1px solid var(--line); }
-  .faq summary {
-    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px;
-    padding: 24px 0; font: 500 1.05rem Poppins, sans-serif; letter-spacing: -.01em; transition: color .2s;
-  }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary:hover { color: var(--accent); }
-  .faq summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
-  .faq .plus { position: relative; width: 28px; height: 28px; flex: none; border-radius: 50%; border: 1px solid var(--line-2); transition: background-color .3s, border-color .3s, transform .4s var(--ease); }
-  .faq .plus::before, .faq .plus::after { content: ""; position: absolute; inset: 0; margin: auto; width: 10px; height: 1.5px; background: var(--ink); transition: background-color .3s; }
-  .faq .plus::after { transform: rotate(90deg); }
-  .faq details[open] .plus { background: var(--ink); border-color: var(--ink); transform: rotate(45deg); }
-  .faq details[open] .plus::before, .faq details[open] .plus::after { background: #fff; }
-  .faq-a { overflow: hidden; }
-  .faq-a p { color: var(--muted); padding: 0 48px 24px 0; margin: 0; }
-
-  /* ============ Contato ============ */
-  .contact { background: var(--ink); color: #fff; }
-  .contact .label { color: #9CA3AF; }
-  .contact .lead { color: #9CA3AF; }
-  .contact-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 64px; align-items: start; }
-  .channels { list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 4px; }
-  .channel {
-    display: flex; align-items: center; gap: 16px; padding: 14px; margin: 0 -14px; border-radius: 12px;
-    color: #fff; text-decoration: none; background: none; border: 0; width: calc(100% + 28px); text-align: left; font: inherit; cursor: pointer;
-    transition: background-color .2s;
-  }
-  .channel:hover { background: rgba(255,255,255,.06); }
-  .channel:focus-visible { outline: 2px solid var(--amber); }
-  .channel .ic { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.14); flex: none; }
-  .channel .ic svg { width: 20px; height: 20px; }
-  .channel b { display: block; font-weight: 600; font-size: .96rem; }
-  .channel small { display: block; color: #9CA3AF; font-size: .82rem; }
-  .channel .go { margin-left: auto; width: 16px; height: 16px; color: #6B7280; transition: transform .3s var(--ease), color .2s; }
-  .channel:hover .go { transform: translateX(4px); color: #fff; }
-
-  .form { background: var(--bg); color: var(--ink); border-radius: var(--r-lg); padding: 34px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
-  .field { display: grid; gap: 7px; }
-  .field.full { grid-column: 1 / -1; }
-  .field label, .field .lbl { font-size: .84rem; font-weight: 600; color: var(--ink-2); }
-  .input {
-    width: 100%; height: 48px; padding: 0 14px; border-radius: 11px; border: 1px solid var(--line-2); background: var(--bg);
-    font: inherit; font-size: .95rem; color: var(--ink); transition: border-color .2s, box-shadow .2s;
-  }
-  textarea.input { height: auto; min-height: 110px; padding: 12px 14px; resize: vertical; }
-  .input:hover { border-color: #9CA3AF; }
-  .input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 4px rgba(17,24,39,.08); }
-  .field.invalid .input { border-color: #DC2626; box-shadow: 0 0 0 4px rgba(220,38,38,.1); }
-  .field .err { display: none; font-size: .78rem; color: #DC2626; }
-  .field.invalid .err { display: block; }
-  .field.invalid { animation: shake .35s; }
-  @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-  .counter { justify-self: end; font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; margin-top: -2px; }
-  .form .chips { gap: 6px; }
-  .form .chip { height: 34px; font-size: .83rem; }
-  .form-note { grid-column: 1 / -1; margin: 0; font-size: .78rem; color: var(--muted); text-align: center; }
-
-  footer { background: linear-gradient(125deg, #111827 0%, #211F1D 58%, #382117 100%); color: #9CA3AF; padding: 0 0 36px; font-size: .88rem; }
-  .footer-cta { background: linear-gradient(110deg, var(--accent-h), var(--accent)); color: #fff; }
-  .footer-cta .wrap { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding-block: 30px; }
-  .footer-cta h2 { margin: 0 0 6px; font-size: 1.35rem; }
-  .footer-cta p { margin: 0; color: rgba(255,255,255,.82); font-size: .92rem; }
-  .footer-cta .btn-outline { flex: none; }
-  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; padding: 40px 0 28px; border-top: 1px solid rgba(255,255,255,.08); }
-  .foot .slogan { margin: 10px 0 0; color: #D1D5DB; font-family: Poppins, sans-serif; }
-  .foot nav { display: flex; flex-wrap: wrap; gap: 4px 22px; }
-  .foot nav a { color: #9CA3AF; text-decoration: none; transition: color .2s; }
-  .foot nav a:hover { color: #fff; }
-  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: .8rem; color: #6B7280; }
-
-  /* ============ WhatsApp flutuante e toast ============ */
-  .wa-float {
-    position: fixed; right: 20px; bottom: 20px; z-index: 60; display: flex; align-items: center; gap: 0;
-    height: 56px; padding: 0 16px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none;
-    box-shadow: 0 12px 28px -10px rgba(194,65,12,.55); font-weight: 600; font-size: .9rem;
-    transform: translateY(120px); transition: transform .5s var(--ease), gap .35s var(--ease), background-color .2s;
-  }
-  .wa-float.show { transform: none; }
-  .wa-float svg { width: 24px; height: 24px; flex: none; }
-  .wa-float span { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .4s var(--ease); }
-  .wa-float:hover { gap: 10px; background: var(--accent-h); }
-  .wa-float:hover span { max-width: 160px; }
-  .wa-float:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-
-  .toast {
-    position: fixed; left: 50%; bottom: 28px; z-index: 120; display: flex; align-items: center; gap: 10px;
-    padding: 12px 18px; border-radius: 12px; background: var(--ink); color: #fff; font-size: .9rem;
-    box-shadow: 0 16px 40px -12px rgba(17,24,39,.5);
-    transform: translate(-50%, 140%); opacity: 0; transition: transform .45s var(--ease), opacity .3s;
-  }
-  .toast.show { transform: translate(-50%, 0); opacity: 1; }
-  .toast svg { width: 18px; height: 18px; color: #4ADE80; }
-
-  /* ============ Revelação ao rolar ============ */
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: var(--d, 0s); }
-  .reveal.in { opacity: 1; transform: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-    .reveal { opacity: 1; transform: none; }
-  }
-
-  /* ============ Responsivo ============ */
-  @media (max-width: 1080px) {
-    .plans, .extras { grid-template-columns: repeat(2, 1fr); }
-    .diffs { grid-template-columns: repeat(2, 1fr); }
-    .steps { grid-template-columns: repeat(3, 1fr); row-gap: 36px; }
-    .steps::before, .steps::after { display: none; }
-    .finder { grid-template-columns: 1fr; }
-    .finder-out { text-align: left; }
-  }
-  @media (max-width: 880px) {
-    section { padding: 84px 0; }
-    .menu, .nav > .btn { display: none; }
-    .menu-toggle { display: grid; }
-    .nav.open .menu {
-      display: flex; flex-direction: column; position: absolute; top: var(--header); left: 0; right: 0;
-      background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px 18px; gap: 0;
-      animation: drop .3s var(--ease);
-    }
-    .nav.open .menu a { padding: 14px 8px; font-size: 1rem; color: var(--ink); border-bottom: 1px solid var(--line); border-radius: 0; }
-    .menu-pill { display: none; }
-    header.top.menu-open { background: var(--bg); border-color: var(--line); }
-    .hero-grid, .support-grid, .team-grid, .region-grid, .contact-grid, .pilot { grid-template-columns: 1fr; }
-    .hero-grid { gap: 56px; }
-    .mock { margin: 0 18px; }
-    .services { grid-template-columns: 1fr 1fr; }
-    .stats .wrap { grid-template-columns: 1fr; }
-    .stat { border-left: 0; border-top: 1px solid var(--line); padding: 28px 0; }
-    .stat:first-child { border-top: 0; }
-    .pilot { padding: 36px 28px; }
-  }
-  @keyframes drop { from { opacity: 0; transform: translateY(-8px); } }
-  @media (max-width: 600px) {
-    body { font-size: 16px; }
-    .wrap { padding: 0 16px; }
-    .services, .diffs, .plans, .extras { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr 1fr; }
-    .form { grid-template-columns: 1fr; padding: 24px 20px; }
-    .member { flex-direction: column; padding: 26px; }
-    .support-card { padding: 30px 24px; }
-    .hero-ctas .btn { flex: 1 1 100%; }
-    .hl { white-space: normal; }
-    .float-a { right: -8px; top: -20px; }
-    .float-b { left: -8px; }
-    .faq-a p { padding-right: 0; }
-    .plans-bar { flex-direction: column; align-items: stretch; }
-    .footer-cta .wrap { align-items: flex-start; flex-direction: column; gap: 18px; }
-    .legal { padding-right: 64px; }
-    .wa-float { right: 14px; bottom: 14px; }
-  }
-</style>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/boot.js"></script>
+<script src="assets/site.js" defer></script>
 </head>
 <body>
 
@@ -610,22 +30,37 @@
       <circle cx="54" cy="46.85" r="5.5" fill="#EA580C"/>
       <circle cx="11" cy="32" r="4.2" fill="#FBBF24"/>
     </symbol>
-    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.06c-.24.68-1.42 1.3-1.950 1.35-.5.05-.97.23-3.28-.68-2.78-1.1-4.54-3.95-4.68-4.13-.13-.18-1.12-1.49-1.12-2.84 0-1.35.71-2.02.96-2.290.25-.28.55-.35.73-.35l.52.01c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.28-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.11.6-.07.16-.18.69-.8.88-1.08.18-.27.37-.23.62-.14.25.09 1.6.76 1.87.9.28.13.46.2.53.32.07.11.07.66-.17 1.33Z"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.06c-.24.68-1.42 1.3-1.95 1.35-.5.05-.97.23-3.28-.68-2.78-1.1-4.54-3.95-4.68-4.13-.13-.18-1.12-1.49-1.12-2.84 0-1.35.71-2.02.96-2.29.25-.28.55-.35.73-.35l.52.01c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.28-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.11.6-.07.16-.18.69-.8.88-1.08.18-.27.37-.23.62-.14.25.09 1.6.76 1.87.9.28.13.46.2.53.32.07.11.07.66-.17 1.33Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
-    <symbol id="i-site" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></g></symbol>
-    <symbol id="i-cart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6"/></g></symbol>
-    <symbol id="i-sys" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></g></symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
-    <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></g></symbol>
-    <symbol id="i-tool" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 13l-8 8-3-3 8-8M14.7 6.3 13 4.6a4 4 0 0 0-5.6 5.6l1.7 1.7"/><path d="m3 21 6-6"/></g></symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></g></symbol>
-    <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></g></symbol>
-    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
+    <symbol id="i-site" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></g></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6"/></g></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></g></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></g></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></g></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18h2"/></g></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></g></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4A6.5 6.5 0 0 1 21.5 20"/></g></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></g></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9S14.6 18.4 12 21c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3Z"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M12 2.8 4.5 5.6v6c0 4.6 3.1 8.2 7.5 9.6 4.4-1.4 7.5-5 7.5-9.6v-6L12 2.8Z"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.7"/></g></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></g></symbol>
+    <symbol id="i-split" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 12h9"/></g></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z"/></symbol>
   </defs>
 </svg>
 
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" id="grain" aria-hidden="true"></div>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
 <header class="top" id="header">
@@ -643,59 +78,140 @@
       <li><a href="#regiao">Região</a></li>
       <li class="menu-pill" id="menuPill" aria-hidden="true"></li>
     </ul>
-    <a class="btn btn-dark btn-sm" href="#contato" data-magnetic>Pedir orçamento <svg class="arrow"><use href="#i-arrow"/></svg></a>
+    <a class="btn btn-primary btn-sm" href="#contato" data-magnetic>Pedir orçamento <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span></button>
   </div>
 </header>
 
 <main id="inicio">
 
-  <!-- HERO -->
+  <!-- HERO: o "C" da logo vira o horizonte -->
   <section class="hero" id="topo">
-    <div class="wrap hero-grid">
-      <div>
-        <a class="pill-badge reveal" href="#fundadores">
-          <b>Novo</b> 3 vagas para clientes fundadores
-          <svg><use href="#i-arrow"/></svg>
+    <div class="hero-tint" aria-hidden="true"></div>
+    <div class="hero-beam" aria-hidden="true"></div>
+    <div class="wrap hero-copy">
+      <a class="pill-badge" href="#fundadores"><b>Novo</b> 3 vagas para clientes fundadores <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <h1><span class="w">No</span> <span class="w">topo</span> <span class="w">da</span> <span class="w">sua</span><br><span class="w grad">presença</span> <span class="w grad">digital.</span></h1>
+      <p class="rotator-line">
+        Sites, lojas virtuais e sistemas para
+        <span class="rotator" id="rotator" aria-live="polite"><span>lojas</span></span>
+        de Agudos e região, com suporte pelo WhatsApp e visita presencial.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#" data-wa="Olá! Vim pelo site da ConectaByte e quero um orçamento." data-magnetic>
+          <svg aria-hidden="true"><use href="#i-wa"/></svg> Falar no WhatsApp
         </a>
-        <h1 class="reveal" style="--d:.05s">No topo da sua <span class="hl">presença digital.<svg viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 70 2, 180 2, 297 7"/></svg></span></h1>
-        <p class="rotator-line reveal" style="--d:.12s">
-          Sites, lojas virtuais e sistemas para
-          <span class="rotator" id="rotator" aria-live="polite"><span>lojas</span></span>
-          de Agudos e região, com suporte pelo WhatsApp e visita presencial.
-        </p>
-        <div class="hero-ctas reveal" style="--d:.18s">
-          <a class="btn btn-primary" href="#" data-wa="Olá! Vim pelo site da ConectaByte e quero um orçamento." data-magnetic>
-            <svg aria-hidden="true"><use href="#i-wa"/></svg> Falar no WhatsApp
-          </a>
-          <a class="btn btn-outline" href="#pacotes" data-magnetic>Ver pacotes <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        </div>
-        <ul class="trust reveal" style="--d:.24s">
-          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Preço fechado</li>
-          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Resposta em até 2h úteis</li>
-          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Domínio no seu nome</li>
-        </ul>
+        <a class="btn btn-ghost" href="#pacotes" data-magnetic>Ver pacotes <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
+      <ul class="trust">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Preço fechado</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Resposta em até 2h úteis</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Domínio no seu nome</li>
+      </ul>
+    </div>
 
-      <div class="mock reveal" id="mock" style="--d:.2s" aria-hidden="true">
-        <div class="browser">
-          <div class="browser-bar"><i></i><i></i><i></i><span class="url">docerianoseubairro.com.br</span></div>
-          <div class="site">
-            <div class="site-nav"><strong>Doceria do Bairro</strong><span><i></i><i></i><i></i></span></div>
-            <div class="site-hero">
-              <b>Encomende seu bolo pelo site</b>
-              <small>Entrega em Agudos e região · Pague no Pix</small>
-              <em>Pedir pelo WhatsApp</em>
+    <div class="horizon" id="horizon" aria-hidden="true">
+      <div class="hero-glow"></div>
+      <svg class="hero-arc" id="heroArc" viewBox="0 0 64 64">
+        <defs>
+          <linearGradient id="g-fire" gradientUnits="userSpaceOnUse" x1="10" y1="44" x2="52" y2="12">
+            <stop offset="0" stop-color="#7C2D12"/><stop offset=".34" stop-color="#C2410C"/><stop offset=".6" stop-color="#EA580C"/><stop offset=".84" stop-color="#FB923C"/><stop offset="1" stop-color="#FBBF24"/>
+          </linearGradient>
+          <radialGradient id="g-haze" cx="32" cy="32" r="22" gradientUnits="userSpaceOnUse">
+            <stop offset=".5" stop-color="#EA580C" stop-opacity="0"/><stop offset=".82" stop-color="#EA580C" stop-opacity=".22"/><stop offset=".95" stop-color="#FB923C" stop-opacity=".5"/><stop offset="1" stop-color="#FBBF24" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="g-rim" gradientUnits="userSpaceOnUse" x1="9" y1="0" x2="50" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".04"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/>
+          </linearGradient>
+          <filter id="f-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.4"/></filter>
+          <filter id="f-tip" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation=".9"/></filter>
+        </defs>
+        <circle class="a-haze" cx="32" cy="32" r="22" fill="url(#g-haze)"/>
+        <g class="a-glow" filter="url(#f-glow)">
+          <path class="arc glowband up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="arc glowband dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="url(#g-fire)"/>
+        </g>
+        <g class="a-white">
+          <path class="arc band up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="#F8FAFC"/>
+          <path class="arc band dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="#F8FAFC"/>
+          <path class="con" d="M46.85 17.15 H54" pathLength="1" stroke="#F8FAFC"/>
+          <path class="con" d="M46.85 46.85 H54" pathLength="1" stroke="#F8FAFC"/>
+        </g>
+        <g class="a-fire">
+          <path class="arc band up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="arc band dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="con" d="M46.85 17.15 H54" pathLength="1" stroke="#FB923C"/>
+          <path class="con" d="M46.85 46.85 H54" pathLength="1" stroke="#EA580C"/>
+        </g>
+        <path class="a-rim" d="M9.4 32 A22.6 22.6 0 0 1 47.98 16.02" fill="none" stroke="url(#g-rim)" stroke-width=".22"/>
+        <path class="a-sweep" d="M9.4 32 A22.6 22.6 0 0 1 47.98 16.02" pathLength="1" fill="none" stroke="#fff" stroke-width=".42" stroke-linecap="round"/>
+        <circle class="n-halo" cx="54" cy="17.15" fill="#FBBF24" filter="url(#f-glow)" opacity=".55"/>
+        <circle class="n-ring nr-l" cx="11" cy="32" r="4" fill="none" stroke="#FBBF24" stroke-width=".5"/>
+        <circle class="n-ring nr-t" cx="54" cy="17.15" r="5" fill="none" stroke="#FBBF24" stroke-width=".5"/>
+        <circle class="n-ring nr-b" cx="54" cy="46.85" r="5" fill="none" stroke="#EA580C" stroke-width=".5"/>
+        <circle class="n-top" cx="54" cy="17.15" fill="#FBBF24"/>
+        <circle class="n-bot" cx="54" cy="46.85" fill="#EA580C"/>
+        <circle class="n-left" cx="11" cy="32" fill="#FBBF24"/>
+        <circle class="a-tip tip-up" r="1.5" fill="#FFF7E6" filter="url(#f-tip)"/>
+        <circle class="a-tip tip-dn" r="1.5" fill="#FFF7E6" filter="url(#f-tip)"/>
+      </svg>
+    </div>
+
+    <!-- Painel ilustrativo de um cliente (dados fictícios de exemplo) -->
+    <div class="wrap dash-wrap" aria-hidden="true">
+      <div class="dash trig">
+        <div class="dp-top">
+          <span class="logo"><svg><use href="#logo"/></svg><span>Painel</span></span>
+          <div class="dp-tabs">
+            <span class="on"><svg><use href="#i-grid"/></svg>Visão geral</span>
+            <span><svg><use href="#i-bag"/></svg>Pedidos</span>
+            <span><svg><use href="#i-globe"/></svg>Site</span>
+            <span><svg><use href="#i-users"/></svg>Clientes</span>
+            <span><svg><use href="#i-gear"/></svg>Ajustes</span>
+          </div>
+          <div class="dp-ic"><svg><use href="#i-bell"/></svg><span class="avatar-s">DB</span></div>
+        </div>
+        <div class="dp-body">
+          <div class="dp-head">
+            <div><h3>Doceria do Bairro</h3><small><i class="live"></i> docerianoseubairro.com.br · no ar</small></div>
+            <span class="dp-chip">Últimos 30 dias</span>
+          </div>
+          <div class="dp-stats">
+            <div class="kpi"><small>Visitas no site</small><div class="v" data-count="2418">0</div><span class="d">↑ 18%</span>
+              <svg class="spark" viewBox="0 0 112 44"><path pathLength="1" stroke="#4ADE80" d="M2 36 C14 34 18 26 28 28 S42 38 54 28 S70 12 80 16 S98 10 110 4"/></svg></div>
+            <div class="kpi"><small>Pedidos no WhatsApp</small><div class="v" data-count="186">0</div><span class="d">↑ 24%</span>
+              <svg class="spark" viewBox="0 0 112 44" style="--d:.3s"><path pathLength="1" stroke="#FB923C" d="M2 34 C12 36 20 30 30 30 S44 20 56 24 S72 30 82 18 S100 8 110 6"/></svg></div>
+            <div class="kpi"><small>Posição no Google</small><div class="v">1º</div><span class="d n">“doceria em Agudos”</span>
+              <svg class="spark" viewBox="0 0 112 44" style="--d:.4s"><path pathLength="1" stroke="#FBBF24" d="M2 40 C16 38 22 34 32 30 S48 30 58 22 S76 16 86 10 S102 6 110 4"/></svg></div>
+            <div class="kpi"><small>Carregamento</small><div class="v" data-count="0.8" data-dec="1" data-suffix=" s">0</div><span class="d">rápido no celular</span>
+              <svg class="spark" viewBox="0 0 112 44" style="--d:.5s"><path pathLength="1" stroke="#4ADE80" d="M2 6 C14 8 20 14 30 16 S46 26 58 28 S76 36 88 36 S102 38 110 40"/></svg></div>
+          </div>
+          <div class="dp-grid">
+            <div class="dp-card">
+              <h4>Pedidos recentes</h4>
+              <div class="sub">Chegaram pelo site nas últimas horas</div>
+              <div class="ord" style="--d:.35s"><span class="av" style="background:linear-gradient(135deg,#F97316,#C2410C)">MS</span><div><b>Mariana S.</b><small>2 bolos de pote · entrega 16h</small></div><span class="val">R$ 24,00</span><span class="tag o">Pix aprovado</span></div>
+              <div class="ord" style="--d:.47s"><span class="av" style="background:linear-gradient(135deg,#FBBF24,#D97706)">CR</span><div><b>Carlos R.</b><small>Torta doce · retirada</small></div><span class="val">R$ 65,00</span><span class="tag a">Novo</span></div>
+              <div class="ord" style="--d:.59s"><span class="av" style="background:linear-gradient(135deg,#475569,#1E293B)">AP</span><div><b>Ana P.</b><small>50 brigadeiros · festa</small></div><span class="val">R$ 90,00</span><span class="tag g">Entregue</span></div>
             </div>
-            <div class="site-prods">
-              <div>Bolo de pote<b>R$ 12,00</b></div>
-              <div>Torta doce<b>R$ 65,00</b></div>
-              <div>Brigadeiro<b>R$ 1,80</b></div>
+            <div class="dp-card">
+              <h4>Visitas por mês</h4>
+              <div class="sub">Este ano comparado ao anterior</div>
+              <div class="legend"><span><i style="background:#EA580C"></i>2026</span><span><i style="background:rgba(255,255,255,.2)"></i>2025</span></div>
+              <div class="chart">
+                <div class="gl" style="top:0"><span>3 mil</span></div><div class="gl" style="top:33%"><span>2 mil</span></div><div class="gl" style="top:66%"><span>1 mil</span></div><div class="gl" style="top:100%"><span>0</span></div>
+                <div class="bars">
+                  <div class="bar-col"><i class="bar prev" style="height:34%;--d:.2s"></i><i class="bar cur" style="height:46%;--d:.25s"></i><em>Jan</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:40%;--d:.27s"></i><i class="bar cur" style="height:58%;--d:.32s"></i><em>Fev</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:37%;--d:.34s"></i><i class="bar cur" style="height:52%;--d:.39s"></i><em>Mar</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:48%;--d:.41s"></i><i class="bar cur" style="height:70%;--d:.46s"></i><em>Abr</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:44%;--d:.48s"></i><i class="bar cur" style="height:79%;--d:.53s"></i><em>Mai</em></div>
+                  <div class="bar-col"><i class="bar prev" style="height:52%;--d:.55s"></i><i class="bar cur" style="height:94%;--d:.6s"></i><em>Jun</em></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="float float-a"><span class="av">G</span><span><b>1º no Google</b><small>“doceria em Agudos”</small></span></div>
-        <div class="float float-b"><span class="av"><svg width="18" height="18"><use href="#i-wa"/></svg></span><span><b>Novo pedido</b><small>2 bolos de pote · 16h</small></span></div>
       </div>
     </div>
   </section>
@@ -703,62 +219,108 @@
   <!-- NÚMEROS -->
   <div class="stats">
     <div class="wrap">
-      <div class="stat reveal"><strong data-count="27" data-suffix="%">0%</strong><p>dos pequenos negócios ainda não vendem por site, redes ou aplicativo.</p><small>Sebrae/FGV</small></div>
-      <div class="stat reveal" style="--d:.08s"><strong data-count="67" data-prefix="R$ " data-suffix=" bi">R$ 0 bi</strong><p>em vendas online de pequenos negócios em 2024. Em 2019 eram R$ 5 bi.</p><small>Sebrae</small></div>
-      <div class="stat reveal" style="--d:.16s"><strong data-count="25" data-suffix=" km">0 km</strong><p>separam Agudos de Bauru, e atendemos toda a região.</p><small>Atendimento local</small></div>
+      <div class="stats-grid">
+        <div class="stat-n rv"><strong class="grad" data-count="27" data-suffix="%">0%</strong><p>dos pequenos negócios ainda não vendem por site, redes ou aplicativo.</p><small>Sebrae/FGV</small></div>
+        <div class="stat-n rv" style="--d:.08s"><strong class="grad" data-count="67" data-prefix="R$ " data-suffix=" bi">R$ 0 bi</strong><p>em vendas online de pequenos negócios em 2024. Em 2019 eram R$ 5 bi.</p><small>Sebrae</small></div>
+        <div class="stat-n rv" style="--d:.16s"><strong class="grad" data-count="25" data-suffix=" km">0 km</strong><p>separam Agudos de Bauru, e atendemos toda a região.</p><small>Atendimento local</small></div>
+      </div>
+    </div>
+    <div class="cities-strip">
+      <p class="rv">Atendimento local em Agudos e região</p>
+      <div class="mq rv" style="--d:.1s" aria-hidden="true">
+        <div class="mq-track">
+          <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
+          <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
+          <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- SERVIÇOS -->
   <section id="servicos">
     <div class="wrap">
-      <div class="head reveal">
+      <div class="head rv">
         <span class="label">O que fazemos</span>
         <h2>Tecnologia sob medida para o tamanho do seu negócio</h2>
         <p class="lead">Fazemos desde o primeiro site da loja até o sistema que organiza o dia a dia da empresa, explicando tudo sem termos técnicos.</p>
       </div>
-      <div class="grid-lines services">
-        <article class="service spot reveal"><span class="num">01</span><div class="ico"><svg><use href="#i-site"/></svg></div><h3>Sites profissionais</h3><p>Sites rápidos, bonitos no celular e preparados para aparecer no Google. Têm botão de WhatsApp, formulário e e-mail profissional.</p></article>
-        <article class="service spot reveal" style="--d:.05s"><span class="num">02</span><div class="ico"><svg><use href="#i-cart"/></svg></div><h3>Catálogos e lojas virtuais</h3><p>Seus produtos ficam online com carrinho, e o pedido chega no WhatsApp ou é pago por Pix e cartão. Você cadastra os produtos num painel simples.</p></article>
-        <article class="service spot reveal" style="--d:.1s"><span class="num">03</span><div class="ico"><svg><use href="#i-sys"/></svg></div><h3>Sistemas sob medida</h3><p>Agendamento, estoque, ordens de serviço, orçamentos e painéis. Trocamos a planilha e o papel por um sistema feito para o seu processo.</p></article>
-        <article class="service spot reveal"><span class="num">04</span><div class="ico"><svg><use href="#i-pin"/></svg></div><h3>Google Meu Negócio e SEO local</h3><p>Deixamos sua empresa no mapa, com horários, fotos e avaliações, para quem busca o seu produto em Agudos achar você primeiro.</p></article>
-        <article class="service spot reveal" style="--d:.05s"><span class="num">05</span><div class="ico"><svg><use href="#i-chat"/></svg></div><h3>Suporte online</h3><p>Mande a dúvida pelo WhatsApp, em texto, áudio ou print. Respondemos rápido e você não precisa abrir chamado.</p></article>
-        <article class="service spot reveal" style="--d:.1s"><span class="num">06</span><div class="ico"><svg><use href="#i-tool"/></svg></div><h3>Suporte presencial</h3><p>Vamos até a sua empresa para levantar o que você precisa, instalar, treinar a equipe e resolver problemas no local.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <!-- SUPORTE -->
-  <section class="soft" id="suporte">
-    <div class="wrap">
-      <div class="head center reveal">
-        <span class="label">Suporte de verdade</span>
-        <h2>Uma mensagem de distância e, quando precisar, na sua porta</h2>
-        <p class="lead">Freelancer some e agência fica longe. Nós somos daqui e continuamos com você depois que o site vai ao ar.</p>
-      </div>
-      <div class="support-grid">
-        <div class="support-card reveal">
-          <div class="kicker"><i></i>Online</div>
-          <h3>Suporte pelo WhatsApp</h3>
-          <p>Um único canal para qualquer dúvida, sem sistema de chamados nem espera.</p>
-          <ul class="checks">
-            <li><svg><use href="#i-check"/></svg>Primeira resposta em até 2 horas úteis</li>
-            <li><svg><use href="#i-check"/></svg>Urgências (site fora do ar) atendidas em até 1 hora útil</li>
-            <li><svg><use href="#i-check"/></svg>Aceitamos áudio, foto e print</li>
-            <li><svg><use href="#i-check"/></svg>Backup, monitoramento e pequenas alterações todo mês</li>
-          </ul>
-        </div>
-        <div class="support-card pres reveal" style="--d:.08s">
-          <div class="kicker"><i></i>Presencial</div>
-          <h3>Visita na sua empresa</h3>
-          <p>Algumas coisas se resolvem melhor pessoalmente, e a gente vai até você.</p>
-          <ul class="checks">
-            <li><svg><use href="#i-check"/></svg>Visita de implantação incluída nos pacotes em Agudos</li>
-            <li><svg><use href="#i-check"/></svg>Treinamento da sua equipe no seu próprio computador</li>
-            <li><svg><use href="#i-check"/></svg>Bauru: visitas às terças e quintas à tarde</li>
-            <li><svg><use href="#i-check"/></svg>Plano com 1 visita por mês para quem quer acompanhamento</li>
-          </ul>
-        </div>
+      <div class="bento">
+        <article class="card bc bc-a spot glow-hover trig rv">
+          <span class="num">01</span>
+          <h3>Sites profissionais</h3>
+          <p>Sites rápidos, bonitos no celular e preparados para aparecer no Google. Têm botão de WhatsApp, formulário e e-mail profissional.</p>
+          <div class="chips-v" aria-hidden="true">
+            <div class="chip-v hot" style="--d:.35s"><svg><use href="#i-bolt"/></svg>Carrega rápido<span class="ok">ativo</span></div>
+            <div class="chip-v" style="--d:.47s"><svg><use href="#i-phone"/></svg>Perfeito no celular</div>
+            <div class="chip-v" style="--d:.59s"><svg><use href="#i-search"/></svg>Pronto para o Google</div>
+          </div>
+        </article>
+        <article class="card bc bc-b spot glow-hover trig rv" style="--d:.08s">
+          <span class="num">02</span>
+          <h3>Catálogos e lojas virtuais</h3>
+          <p>Seus produtos ficam online com carrinho, e o pedido chega no WhatsApp ou é pago por Pix e cartão. Você cadastra os produtos num painel simples.</p>
+          <div class="order-stack" aria-hidden="true">
+            <div class="order-back"></div>
+            <div class="order">
+              <div class="r1"><b>Pedido #0142</b><span>R$ 89,00</span></div>
+              <small>2 bolos de pote + 1 torta doce</small>
+              <div class="st"><span class="w8">Aguardando Pix</span><span class="ok"><svg><use href="#i-check"/></svg>Pix aprovado</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="card bc bc-c spot glow-hover trig rv" style="--d:.16s">
+          <div class="beam" aria-hidden="true"></div>
+          <div class="beam-glow" aria-hidden="true"></div>
+          <div class="tile" aria-hidden="true"><svg><use href="#logo"/></svg></div>
+          <span class="num">03</span>
+          <div class="txt">
+            <h3>Sistemas sob medida</h3>
+            <p>Agendamento, estoque, ordens de serviço, orçamentos e painéis. Trocamos a planilha e o papel por um sistema feito para o seu processo.</p>
+          </div>
+        </article>
+        <article class="card bc bc-d spot glow-hover trig rv" style="--d:.1s">
+          <span class="num">05</span>
+          <div class="txt">
+            <h3>Suporte online</h3>
+            <p>Mande a dúvida pelo WhatsApp, em texto, áudio ou print. Respondemos rápido e você não precisa abrir chamado.</p>
+          </div>
+          <div class="sparkles" aria-hidden="true">
+            <svg viewBox="0 0 24 24" style="left:20px;top:30px;width:58px;height:58px;color:#F8FAFC"><use href="#i-spark"/></svg>
+            <svg viewBox="0 0 24 24" style="left:92px;top:4px;width:30px;height:30px;color:#FBBF24"><use href="#i-spark"/></svg>
+            <svg viewBox="0 0 24 24" style="left:100px;top:96px;width:24px;height:24px;color:#F97316"><use href="#i-spark"/></svg>
+            <svg viewBox="0 0 24 24" style="left:0;top:110px;width:16px;height:16px;color:#F8FAFC"><use href="#i-spark"/></svg>
+          </div>
+          <div class="chat" aria-hidden="true">
+            <div class="chat-h"><span class="lg"><svg><use href="#logo"/></svg></span><div><b>ConectaByte</b><small>● online</small></div></div>
+            <div class="msgs">
+              <div class="bub in" style="--d:.45s">Oi! Consegue trocar o preço da torta no site?<small>14:02</small></div>
+              <div class="typing"><i></i><i></i><i></i></div>
+              <div class="bub out" style="--d:1.95s">Claro! Já está no ar ✓<small>14:06</small></div>
+            </div>
+          </div>
+        </article>
+        <article class="card bc bc-e spot glow-hover trig rv">
+          <span class="num">04</span>
+          <h3>Google Meu Negócio e SEO local</h3>
+          <p>Deixamos sua empresa no mapa, com horários, fotos e avaliações, para quem busca o seu produto em Agudos achar você primeiro.</p>
+          <div class="gsearch" aria-hidden="true">
+            <div class="gs-bar"><svg><use href="#i-search"/></svg>doceria em Agudos</div>
+            <div class="gs-res"><span class="pin"><svg><use href="#i-pin"/></svg></span><div><b>Doceria do Bairro</b><small>Aberto agora · Agudos</small></div><span class="rank">1º</span></div>
+          </div>
+        </article>
+        <article class="card bc bc-f spot glow-hover trig rv" style="--d:.08s">
+          <span class="num">06</span>
+          <div class="txt">
+            <h3>Suporte presencial</h3>
+            <p>Vamos até a sua empresa para levantar o que você precisa, instalar, treinar a equipe e resolver problemas no local.</p>
+          </div>
+          <div class="visit" aria-hidden="true">
+            <div class="visit-h"><b>Próxima visita</b><span>Agenda da semana</span></div>
+            <div class="week"><span><b>Seg</b>Agudos</span><span class="go"><b>Ter</b>Bauru</span><span><b>Qua</b>Agudos</span><span class="go"><b>Qui</b>Bauru</span><span><b>Sex</b>Agudos</span></div>
+            <div class="route-card"><svg><use href="#i-cal"/></svg><div>Implantação e treinamento<small>Na sua empresa, no seu computador</small></div></div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -766,34 +328,116 @@
   <!-- DIFERENCIAIS -->
   <section id="diferenciais">
     <div class="wrap">
-      <div class="head reveal">
+      <div class="head center rv">
         <span class="label">Por que a ConectaByte</span>
         <h2>Sem surpresa na fatura e sem ficar preso a ninguém</h2>
       </div>
-      <div class="grid-lines diffs reveal">
-        <div class="diff"><span class="n">01</span><h3>Preço fechado</h3><p>O escopo, o prazo e o valor ficam por escrito antes de começar.</p></div>
-        <div class="diff"><span class="n">02</span><h3>Pagamento em etapas</h3><p>Você paga 50% na aprovação e 50% na entrega. Os pacotes maiores podem ser divididos em 3 vezes.</p></div>
-        <div class="diff"><span class="n">03</span><h3>Manutenção incluída</h3><p>A mensalidade cobre hospedagem, backup, segurança e pequenos ajustes.</p></div>
-        <div class="diff"><span class="n">04</span><h3>O site é seu</h3><p>O domínio fica no seu nome e você recebe a documentação. Ninguém fica refém da gente.</p></div>
-        <div class="diff"><span class="n">05</span><h3>Foco em cliente local</h3><p>Todos os pacotes trazem Google Meu Negócio, botão de WhatsApp e SEO local.</p></div>
-        <div class="diff"><span class="n">06</span><h3>30 dias de garantia</h3><p>Corrigimos sem custo qualquer erro que aparecer depois da entrega.</p></div>
-        <div class="diff"><span class="n">07</span><h3>Linguagem simples</h3><p>Explicamos tudo sem jargão técnico, já na primeira conversa.</p></div>
-        <div class="diff"><span class="n">08</span><h3>Empresa da região</h3><p>Conhecemos o comércio daqui e estamos perto quando você precisar.</p></div>
+      <div class="f-row">
+        <div class="f-copy">
+          <h3 class="rv">Manutenção incluída</h3>
+          <p class="rv" style="--d:.06s">A mensalidade cobre hospedagem, backup, segurança e pequenos ajustes.</p>
+          <a class="btn btn-ghost btn-sm rv" style="--d:.12s" href="#pacotes">Ver pacotes <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <ul class="checks-v">
+            <li class="rv" style="--d:.18s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Foco em cliente local</b><span>Todos os pacotes trazem Google Meu Negócio, botão de WhatsApp e SEO local.</span></div></li>
+            <li class="rv" style="--d:.24s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Linguagem simples</b><span>Explicamos tudo sem jargão técnico, já na primeira conversa.</span></div></li>
+            <li class="rv" style="--d:.3s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Empresa da região</b><span>Conhecemos o comércio daqui e estamos perto quando você precisar.</span></div></li>
+          </ul>
+        </div>
+        <div class="card f-card trig rv" style="--d:.1s" id="fCard">
+          <div class="f-item active"><span class="fi"><svg aria-hidden="true"><use href="#i-doc"/></svg></span><div><h4>Preço fechado</h4><p>O escopo, o prazo e o valor ficam por escrito antes de começar.</p></div><span class="n">01</span></div>
+          <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-split"/></svg></span><div><h4>Pagamento em etapas</h4><p>Você paga 50% na aprovação e 50% na entrega. Os pacotes maiores podem ser divididos em 3 vezes.</p></div><span class="n">02</span></div>
+          <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-unlock"/></svg></span><div><h4>O site é seu</h4><p>O domínio fica no seu nome e você recebe a documentação. Ninguém fica refém da gente.</p></div><span class="n">04</span></div>
+          <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><div><h4>30 dias de garantia</h4><p>Corrigimos sem custo qualquer erro que aparecer depois da entrega.</p></div><span class="n">06</span></div>
+          <svg class="ring" viewBox="0 0 640 640" aria-hidden="true">
+            <defs>
+              <linearGradient id="g-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".45" stop-color="#EA580C"/><stop offset="1" stop-color="#7C2D12"/></linearGradient>
+              <radialGradient id="g-ring-in" cx=".5" cy=".5" r=".5"><stop offset=".6" stop-color="#0D0F14"/><stop offset=".92" stop-color="#3A1A0C"/><stop offset="1" stop-color="#EA580C" stop-opacity=".6"/></radialGradient>
+              <filter id="f-ring" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+            </defs>
+            <circle cx="320" cy="320" r="296" fill="none" stroke="#14171E" stroke-width="44"/>
+            <circle cx="320" cy="320" r="244" fill="none" stroke="url(#g-ring)" stroke-width="26" filter="url(#f-ring)" opacity=".85"/>
+            <circle cx="320" cy="320" r="244" fill="none" stroke="url(#g-ring)" stroke-width="12"/>
+            <circle cx="320" cy="320" r="236" fill="url(#g-ring-in)"/>
+            <g class="ring-sweep"><circle cx="320" cy="320" r="250" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" pathLength="1" stroke-dasharray=".1 .9" opacity=".9"/></g>
+          </svg>
+          <svg class="shield" viewBox="0 0 190 210" aria-hidden="true">
+            <defs>
+              <linearGradient id="g-sh-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E5E7EB"/></linearGradient>
+              <linearGradient id="g-sh-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D1D5DB"/><stop offset="1" stop-color="#9CA3AF"/></linearGradient>
+            </defs>
+            <path d="M95 8 L172 36 V98 C172 150 138 186 95 202 C52 186 18 150 18 98 V36 Z" fill="url(#g-sh-l)"/>
+            <path d="M95 8 L172 36 V98 C172 150 138 186 95 202 Z" fill="url(#g-sh-r)"/>
+            <path class="sh-check" d="M60 104 L86 130 L134 80" fill="none" stroke="#EA580C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPORTE -->
+  <section id="suporte">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="label">Suporte de verdade</span>
+        <h2>Uma mensagem de distância e, quando precisar, na sua porta</h2>
+        <p class="lead">Freelancer some e agência fica longe. Nós somos daqui e continuamos com você depois que o site vai ao ar.</p>
+      </div>
+      <div class="s-row">
+        <div class="card s-card trig rv" id="sCard" aria-hidden="true">
+          <div class="s-top"><span class="fi"><svg><use href="#i-chat"/></svg></span><div><b>Respostas em até 2h úteis</b><small>Texto, áudio, foto ou print.</small></div></div>
+          <div class="plane" id="plane">
+            <div class="g" style="top:0;width:60%"></div>
+            <div class="g" style="top:62px;width:82%"></div>
+            <div class="g" style="top:124px;width:70%"></div>
+            <div class="g" style="top:186px;width:90%"></div>
+            <div class="g" style="top:248px;width:64%"></div>
+            <div class="g" style="top:310px;width:78%"></div>
+            <div class="s3d">
+              <div class="r"><b>Novo pedido</b><svg><use href="#i-wa"/></svg></div>
+              <div class="t">2 bolos de pote · 16h</div>
+              <div class="p">R$ 24,00</div>
+              <svg class="wv" viewBox="0 0 110 40"><path pathLength="1" d="M2 30 C14 30 16 12 28 14 S44 34 56 26 S72 4 84 10 S100 26 108 20" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="sup-blocks">
+          <div class="card sup glow-hover rv">
+            <div class="kicker"><i></i>Online</div>
+            <h3>Suporte pelo WhatsApp</h3>
+            <p>Um único canal para qualquer dúvida, sem sistema de chamados nem espera.</p>
+            <ul class="checks">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Primeira resposta em até 2 horas úteis</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Urgências (site fora do ar) atendidas em até 1 hora útil</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aceitamos áudio, foto e print</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Backup, monitoramento e pequenas alterações todo mês</li>
+            </ul>
+          </div>
+          <div class="card sup pres glow-hover rv" style="--d:.08s">
+            <div class="kicker"><i></i>Presencial</div>
+            <h3>Visita na sua empresa</h3>
+            <p>Algumas coisas se resolvem melhor pessoalmente, e a gente vai até você.</p>
+            <ul class="checks">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Visita de implantação incluída nos pacotes em Agudos</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Treinamento da sua equipe no seu próprio computador</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Bauru: visitas às terças e quintas à tarde</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Plano com 1 visita por mês para quem quer acompanhamento</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- PACOTES -->
-  <section class="soft" id="pacotes">
+  <section id="pacotes">
     <div class="wrap">
-      <div class="head center reveal">
+      <div class="head center rv">
         <span class="label">Pacotes</span>
         <h2>Escolha o ponto de partida</h2>
         <p class="lead">Os valores são fechados e a mensalidade inclui hospedagem, suporte e manutenção. Se nenhum pacote servir, montamos uma proposta sob medida.</p>
       </div>
 
-      <!-- Assistente de escolha -->
-      <div class="finder reveal" role="group" aria-labelledby="finderTitle">
+      <div class="finder rv" role="group" aria-labelledby="finderTitle">
         <strong id="finderTitle">O que você precisa?</strong>
         <div class="chips" id="finder">
           <label class="chip"><input type="checkbox" value="google"><span class="tick"><svg><use href="#i-check"/></svg></span>Aparecer no Google</label>
@@ -805,7 +449,7 @@
         <div class="finder-out" id="finderOut" aria-live="polite">Marque as opções e indicamos um pacote.</div>
       </div>
 
-      <div class="plans-bar reveal">
+      <div class="plans-bar rv">
         <p>Investimento único + mensalidade com hospedagem e suporte.</p>
         <div class="seg" id="billing" role="group" aria-label="Forma de pagamento da mensalidade">
           <span class="thumb" aria-hidden="true"></span>
@@ -815,77 +459,78 @@
       </div>
 
       <div class="plans">
-        <article class="plan reveal" data-plan="vitrine">
-          <div class="tags"><span class="tag rec">Recomendado</span></div>
+        <article class="card plan glow-hover rv" data-plan="vitrine">
+          <div class="tags"><span class="ptag rec">Recomendado</span></div>
           <h3>Vitrine</h3>
           <p class="for">Para quem precisa aparecer no Google e receber contatos</p>
           <div class="from">investimento</div>
-          <div class="price">R$ 1.490</div>
+          <div class="price" data-count="1490" data-prefix="R$ ">R$ 1.490</div>
           <div class="monthly"><span data-monthly="99">R$ 99</span><small>/mês</small></div>
           <ul>
-            <li><svg><use href="#i-check"/></svg>Site de 1 página, responsivo</li>
-            <li><svg><use href="#i-check"/></svg>Botão de WhatsApp e formulário</li>
-            <li><svg><use href="#i-check"/></svg>Google Meu Negócio configurado</li>
-            <li><svg><use href="#i-check"/></svg>Domínio .com.br, SSL e hospedagem</li>
-            <li><svg><use href="#i-check"/></svg>1 visita de implantação em Agudos</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Site de 1 página, responsivo</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Botão de WhatsApp e formulário</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Google Meu Negócio configurado</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Domínio .com.br, SSL e hospedagem</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>1 visita de implantação em Agudos</li>
           </ul>
-          <a class="btn btn-outline btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VITRINE da ConectaByte.">Quero o Vitrine <svg class="arrow"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VITRINE da ConectaByte.">Quero o Vitrine <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <p class="prazo">Entrega em 7 dias úteis</p>
         </article>
-        <article class="plan pop reveal" style="--d:.05s" data-plan="presenca">
-          <div class="tags"><span class="tag">Mais escolhido</span><span class="tag rec">Recomendado</span></div>
+        <article class="card plan pop rv" style="--d:.06s" data-plan="presenca">
+          <span class="glow-b" aria-hidden="true"></span>
+          <div class="tags"><span class="ptag">Mais escolhido</span><span class="ptag rec">Recomendado</span></div>
           <h3>Presença</h3>
           <p class="for">Para empresas que querem credibilidade e mais clientes</p>
           <div class="from">investimento</div>
-          <div class="price">R$ 3.200</div>
+          <div class="price" data-count="3200" data-prefix="R$ ">R$ 3.200</div>
           <div class="monthly"><span data-monthly="149">R$ 149</span><small>/mês</small></div>
           <ul>
-            <li><svg><use href="#i-check"/></svg>Até 6 páginas, com galeria e blog</li>
-            <li><svg><use href="#i-check"/></svg>SEO local e Google Analytics</li>
-            <li><svg><use href="#i-check"/></svg>Integração com Instagram e WhatsApp</li>
-            <li><svg><use href="#i-check"/></svg>3 e-mails profissionais</li>
-            <li><svg><use href="#i-check"/></svg>2 rodadas de ajustes e treinamento de 1 hora</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Até 6 páginas, com galeria e blog</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>SEO local e Google Analytics</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Integração com Instagram e WhatsApp</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>3 e-mails profissionais</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>2 rodadas de ajustes e treinamento de 1 hora</li>
           </ul>
-          <a class="btn btn-primary btn-block" href="#" data-wa="Olá! Tenho interesse no pacote PRESENÇA da ConectaByte.">Quero o Presença <svg class="arrow"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-primary btn-block" href="#" data-wa="Olá! Tenho interesse no pacote PRESENÇA da ConectaByte.">Quero o Presença <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <p class="prazo">Entrega em 14 dias</p>
         </article>
-        <article class="plan reveal" style="--d:.1s" data-plan="vendas">
-          <div class="tags"><span class="tag rec">Recomendado</span></div>
+        <article class="card plan glow-hover rv" style="--d:.12s" data-plan="vendas">
+          <div class="tags"><span class="ptag rec">Recomendado</span></div>
           <h3>Vendas</h3>
           <p class="for">Para lojas, doceiras, restaurantes e distribuidores</p>
           <div class="from">investimento</div>
-          <div class="price">R$ 4.900</div>
+          <div class="price" data-count="4900" data-prefix="R$ ">R$ 4.900</div>
           <div class="monthly"><span data-monthly="199">R$ 199</span><small>/mês</small></div>
           <ul>
-            <li><svg><use href="#i-check"/></svg>Catálogo ou loja com carrinho</li>
-            <li><svg><use href="#i-check"/></svg>Pedido pelo WhatsApp ou Pix e cartão</li>
-            <li><svg><use href="#i-check"/></svg>Painel para cadastrar produtos</li>
-            <li><svg><use href="#i-check"/></svg>Até 100 produtos cadastrados por nós</li>
-            <li><svg><use href="#i-check"/></svg>Treinamento da equipe</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Catálogo ou loja com carrinho</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Pedido pelo WhatsApp ou Pix e cartão</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Painel para cadastrar produtos</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Até 100 produtos cadastrados por nós</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Treinamento da equipe</li>
           </ul>
-          <a class="btn btn-outline btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VENDAS da ConectaByte.">Quero o Vendas <svg class="arrow"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VENDAS da ConectaByte.">Quero o Vendas <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <p class="prazo">Entrega em 21 dias</p>
         </article>
-        <article class="plan reveal" style="--d:.15s" data-plan="sistema">
-          <div class="tags"><span class="tag rec">Recomendado</span></div>
+        <article class="card plan glow-hover rv" style="--d:.18s" data-plan="sistema">
+          <div class="tags"><span class="ptag rec">Recomendado</span></div>
           <h3>Sob medida</h3>
           <p class="for">Para quem ainda controla agenda, estoque ou pedidos no papel</p>
           <div class="from">a partir de</div>
-          <div class="price">R$ 6.500</div>
+          <div class="price" data-count="6500" data-prefix="R$ ">R$ 6.500</div>
           <div class="monthly"><span data-monthly="299">R$ 299</span><small>/mês</small></div>
           <ul>
-            <li><svg><use href="#i-check"/></svg>Diagnóstico (R$ 600, abatido se fechar)</li>
-            <li><svg><use href="#i-check"/></svg>Escopo e protótipo antes de programar</li>
-            <li><svg><use href="#i-check"/></svg>Desenvolvimento em etapas</li>
-            <li><svg><use href="#i-check"/></svg>Migração de dados e treinamento</li>
-            <li><svg><use href="#i-check"/></svg>30 dias de garantia</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Diagnóstico (R$ 600, abatido se fechar)</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Escopo e protótipo antes de programar</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Desenvolvimento em etapas</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Migração de dados e treinamento</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>30 dias de garantia</li>
           </ul>
-          <a class="btn btn-outline btn-block" href="#" data-wa="Olá! Quero conversar sobre um SISTEMA SOB MEDIDA com a ConectaByte.">Agendar diagnóstico <svg class="arrow"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Quero conversar sobre um SISTEMA SOB MEDIDA com a ConectaByte.">Agendar diagnóstico <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <p class="prazo">De 30 a 60 dias</p>
         </article>
       </div>
 
-      <div class="extras reveal">
+      <div class="extras rv">
         <div class="extra"><b>Suporte WhatsApp</b><span class="v">R$ 149/mês</span><p>Horário comercial, 1 alteração simples por mês, monitoramento e backup. Vale também para sites de terceiros.</p></div>
         <div class="extra"><b>Suporte Presencial</b><span class="v">R$ 349/mês</span><p>Tudo do plano WhatsApp, mais 1 visita por mês e até 5 horas de serviço.</p></div>
         <div class="extra"><b>Visita avulsa</b><span class="v">R$ 120/hora</span><p>Atendimento na sua empresa em Agudos.</p></div>
@@ -896,9 +541,9 @@
   </section>
 
   <!-- CLIENTES FUNDADORES -->
-  <section id="fundadores" style="padding-bottom:0">
+  <section id="fundadores" style="padding-top:0">
     <div class="wrap">
-      <div class="pilot reveal">
+      <div class="card pilot rv">
         <div>
           <span class="label">Lançamento</span>
           <h2>Seja um dos 3 clientes fundadores</h2>
@@ -907,41 +552,138 @@
         <div class="pilot-side">
           <div class="seats" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="seats-label">3 de 3 vagas disponíveis</div>
-          <a class="btn btn-dark btn-block" href="#" data-wa="Olá! Quero saber sobre as vagas de cliente fundador com 40% de desconto." data-magnetic>Quero uma vaga <svg class="arrow"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-primary btn-block" href="#" data-wa="Olá! Quero saber sobre as vagas de cliente fundador com 40% de desconto." data-magnetic>Quero uma vaga <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROCESSO -->
-  <section id="como-funciona">
+  <!-- MODELOS -->
+  <section id="modelos" style="padding-top:0">
     <div class="wrap">
-      <div class="head center reveal">
+      <div class="head center rv">
+        <span class="label">Modelos</span>
+        <h2>Um site pensado para cada negócio</h2>
+        <p class="lead">Adaptamos o projeto à sua marca, aos seus produtos e à sua cidade.</p>
+      </div>
+      <div class="ports">
+        <a class="port rv" href="#" data-wa="Olá! Gostei do modelo de site para doceria da ConectaByte.">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="d-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7F0E8"/><stop offset="1" stop-color="#E6D9CB"/></linearGradient>
+              <linearGradient id="d-body" x1="0" x2="1"><stop offset="0" stop-color="#FBE3C8"/><stop offset=".55" stop-color="#F2C9A0"/><stop offset="1" stop-color="#D99A68"/></linearGradient>
+              <linearGradient id="d-top" x1="0" x2="1"><stop offset="0" stop-color="#FB923C"/><stop offset="1" stop-color="#C2410C"/></linearGradient>
+              <radialGradient id="d-sh"><stop offset="0" stop-color="#6B4C33" stop-opacity=".32"/><stop offset="1" stop-color="#6B4C33" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#d-bg)"/>
+            <circle cx="330" cy="120" r="150" fill="#fff" opacity=".4"/>
+            <ellipse cx="200" cy="438" rx="168" ry="40" fill="url(#d-sh)"/>
+            <ellipse cx="200" cy="414" rx="150" ry="38" fill="#fff"/>
+            <ellipse cx="200" cy="409" rx="134" ry="31" fill="#F1ECE6"/>
+            <path d="M90 290 v104 a110 28 0 0 0 220 0 v-104 z" fill="url(#d-body)"/>
+            <path d="M90 344 a110 28 0 0 0 220 0" fill="none" stroke="#E2A877" stroke-width="6"/>
+            <ellipse cx="200" cy="288" rx="113" ry="30" fill="url(#d-top)"/>
+            <g fill="#EA580C"><rect x="96" y="290" width="18" height="40" rx="9"/><rect x="128" y="300" width="18" height="30" rx="9"/><rect x="160" y="305" width="18" height="52" rx="9"/><rect x="196" y="307" width="18" height="34" rx="9"/><rect x="232" y="305" width="18" height="46" rx="9"/><rect x="266" y="300" width="18" height="28" rx="9"/><rect x="290" y="292" width="16" height="38" rx="8"/></g>
+            <ellipse cx="200" cy="283" rx="104" ry="24" fill="#F97316"/>
+            <ellipse cx="176" cy="276" rx="56" ry="8" fill="#FED7AA" opacity=".55"/>
+            <g fill="#FFF7ED"><rect x="150" y="282" width="10" height="4" rx="2" transform="rotate(25 155 284)"/><rect x="236" y="288" width="10" height="4" rx="2" transform="rotate(-30 241 290)"/><rect x="214" y="272" width="10" height="4" rx="2" transform="rotate(60 219 274)"/><rect x="128" y="292" width="10" height="4" rx="2" transform="rotate(-10 133 294)"/></g>
+            <path d="M201 244 q6 -26 26 -34" fill="none" stroke="#4B3A2A" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="200" cy="262" r="22" fill="#B91C1C"/>
+            <circle cx="192" cy="254" r="6" fill="#FECACA" opacity=".85"/>
+            <circle cx="88" cy="168" r="9" fill="#FBBF24"/><circle cx="318" cy="214" r="6" fill="#EA580C"/><circle cx="120" cy="104" r="5" fill="#EA580C"/>
+          </svg>
+          <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+          <span class="cap"><b>Doceria</b><small><span>Cardápio online e pedido pelo WhatsApp</span></small></span>
+        </a>
+        <a class="port rv" style="--d:.08s" href="#" data-wa="Olá! Gostei do modelo de site para clínica da ConectaByte.">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="c-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E1E9ED"/><stop offset="1" stop-color="#C3D0D7"/></linearGradient>
+              <radialGradient id="c-sh"><stop offset="0" stop-color="#2C3E4A" stop-opacity=".3"/><stop offset="1" stop-color="#2C3E4A" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#c-bg)"/>
+            <circle cx="70" cy="110" r="140" fill="#fff" opacity=".35"/>
+            <ellipse cx="200" cy="452" rx="150" ry="30" fill="url(#c-sh)"/>
+            <g transform="rotate(-8 200 300)">
+              <rect x="86" y="196" width="230" height="230" rx="28" fill="#fff"/>
+              <path d="M86 224 a28 28 0 0 1 28 -28 h174 a28 28 0 0 1 28 28 v32 h-230z" fill="#EA580C"/>
+              <rect x="134" y="180" width="12" height="34" rx="6" fill="#1F2937"/><rect x="256" y="180" width="12" height="34" rx="6" fill="#1F2937"/>
+              <g fill="#D7DEE3"><circle cx="124" cy="290" r="9"/><circle cx="164" cy="290" r="9"/><circle cx="204" cy="290" r="9"/><circle cx="244" cy="290" r="9"/><circle cx="284" cy="290" r="9"/><circle cx="124" cy="330" r="9"/><circle cx="164" cy="330" r="9"/><circle cx="244" cy="330" r="9"/><circle cx="284" cy="330" r="9"/><circle cx="124" cy="370" r="9"/><circle cx="164" cy="370" r="9"/><circle cx="204" cy="370" r="9"/><circle cx="244" cy="370" r="9"/></g>
+              <rect x="186" y="312" width="36" height="36" rx="10" fill="#EA580C"/>
+              <path d="M195 330 l7 7 l12 -13" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <circle cx="304" cy="176" r="50" fill="#fff"/>
+            <rect x="296" y="150" width="16" height="52" rx="5" fill="#EA580C"/><rect x="278" y="168" width="52" height="16" rx="5" fill="#EA580C"/>
+            <rect x="60" y="430" width="120" height="44" rx="22" fill="#fff"/>
+            <circle cx="84" cy="452" r="8" fill="#4ADE80"/><text x="100" y="458" font-family="Inter, sans-serif" font-size="17" font-weight="600" fill="#1F2937">09:30</text>
+          </svg>
+          <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+          <span class="cap"><b>Clínica</b><small><span>Agendamento online e mapa de acesso</span></small></span>
+        </a>
+        <a class="port rv" style="--d:.16s" href="#" data-wa="Olá! Gostei do modelo de site para oficina da ConectaByte.">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="o-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFEDE6"/><stop offset="1" stop-color="#D9D6CB"/></linearGradient>
+              <linearGradient id="o-metal" x1="0" x2="1"><stop offset="0" stop-color="#F3F4F6"/><stop offset=".5" stop-color="#C9CDD4"/><stop offset="1" stop-color="#9CA3AF"/></linearGradient>
+              <radialGradient id="o-sh"><stop offset="0" stop-color="#3B3A33" stop-opacity=".3"/><stop offset="1" stop-color="#3B3A33" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#o-bg)"/>
+            <circle cx="320" cy="90" r="130" fill="#fff" opacity=".4"/>
+            <ellipse cx="200" cy="450" rx="160" ry="30" fill="url(#o-sh)"/>
+            <g transform="translate(200 300)">
+              <circle r="104" fill="none" stroke="#1F2430" stroke-width="36" stroke-dasharray="22.3 18.5"/>
+              <circle r="92" fill="#2A303C"/>
+              <circle r="88" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="2"/>
+              <circle r="40" fill="#EA580C"/>
+              <circle r="40" fill="none" stroke="#FB923C" stroke-width="3"/>
+              <circle r="16" fill="#1F2430"/>
+            </g>
+            <g transform="rotate(-38 200 300)">
+              <rect x="186" y="150" width="28" height="250" rx="14" fill="url(#o-metal)"/>
+              <path d="M200 96 a46 46 0 1 1 -0.1 0 z M186 92 h28 v40 h-28 z" fill="url(#o-metal)" fill-rule="evenodd"/>
+              <circle cx="200" cy="138" r="22" fill="#EFEDE6"/>
+              <rect x="190" y="96" width="20" height="44" fill="#EFEDE6"/>
+            </g>
+            <g fill="#1F2430"><polygon points="74,180 86,173 98,180 98,194 86,201 74,194"/><polygon points="314,420 324,414 334,420 334,432 324,438 314,432"/></g>
+            <circle cx="330" cy="200" r="8" fill="#FBBF24"/><circle cx="70" cy="420" r="6" fill="#EA580C"/>
+          </svg>
+          <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+          <span class="cap"><b>Oficina</b><small><span>Orçamento online e ordem de serviço</span></small></span>
+        </a>
+      </div>
+      <p class="port-note rv">Ilustrações de exemplo. Cada projeto é feito com a identidade da sua empresa.</p>
+    </div>
+  </section>
+
+  <!-- PROCESSO -->
+  <section id="como-funciona" style="padding-top:0">
+    <div class="wrap">
+      <div class="head center rv">
         <span class="label">Como funciona</span>
         <h2>Do primeiro “oi” ao site no ar</h2>
         <p class="lead">Seguimos um processo claro e você acompanha cada etapa.</p>
       </div>
       <ol class="steps" id="steps">
-        <li class="step"><div class="dot">1</div><h3>Contato</h3><p>Você chama no WhatsApp e respondemos no mesmo dia.</p></li>
-        <li class="step"><div class="dot">2</div><h3>Diagnóstico</h3><p>Conversa de 30 a 45 min na sua empresa ou por vídeo.</p></li>
-        <li class="step"><div class="dot">3</div><h3>Proposta</h3><p>Escopo, prazo e valor em até 2 dias, com assinatura digital.</p></li>
-        <li class="step"><div class="dot">4</div><h3>Conteúdo</h3><p>Juntamos logo, fotos e textos com um checklist simples.</p></li>
-        <li class="step"><div class="dot">5</div><h3>Desenvolvimento</h3><p>Você acompanha tudo por um link de prévia e aprova.</p></li>
-        <li class="step"><div class="dot">6</div><h3>Entrega e suporte</h3><p>Publicamos, treinamos sua equipe e seguimos juntos.</p></li>
+        <li class="step rv"><div class="dot">1</div><h3>Contato</h3><p>Você chama no WhatsApp e respondemos no mesmo dia.</p></li>
+        <li class="step rv" style="--d:.06s"><div class="dot">2</div><h3>Diagnóstico</h3><p>Conversa de 30 a 45 min na sua empresa ou por vídeo.</p></li>
+        <li class="step rv" style="--d:.12s"><div class="dot">3</div><h3>Proposta</h3><p>Escopo, prazo e valor em até 2 dias, com assinatura digital.</p></li>
+        <li class="step rv" style="--d:.18s"><div class="dot">4</div><h3>Conteúdo</h3><p>Juntamos logo, fotos e textos com um checklist simples.</p></li>
+        <li class="step rv" style="--d:.24s"><div class="dot">5</div><h3>Desenvolvimento</h3><p>Você acompanha tudo por um link de prévia e aprova.</p></li>
+        <li class="step rv" style="--d:.3s"><div class="dot">6</div><h3>Entrega e suporte</h3><p>Publicamos, treinamos sua equipe e seguimos juntos.</p></li>
       </ol>
     </div>
   </section>
 
   <!-- EQUIPE -->
-  <section class="soft" id="equipe">
+  <section id="equipe">
     <div class="wrap">
-      <div class="head reveal">
+      <div class="head rv">
         <span class="label">O time por trás</span>
         <h2>Quem vai cuidar do seu projeto</h2>
         <p class="lead">A ConectaByte tem dois sócios, e você fala direto com quem faz.</p>
       </div>
       <div class="team-grid">
-        <article class="member reveal">
+        <article class="card member glow-hover rv">
           <div class="avatar" aria-hidden="true">GA</div>
           <div>
             <h3>Giovanni Anicezio Andrade</h3>
@@ -950,7 +692,7 @@
             <div class="skills"><span>Desenvolvimento</span><span>Sistemas</span><span>Segurança</span><span>Qualidade</span></div>
           </div>
         </article>
-        <article class="member reveal" style="--d:.08s">
+        <article class="card member glow-hover rv" style="--d:.08s">
           <div class="avatar" aria-hidden="true">AL</div>
           <div>
             <h3>Anthony Gabriel Schirato Lourenço</h3>
@@ -964,41 +706,41 @@
   </section>
 
   <!-- REGIÃO -->
-  <section id="regiao">
+  <section id="regiao" style="padding-top:0">
     <div class="wrap region-grid">
-      <div class="reveal">
+      <div class="rv">
         <span class="label">Onde atendemos</span>
         <h2>De Agudos para toda a região</h2>
         <p class="lead">O atendimento online funciona em qualquer lugar, e a visita presencial cobre as cidades abaixo. Passe o mouse para ver no mapa.</p>
         <ul class="cities" id="cities">
-          <li class="city" data-city="agudos"><span class="dot" style="background:var(--accent)"></span><span><b>Agudos</b><small>Nossa base. A visita de implantação já vem nos pacotes.</small></span></li>
-          <li class="city" data-city="bauru"><span class="dot" style="background:var(--ink)"></span><span><b>Bauru</b><small>Visitas agendadas às terças e quintas à tarde.</small></span></li>
-          <li class="city" data-city="lencois pederneiras piratininga"><span class="dot" style="background:#9CA3AF"></span><span><b>Lençóis Paulista · Pederneiras · Piratininga</b><small>Atendimento por vídeo e WhatsApp, com visita na implantação e nos planos presenciais.</small></span></li>
+          <li class="city" data-city="agudos"><span class="dot" style="background:var(--orange)"></span><span><b>Agudos</b><small>Nossa base. A visita de implantação já vem nos pacotes.</small></span></li>
+          <li class="city" data-city="bauru"><span class="dot" style="background:#F8FAFC"></span><span><b>Bauru</b><small>Visitas agendadas às terças e quintas à tarde.</small></span></li>
+          <li class="city" data-city="lencois pederneiras piratininga"><span class="dot" style="background:#6B7280"></span><span><b>Lençóis Paulista · Pederneiras · Piratininga</b><small>Atendimento por vídeo e WhatsApp, com visita na implantação e nos planos presenciais.</small></span></li>
         </ul>
       </div>
-      <div class="map reveal" style="--d:.1s" role="img" aria-label="Mapa esquemático: Agudos no centro, ligada a Bauru, Pederneiras, Lençóis Paulista e Piratininga">
+      <div class="card map rv" style="--d:.1s" role="img" aria-label="Mapa esquemático: Agudos no centro, ligada a Bauru, Pederneiras, Lençóis Paulista e Piratininga">
         <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
-          <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#D1D5DB"/></pattern></defs>
+          <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#262B36"/></pattern></defs>
           <rect width="480" height="380" rx="12" fill="url(#dots)"/>
-          <g fill="none" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 6">
+          <g fill="none" stroke="#3A404D" stroke-width="1.5" stroke-dasharray="5 6">
             <path class="route" data-city="bauru" d="M290 200 L160 150"/>
             <path class="route" data-city="pederneiras" d="M290 200 L300 70"/>
             <path class="route" data-city="lencois" d="M290 200 L400 290"/>
             <path class="route" data-city="piratininga" d="M160 150 L80 250"/>
           </g>
-          <g font-family="Inter, sans-serif" font-size="13" fill="#374151">
-            <g class="node" data-city="bauru"><circle cx="160" cy="150" r="8" fill="#111827"/></g>
-            <text x="160" y="130" text-anchor="middle" font-weight="600">Bauru</text>
-            <g class="node" data-city="pederneiras"><circle cx="300" cy="70" r="6" fill="#9CA3AF"/></g>
+          <g font-family="Inter, sans-serif" font-size="13" fill="#B4B9C4">
+            <g class="node" data-city="bauru"><circle cx="160" cy="150" r="8" fill="#F8FAFC"/></g>
+            <text x="160" y="130" text-anchor="middle" font-weight="600" fill="#F5F6F8">Bauru</text>
+            <g class="node" data-city="pederneiras"><circle cx="300" cy="70" r="6" fill="#6B7280"/></g>
             <text x="300" y="50" text-anchor="middle">Pederneiras</text>
-            <g class="node" data-city="lencois"><circle cx="400" cy="290" r="6" fill="#9CA3AF"/></g>
+            <g class="node" data-city="lencois"><circle cx="400" cy="290" r="6" fill="#6B7280"/></g>
             <text x="400" y="318" text-anchor="middle">Lençóis Paulista</text>
-            <g class="node" data-city="piratininga"><circle cx="80" cy="250" r="6" fill="#9CA3AF"/></g>
+            <g class="node" data-city="piratininga"><circle cx="80" cy="250" r="6" fill="#6B7280"/></g>
             <text x="80" y="278" text-anchor="middle">Piratininga</text>
-            <text x="222" y="164" text-anchor="middle" font-size="11" fill="#6B7280" transform="rotate(21 222 164)">~25 km</text>
-            <circle class="pulse" cx="290" cy="200" r="12" fill="#C2410C"/>
-            <g class="node" data-city="agudos"><circle cx="290" cy="200" r="11" fill="#C2410C"/><circle cx="290" cy="200" r="4" fill="#fff"/></g>
-            <text x="290" y="234" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="600" font-size="15" fill="#111827">Agudos</text>
+            <text x="222" y="164" text-anchor="middle" font-size="11" fill="#828898" transform="rotate(21 222 164)">~25 km</text>
+            <circle class="pulse" cx="290" cy="200" r="12" fill="#EA580C"/>
+            <g class="node" data-city="agudos"><circle cx="290" cy="200" r="11" fill="#EA580C"/><circle cx="290" cy="200" r="4" fill="#fff"/></g>
+            <text x="290" y="234" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="600" font-size="15" fill="#FFFFFF">Agudos</text>
           </g>
         </svg>
       </div>
@@ -1006,13 +748,13 @@
   </section>
 
   <!-- FAQ -->
-  <section class="soft" id="duvidas">
+  <section id="duvidas" style="padding-top:0">
     <div class="wrap">
-      <div class="head center reveal">
+      <div class="head center rv">
         <span class="label">Dúvidas frequentes</span>
         <h2>Perguntas que todo lojista faz</h2>
       </div>
-      <div class="faq reveal">
+      <div class="faq rv">
         <details><summary>O site e o domínio ficam no meu nome?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Sim. O domínio é registrado no nome da sua empresa, o conteúdo é seu e você recebe a documentação do projeto. Ninguém fica preso à ConectaByte.</p></div></details>
         <details><summary>Como é feito o pagamento?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Você paga 50% na aprovação da proposta e 50% na entrega. Os pacotes Vendas e Sob Medida podem ser divididos em até 3 parcelas. A mensalidade começa depois que o site vai ao ar e pode ser paga por Pix ou boleto, com 10% de desconto no plano anual.</p></div></details>
         <details><summary>O que a mensalidade inclui?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Hospedagem, certificado de segurança (SSL), backup, monitoramento, atualizações e suporte pelo WhatsApp em horário comercial, com pequenas alterações todo mês.</p></div></details>
@@ -1025,86 +767,91 @@
   </section>
 
   <!-- CONTATO -->
-  <section class="contact on-dark" id="contato">
-    <div class="wrap contact-grid">
-      <div class="reveal">
-        <span class="label">Fale com a gente</span>
-        <h2>Vamos colocar sua empresa no topo?</h2>
-        <p class="lead">Conte um pouco sobre o seu negócio e respondemos pelo WhatsApp. O diagnóstico inicial é sem compromisso.</p>
-        <ul class="channels">
-          <li><a class="channel" href="#" data-wa="Olá! Vim pelo site da ConectaByte."><span class="ic"><svg><use href="#i-wa"/></svg></span><span><b>WhatsApp</b><small>Resposta em até 2 horas úteis</small></span><svg class="go"><use href="#i-arrow"/></svg></a></li>
-          <li><button class="channel" type="button" id="copyEmail" data-email="contato@conectabyte.com.br"><span class="ic"><svg><use href="#i-mail"/></svg></span><span><b>contato@conectabyte.com.br</b><small>Clique para copiar o e-mail</small></span><svg class="go"><use href="#i-copy"/></svg></button></li>
-          <li><a class="channel" href="https://instagram.com/conectabyte" target="_blank" rel="noopener"><span class="ic"><svg><use href="#i-ig"/></svg></span><span><b>@conectabyte</b><small>Bastidores, dicas e projetos</small></span><svg class="go"><use href="#i-arrow"/></svg></a></li>
-          <li><div class="channel" style="cursor:default"><span class="ic"><svg><use href="#i-clock"/></svg></span><span><b id="openStatus">Seg. a sex., 8h às 18h</b><small>Agudos/SP · atendimento em toda a região</small></span></div></li>
-        </ul>
-      </div>
-
-      <form class="form reveal" id="leadForm" novalidate style="--d:.08s">
-        <div class="field" id="fNome">
-          <label for="f-nome">Seu nome</label>
-          <input class="input" id="f-nome" name="nome" autocomplete="name" placeholder="Como podemos te chamar?">
-          <span class="err">Informe seu nome para continuarmos.</span>
-        </div>
-        <div class="field">
-          <label for="f-empresa">Empresa</label>
-          <input class="input" id="f-empresa" name="empresa" autocomplete="organization" placeholder="Nome do seu negócio">
-        </div>
-        <div class="field full">
-          <label for="f-cidade">Cidade</label>
-          <select class="input" id="f-cidade" name="cidade">
-            <option>Agudos</option><option>Bauru</option><option>Lençóis Paulista</option><option>Pederneiras</option><option>Piratininga</option><option>Outra</option>
-          </select>
-        </div>
-        <div class="field full" role="radiogroup" aria-labelledby="lblInteresse">
-          <span class="lbl" id="lblInteresse">Interesse</span>
-          <div class="chips" id="interesse">
-            <label class="chip"><input type="radio" name="interesse" value="Ainda não sei, quero orientação" checked><span class="tick"><svg><use href="#i-check"/></svg></span>Não sei ainda</label>
-            <label class="chip"><input type="radio" name="interesse" value="Pacote Vitrine" data-plan="vitrine"><span class="tick"><svg><use href="#i-check"/></svg></span>Vitrine</label>
-            <label class="chip"><input type="radio" name="interesse" value="Pacote Presença" data-plan="presenca"><span class="tick"><svg><use href="#i-check"/></svg></span>Presença</label>
-            <label class="chip"><input type="radio" name="interesse" value="Pacote Vendas" data-plan="vendas"><span class="tick"><svg><use href="#i-check"/></svg></span>Vendas</label>
-            <label class="chip"><input type="radio" name="interesse" value="Sistema sob medida" data-plan="sistema"><span class="tick"><svg><use href="#i-check"/></svg></span>Sistema</label>
-            <label class="chip"><input type="radio" name="interesse" value="Suporte para site que já tenho"><span class="tick"><svg><use href="#i-check"/></svg></span>Suporte</label>
+  <section class="contact" id="contato" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta-panel rv">
+        <div class="contact-grid">
+          <div>
+            <span class="label">Fale com a gente</span>
+            <h2>Vamos colocar sua empresa no topo?</h2>
+            <p class="lead">Conte um pouco sobre o seu negócio e respondemos pelo WhatsApp. O diagnóstico inicial é sem compromisso.</p>
+            <ul class="channels">
+              <li><a class="channel" href="#" data-wa="Olá! Vim pelo site da ConectaByte."><span class="ic"><svg aria-hidden="true"><use href="#i-wa"/></svg></span><span><b>WhatsApp</b><small>Resposta em até 2 horas úteis</small></span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+              <li><button class="channel" type="button" id="copyEmail" data-email="contato@conectabyte.com.br"><span class="ic"><svg aria-hidden="true"><use href="#i-mail"/></svg></span><span><b>contato@conectabyte.com.br</b><small>Clique para copiar o e-mail</small></span><svg class="go" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+              <li><a class="channel" href="https://instagram.com/conectabyte" target="_blank" rel="noopener"><span class="ic"><svg aria-hidden="true"><use href="#i-ig"/></svg></span><span><b>@conectabyte</b><small>Bastidores, dicas e projetos</small></span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+              <li><div class="channel" style="cursor:default"><span class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></span><span><b id="openStatus">Seg. a sex., 8h às 18h</b><small>Agudos/SP · atendimento em toda a região</small></span></div></li>
+            </ul>
           </div>
+
+          <form class="form" id="leadForm" novalidate>
+            <div class="field" id="fNome">
+              <label for="f-nome">Seu nome</label>
+              <input class="input" id="f-nome" name="nome" autocomplete="name" placeholder="Como podemos te chamar?">
+              <span class="err">Informe seu nome para continuarmos.</span>
+            </div>
+            <div class="field">
+              <label for="f-empresa">Empresa</label>
+              <input class="input" id="f-empresa" name="empresa" autocomplete="organization" placeholder="Nome do seu negócio">
+            </div>
+            <div class="field full">
+              <label for="f-cidade">Cidade</label>
+              <select class="input" id="f-cidade" name="cidade">
+                <option>Agudos</option><option>Bauru</option><option>Lençóis Paulista</option><option>Pederneiras</option><option>Piratininga</option><option>Outra</option>
+              </select>
+            </div>
+            <div class="field full" role="radiogroup" aria-labelledby="lblInteresse">
+              <span class="lbl" id="lblInteresse">Interesse</span>
+              <div class="chips" id="interesse">
+                <label class="chip"><input type="radio" name="interesse" value="Ainda não sei, quero orientação" checked><span class="tick"><svg><use href="#i-check"/></svg></span>Não sei ainda</label>
+                <label class="chip"><input type="radio" name="interesse" value="Pacote Vitrine" data-plan="vitrine"><span class="tick"><svg><use href="#i-check"/></svg></span>Vitrine</label>
+                <label class="chip"><input type="radio" name="interesse" value="Pacote Presença" data-plan="presenca"><span class="tick"><svg><use href="#i-check"/></svg></span>Presença</label>
+                <label class="chip"><input type="radio" name="interesse" value="Pacote Vendas" data-plan="vendas"><span class="tick"><svg><use href="#i-check"/></svg></span>Vendas</label>
+                <label class="chip"><input type="radio" name="interesse" value="Sistema sob medida" data-plan="sistema"><span class="tick"><svg><use href="#i-check"/></svg></span>Sistema</label>
+                <label class="chip"><input type="radio" name="interesse" value="Suporte para site que já tenho"><span class="tick"><svg><use href="#i-check"/></svg></span>Suporte</label>
+              </div>
+            </div>
+            <div class="field full">
+              <label for="f-msg">Conte rapidamente o que você precisa</label>
+              <textarea class="input" id="f-msg" name="mensagem" maxlength="500" placeholder="Ex.: tenho uma doceria e quero receber encomendas pelo site."></textarea>
+              <span class="counter" id="counter">0/500</span>
+            </div>
+            <div class="field full">
+              <button class="btn btn-primary btn-block" type="submit" id="sendBtn"><svg aria-hidden="true"><use href="#i-wa"/></svg> Enviar pelo WhatsApp</button>
+            </div>
+            <p class="form-note">Os dados informados serão usados para preparar um contato comercial pelo WhatsApp; você revisa e envia a mensagem. <a class="privacy-link" href="privacidade.html">Leia o aviso de privacidade.</a></p>
+          </form>
         </div>
-        <div class="field full">
-          <label for="f-msg">Conte rapidamente o que você precisa</label>
-          <textarea class="input" id="f-msg" name="mensagem" maxlength="500" placeholder="Ex.: tenho uma doceria e quero receber encomendas pelo site."></textarea>
-          <span class="counter" id="counter">0/500</span>
-        </div>
-        <div class="field full">
-          <button class="btn btn-wa btn-block" type="submit" id="sendBtn"><svg aria-hidden="true"><use href="#i-wa"/></svg> Enviar pelo WhatsApp</button>
-        </div>
-        <p class="form-note">Nada fica salvo neste site. A mensagem abre no seu WhatsApp para você revisar e enviar.</p>
-      </form>
+      </div>
     </div>
   </section>
 </main>
 
-<footer class="on-dark">
-  <div class="footer-cta">
-    <div class="wrap">
-      <div>
-        <h2>Seu próximo passo começa aqui.</h2>
-        <p>Conte o que sua empresa precisa e converse direto com a ConectaByte.</p>
-      </div>
-      <a class="btn btn-outline" href="#" data-wa="Olá! Vim pelo site da ConectaByte e quero conversar sobre meu projeto.">
-        <svg aria-hidden="true"><use href="#i-wa"/></svg> Chamar no WhatsApp
-      </a>
-    </div>
-  </div>
+<footer>
   <div class="wrap">
+    <div class="footer-cta rv">
+      <div class="in">
+        <div>
+          <h2>Seu próximo passo começa aqui.</h2>
+          <p>Conte o que sua empresa precisa e converse direto com a ConectaByte.</p>
+        </div>
+        <a class="btn btn-light" href="#" data-wa="Olá! Vim pelo site da ConectaByte e quero conversar sobre meu projeto.">
+          <svg aria-hidden="true"><use href="#i-wa"/></svg> Chamar no WhatsApp
+        </a>
+      </div>
+    </div>
     <div class="foot">
-      <div>
+      <div class="rv">
         <a class="logo" href="#inicio" aria-label="ConectaByte, voltar ao início"><svg aria-hidden="true"><use href="#logo"/></svg><span>Conecta<b>Byte</b></span></a>
         <p class="slogan">No topo da sua presença digital.</p>
       </div>
-      <nav aria-label="Rodapé">
+      <nav aria-label="Rodapé" class="rv" style="--d:.08s">
+        <h6>Navegação</h6>
         <a href="#servicos">Serviços</a><a href="#pacotes">Pacotes</a><a href="#equipe">Equipe</a><a href="#regiao">Região</a><a href="#duvidas">Dúvidas</a><a href="#contato">Contato</a>
       </nav>
     </div>
     <div class="legal">
       <span>© <span id="ano">2026</span> ConectaByte · Sites e sistemas · Agudos/SP</span>
-      <span>Seus dados são tratados conforme a LGPD.</span>
+      <span class="privacy-links"><a class="privacy-link" href="privacidade.html">Privacidade e cookies</a><button class="cookie-manage" type="button" data-cookie-settings>Configurar cookies</button></span>
     </div>
   </div>
 </footer>
@@ -1115,305 +862,10 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"><svg aria-hidden="true"><use href="#i-check"/></svg><span></span></div>
 
-<script>
-(() => {
-  // TODO: trocar pelo número real do WhatsApp Business (55 + DDD + número, só dígitos)
-  const WHATSAPP = "5514999999999";
-
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const finePointer = matchMedia("(pointer: fine)").matches;
-  const waLink = (msg) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
-  const brl = (n) => "R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
-
-  /* ---------- Toast ---------- */
-  const toastEl = $("#toast");
-  let toastTimer;
-  function toast(msg) {
-    toastEl.querySelector("span").textContent = msg;
-    toastEl.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2600);
-  }
-
-  /* ---------- Links de WhatsApp ---------- */
-  $$("[data-wa]").forEach((a) => {
-    a.href = waLink(a.dataset.wa);
-    a.target = "_blank";
-    a.rel = "noopener";
-  });
-
-  /* ---------- Botões: ripple e efeito magnético ---------- */
-  document.addEventListener("pointerdown", (e) => {
-    const btn = e.target.closest(".btn");
-    if (!btn || reduce) return;
-    const r = btn.getBoundingClientRect();
-    const size = Math.max(r.width, r.height) * 2.2;
-    const dot = document.createElement("span");
-    dot.className = "ripple";
-    dot.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
-    btn.appendChild(dot);
-    dot.addEventListener("animationend", () => dot.remove());
-  });
-
-  if (finePointer && !reduce) {
-    $$("[data-magnetic]").forEach((el) => {
-      el.addEventListener("pointermove", (e) => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty("--mx", ((e.clientX - r.left - r.width / 2) * 0.18).toFixed(1) + "px");
-        el.style.setProperty("--my", ((e.clientY - r.top - r.height / 2) * 0.3).toFixed(1) + "px");
-      });
-      el.addEventListener("pointerleave", () => { el.style.setProperty("--mx", "0px"); el.style.setProperty("--my", "0px"); });
-    });
-
-    // Luz que segue o mouse nos cards de serviço
-    $$(".spot").forEach((el) => el.addEventListener("pointermove", (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--x", e.clientX - r.left + "px");
-      el.style.setProperty("--y", e.clientY - r.top + "px");
-    }));
-
-    // Inclinação 3D do mockup
-    const mock = $("#mock"), browser = $(".browser", mock);
-    mock.addEventListener("pointermove", (e) => {
-      const r = mock.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-      browser.style.setProperty("--ry", (x * 8).toFixed(2) + "deg");
-      browser.style.setProperty("--rx", (-y * 8).toFixed(2) + "deg");
-    });
-    mock.addEventListener("pointerleave", () => { browser.style.setProperty("--rx", "0deg"); browser.style.setProperty("--ry", "0deg"); });
-  }
-
-  /* ---------- Cabeçalho, progresso e botão flutuante ---------- */
-  const header = $("#header"), progress = $("#progress"), waFloat = $("#waFloat"), nav = $("#nav");
-  let lastY = scrollY, ticking = false;
-  function onScroll() {
-    const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
-    progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-    header.classList.toggle("scrolled", y > 8);
-    header.classList.toggle("hide", y > lastY && y > 400 && !nav.classList.contains("open"));
-    waFloat.classList.toggle("show", y > innerHeight * 0.6);
-    lastY = y;
-    ticking = false;
-  }
-  addEventListener("scroll", () => { if (!ticking) { requestAnimationFrame(onScroll); ticking = true; } }, { passive: true });
-  onScroll();
-
-  /* ---------- Menu: pílula deslizante + seção ativa ---------- */
-  const menu = $("#menu"), pill = $("#menuPill"), links = $$("a", menu);
-  let activeLink = null;
-  function movePill(a) {
-    if (!a) { pill.style.opacity = 0; return; }
-    pill.style.opacity = 1;
-    pill.style.width = a.offsetWidth + "px";
-    pill.style.transform = `translateX(${a.offsetLeft}px)`;
-  }
-  links.forEach((a) => a.addEventListener("mouseenter", () => movePill(a)));
-  menu.addEventListener("mouseleave", () => movePill(activeLink));
-
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      const link = links.find((a) => a.hash === "#" + en.target.id);
-      links.forEach((a) => a.classList.toggle("active", a === link));
-      activeLink = link || null;
-      if (!menu.matches(":hover")) movePill(activeLink);
-    });
-  }, { rootMargin: "-45% 0px -50% 0px" });
-  $$("main section[id]").forEach((s) => spy.observe(s));
-
-  const toggle = $("#menuToggle");
-  function setMenu(open) {
-    nav.classList.toggle("open", open);
-    header.classList.toggle("menu-open", open);
-    toggle.setAttribute("aria-expanded", open);
-    toggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
-  }
-  toggle.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
-  links.forEach((a) => a.addEventListener("click", () => setMenu(false)));
-  addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
-
-  /* ---------- Palavra rotativa no hero ---------- */
-  const words = ["lojas", "padarias", "clínicas", "restaurantes", "indústrias", "escritórios"];
-  const rot = $("#rotator");
-  let wi = 0;
-  if (!reduce) setInterval(() => {
-    const old = rot.firstElementChild;
-    const next = document.createElement("span");
-    next.textContent = words[wi = (wi + 1) % words.length];
-    rot.appendChild(next);
-    old.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(-100%)", opacity: 0 }], { duration: 450, easing: "cubic-bezier(.7,0,.2,1)" }).onfinish = () => old.remove();
-    next.animate([{ transform: "translateY(100%)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 450, easing: "cubic-bezier(.2,.8,.2,1)" });
-  }, 2200);
-
-  /* ---------- Revelação ao rolar ---------- */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-  $$(".reveal").forEach((el) => io.observe(el));
-
-  /* ---------- Contadores ---------- */
-  const countIO = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      const el = en.target, to = +el.dataset.count, pre = el.dataset.prefix || "", suf = el.dataset.suffix || "";
-      countIO.unobserve(el);
-      if (reduce) { el.textContent = pre + to + suf; return; }
-      const t0 = performance.now(), dur = 1400;
-      const step = (t) => {
-        const p = Math.min((t - t0) / dur, 1), eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = pre + Math.round(to * eased) + suf;
-        if (p < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    });
-  }, { threshold: 0.6 });
-  $$("[data-count]").forEach((el) => countIO.observe(el));
-
-  /* ---------- Mensalidade mensal x anual ---------- */
-  const seg = $("#billing");
-  function animateValue(el, from, to) {
-    if (reduce) { el.textContent = brl(to); return; }
-    const t0 = performance.now(), dur = 500;
-    const step = (t) => {
-      const p = Math.min((t - t0) / dur, 1), v = from + (to - from) * (1 - Math.pow(1 - p, 3));
-      el.textContent = brl(p < 1 ? Math.round(v) : to);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
-  $$("button", seg).forEach((b) => b.addEventListener("click", () => {
-    const annual = b.dataset.mode === "anual";
-    if ((seg.classList.contains("right")) === annual) return;
-    seg.classList.toggle("right", annual);
-    $$("button", seg).forEach((x) => x.setAttribute("aria-pressed", x === b));
-    $$("[data-monthly]").forEach((el) => {
-      const base = +el.dataset.monthly;
-      const to = annual ? Math.round(base * 0.9 * 100) / 100 : base;
-      const from = annual ? base : Math.round(base * 0.9 * 100) / 100;
-      animateValue(el, from, to);
-    });
-    $$(".plan .monthly small").forEach((s) => (s.textContent = annual ? "/mês no plano anual" : "/mês"));
-  }));
-
-  /* ---------- Assistente: qual pacote? ---------- */
-  const finderOut = $("#finderOut");
-  const names = { vitrine: "Vitrine", presenca: "Presença", vendas: "Vendas", sistema: "Sob medida" };
-  $("#finder").addEventListener("change", () => {
-    const sel = $$("#finder input:checked").map((i) => i.value);
-    let rec = null;
-    if (sel.includes("sistema")) rec = "sistema";
-    else if (sel.includes("vender")) rec = "vendas";
-    else if (sel.includes("paginas")) rec = "presenca";
-    else if (sel.length) rec = "vitrine";
-    $$(".plan").forEach((p) => p.classList.toggle("is-rec", p.dataset.plan === rec));
-    finderOut.innerHTML = rec
-      ? `Indicamos o <b>${names[rec]}</b>. <a class="link" href="#contato" data-pick="${rec}">Pedir este <svg><use href="#i-arrow"/></svg></a>`
-      : "Marque as opções e indicamos um pacote.";
-  });
-  finderOut.addEventListener("click", (e) => {
-    const a = e.target.closest("[data-pick]");
-    if (!a) return;
-    const radio = $(`#interesse input[data-plan="${a.dataset.pick}"]`);
-    if (radio) radio.checked = true;
-  });
-
-  /* ---------- Linha do processo ---------- */
-  const steps = $$("#steps .step"), stepsEl = $("#steps");
-  const stepIO = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      stepIO.disconnect();
-      steps.forEach((s, i) => setTimeout(() => {
-        s.classList.add("on");
-        stepsEl.style.setProperty("--fill", i / (steps.length - 1));
-      }, reduce ? 0 : i * 260));
-    });
-  }, { threshold: 0.5 });
-  stepIO.observe(stepsEl);
-
-  /* ---------- Região: lista e mapa conectados ---------- */
-  const mapEls = $$(".map [data-city]");
-  function hot(cities, on) {
-    mapEls.forEach((m) => { if (cities.includes(m.dataset.city)) m.classList.toggle("hot", on); });
-  }
-  $$(".city").forEach((li) => {
-    const cities = li.dataset.city.split(" ");
-    li.addEventListener("mouseenter", () => hot(cities, true));
-    li.addEventListener("mouseleave", () => hot(cities, false));
-  });
-  $$(".map .node").forEach((n) => {
-    const li = $$(".city").find((c) => c.dataset.city.split(" ").includes(n.dataset.city));
-    n.addEventListener("mouseenter", () => { li && li.classList.add("hot"); hot([n.dataset.city], true); });
-    n.addEventListener("mouseleave", () => { li && li.classList.remove("hot"); hot([n.dataset.city], false); });
-  });
-
-  /* ---------- FAQ com animação suave (uma aberta por vez) ---------- */
-  const faqs = $$(".faq details");
-  function closeFaq(d) {
-    const a = $(".faq-a", d);
-    if (reduce) { d.open = false; return; }
-    a.animate([{ height: a.offsetHeight + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 260, easing: "cubic-bezier(.7,0,.2,1)" }).onfinish = () => (d.open = false);
-  }
-  function openFaq(d) {
-    d.open = true;
-    if (reduce) return;
-    const a = $(".faq-a", d);
-    a.animate([{ height: "0px", opacity: 0 }, { height: a.scrollHeight + "px", opacity: 1 }], { duration: 320, easing: "cubic-bezier(.2,.8,.2,1)" });
-  }
-  faqs.forEach((d) => $("summary", d).addEventListener("click", (e) => {
-    e.preventDefault();
-    if (d.open) return closeFaq(d);
-    faqs.filter((x) => x.open).forEach(closeFaq);
-    openFaq(d);
-  }));
-
-  /* ---------- Copiar e-mail ---------- */
-  $("#copyEmail").addEventListener("click", async (e) => {
-    const email = e.currentTarget.dataset.email;
-    try { await navigator.clipboard.writeText(email); toast("E-mail copiado: " + email); }
-    catch { location.href = "mailto:" + email; }
-  });
-
-  /* ---------- Aberto agora? ---------- */
-  const now = new Date(), d = now.getDay(), h = now.getHours();
-  const open = d >= 1 && d <= 5 && h >= 8 && h < 18;
-  $("#openStatus").innerHTML = open
-    ? 'Seg. a sex., 8h às 18h · <span style="color:#4ADE80">aberto agora</span>'
-    : 'Seg. a sex., 8h às 18h · <span style="color:#9CA3AF">fechado agora</span>';
-
-  /* ---------- Formulário ---------- */
-  const form = $("#leadForm"), nome = $("#f-nome"), fNome = $("#fNome"), msg = $("#f-msg"), counter = $("#counter"), sendBtn = $("#sendBtn");
-  msg.addEventListener("input", () => (counter.textContent = `${msg.value.length}/500`));
-  nome.addEventListener("input", () => fNome.classList.remove("invalid"));
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (!nome.value.trim()) {
-      fNome.classList.remove("invalid"); void fNome.offsetWidth; fNome.classList.add("invalid");
-      nome.focus();
-      return;
-    }
-    const empresa = $("#f-empresa").value.trim();
-    const linhas = [
-      `Olá! Sou ${nome.value.trim()}${empresa ? `, da ${empresa}` : ""}.`,
-      `Cidade: ${$("#f-cidade").value}`,
-      `Interesse: ${form.interesse.value}`,
-    ];
-    if (msg.value.trim()) linhas.push("", msg.value.trim());
-    const url = waLink(linhas.join("\n"));
-    const win = window.open("", "_blank");   // abre já no clique para não ser bloqueado
-    if (win) win.opener = null;
-    sendBtn.classList.add("loading");
-    setTimeout(() => {
-      sendBtn.classList.remove("loading");
-      if (win) win.location = url; else location.href = url;
-      toast("Abrindo o WhatsApp…");
-    }, reduce ? 0 : 700);
-  });
-
-  $("#ano").textContent = now.getFullYear();
-})();
-</script>
+<div class="cookie-banner" id="cookieBanner" role="region" aria-label="Preferências de cookies" hidden>
+  <h2>Sua privacidade importa</h2>
+  <p>Este site não usa cookies de publicidade ou analytics. Guardamos apenas sua escolha neste navegador. <a href="privacidade.html">Saiba mais na política de privacidade.</a></p>
+  <div class="cookie-actions"><button class="btn btn-primary" type="button" data-cookie-save>Entendi</button><button class="btn btn-ghost" type="button" data-cookie-settings>Configurar</button></div>
+</div>
 </body>
 </html>
