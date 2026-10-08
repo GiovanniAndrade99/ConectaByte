@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<!-- Copia da CSP do _headers: protege mesmo em hospedagens que ignoram o _headers (ex.: GitHub Pages).
+     Se mudar uma, mude a outra. frame-ancestors so funciona no cabecalho. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; form-action 'self' https://wa.me; base-uri 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>ConectaByte | Sites e sistemas em Agudos e região</title>
+<meta name="description" content="ConectaByte: sites, lojas virtuais e sistemas sob medida para empresas de Agudos, Bauru, Lençóis Paulista, Pederneiras e Piratininga. Suporte por WhatsApp e visita presencial.">
+<meta property="og:title" content="ConectaByte | No topo da sua presença digital.">
+<meta property="og:description" content="Sites e sistemas para o comércio de Agudos e região, com suporte por WhatsApp e visita presencial.">
+<meta property="og:locale" content="pt_BR">
+<meta name="theme-color" content="#07080B">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preload" href="assets/fonts/poppins-179f97ec.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-f11d729b.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/boot.js"></script>
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+
+<!-- Ícones -->
+<svg class="sprite" width="0" height="0" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 64 64">
+      <path d="M46.85 17.15 A21 21 0 1 0 46.85 46.85" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M46.85 17.15 H54 M46.85 46.85 H54" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="54" cy="17.15" r="5.5" fill="#FBBF24"/>
+      <circle cx="54" cy="46.85" r="5.5" fill="#EA580C"/>
+      <circle cx="11" cy="32" r="4.2" fill="#FBBF24"/>
+    </symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.06c-.24.68-1.42 1.3-1.95 1.35-.5.05-.97.23-3.28-.68-2.78-1.1-4.54-3.95-4.68-4.13-.13-.18-1.12-1.49-1.12-2.84 0-1.35.71-2.02.96-2.29.25-.28.55-.35.73-.35l.52.01c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.28-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.11.6-.07.16-.18.69-.8.88-1.08.18-.27.37-.23.62-.14.25.09 1.6.76 1.87.9.28.13.46.2.53.32.07.11.07.66-.17 1.33Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></g></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></g></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></g></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18h2"/></g></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></g></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4A6.5 6.5 0 0 1 21.5 20"/></g></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></g></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9S14.6 18.4 12 21c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3Z"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M12 2.8 4.5 5.6v6c0 4.6 3.1 8.2 7.5 9.6 4.4-1.4 7.5-5 7.5-9.6v-6L12 2.8Z"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.7"/></g></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></g></symbol>
+    <symbol id="i-split" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 12h9"/></g></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z"/></symbol>
+  </defs>
+</svg>
+
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" id="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="top" id="header">
+  <div class="wrap nav" id="nav">
+    <a class="logo" href="#inicio" aria-label="ConectaByte, início">
+      <svg aria-hidden="true"><use href="#logo"/></svg>
+      <span>Conecta<b>Byte</b></span>
+    </a>
+    <ul class="menu" id="menu">
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#suporte">Suporte</a></li>
+      <li><a href="#pacotes">Pacotes</a></li>
+      <li><a href="#como-funciona">Processo</a></li>
+      <li><a href="#equipe">Equipe</a></li>
+      <li><a href="#regiao">Região</a></li>
+      <li class="menu-pill" id="menuPill" aria-hidden="true"></li>
+    </ul>
+    <a class="btn btn-primary btn-sm" href="#contato" data-magnetic>Pedir orçamento <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <!-- HERO: o "C" da logo vira o horizonte -->
+  <section class="hero" id="topo">
+    <div class="hero-tint" aria-hidden="true"></div>
+    <div class="hero-beam" aria-hidden="true"></div>
+    <div class="wrap hero-copy">
+      <a class="pill-badge" href="#fundadores"><b>Novo</b> 3 vagas para clientes fundadores <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <h1><span class="w">No</span> <span class="w">topo</span> <span class="w">da</span> <span class="w">sua</span><br><span class="w grad">presença</span> <span class="w grad">digital.</span></h1>
+      <p class="rotator-line">
+        Sites, lojas virtuais e sistemas para
+        <span class="rotator" id="rotator" aria-live="polite"><span>lojas</span></span>
+        de Agudos e região, com suporte pelo WhatsApp e visita presencial.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#" data-wa="Olá! Vim pelo site da ConectaByte e quero um orçamento." data-magnetic>
+          <svg aria-hidden="true"><use href="#i-wa"/></svg> Falar no WhatsApp
+        </a>
+        <a class="btn btn-ghost" href="#pacotes" data-magnetic>Ver pacotes <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <ul class="trust">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Preço fechado</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Resposta em até 2h úteis</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Domínio no seu nome</li>
+      </ul>
+    </div>
+
+    <div class="horizon" id="horizon" aria-hidden="true">
+      <div class="hero-glow"></div>
+      <svg class="hero-arc" id="heroArc" viewBox="0 0 64 64">
+        <defs>
+          <linearGradient id="g-fire" gradientUnits="userSpaceOnUse" x1="10" y1="44" x2="52" y2="12">
+            <stop offset="0" stop-color="#7C2D12"/><stop offset=".34" stop-color="#C2410C"/><stop offset=".6" stop-color="#EA580C"/><stop offset=".84" stop-color="#FB923C"/><stop offset="1" stop-color="#FBBF24"/>
+          </linearGradient>
+          <radialGradient id="g-haze" cx="32" cy="32" r="22" gradientUnits="userSpaceOnUse">
+            <stop offset=".5" stop-color="#EA580C" stop-opacity="0"/><stop offset=".82" stop-color="#EA580C" stop-opacity=".22"/><stop offset=".95" stop-color="#FB923C" stop-opacity=".5"/><stop offset="1" stop-color="#FBBF24" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="g-rim" gradientUnits="userSpaceOnUse" x1="9" y1="0" x2="50" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".04"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/>
+          </linearGradient>
+          <filter id="f-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.4"/></filter>
+          <filter id="f-tip" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation=".9"/></filter>
+        </defs>
+        <circle class="a-haze" cx="32" cy="32" r="22" fill="url(#g-haze)"/>
+        <g class="a-glow" filter="url(#f-glow)">
+          <path class="arc glowband up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="arc glowband dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="url(#g-fire)"/>
+        </g>
+        <g class="a-white">
+          <path class="arc band up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="#F8FAFC"/>
+          <path class="arc band dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="#F8FAFC"/>
+          <path class="con" d="M46.85 17.15 H54" pathLength="1" stroke="#F8FAFC"/>
+          <path class="con" d="M46.85 46.85 H54" pathLength="1" stroke="#F8FAFC"/>
+        </g>
+        <g class="a-fire">
+          <path class="arc band up" d="M11 32 A21 21 0 0 1 46.85 17.15" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="arc band dn" d="M11 32 A21 21 0 0 0 46.85 46.85" pathLength="1" stroke="url(#g-fire)"/>
+          <path class="con" d="M46.85 17.15 H54" pathLength="1" stroke="#FB923C"/>
+          <path class="con" d="M46.85 46.85 H54" pathLength="1" stroke="#EA580C"/>
+        </g>
+        <path class="a-rim" d="M9.4 32 A22.6 22.6 0 0 1 47.98 16.02" fill="none" stroke="url(#g-rim)" stroke-width=".22"/>
+        <path class="a-sweep" d="M9.4 32 A22.6 22.6 0 0 1 47.98 16.02" pathLength="1" fill="none" stroke="#fff" stroke-width=".42" stroke-linecap="round"/>
+        <circle class="n-halo" cx="54" cy="17.15" fill="#FBBF24" filter="url(#f-glow)" opacity=".55"/>
+        <circle class="n-ring nr-l" cx="11" cy="32" r="4" fill="none" stroke="#FBBF24" stroke-width=".5"/>
+        <circle class="n-ring nr-t" cx="54" cy="17.15" r="5" fill="none" stroke="#FBBF24" stroke-width=".5"/>
+        <circle class="n-ring nr-b" cx="54" cy="46.85" r="5" fill="none" stroke="#EA580C" stroke-width=".5"/>
+        <circle class="n-top" cx="54" cy="17.15" fill="#FBBF24"/>
+        <circle class="n-bot" cx="54" cy="46.85" fill="#EA580C"/>
+        <circle class="n-left" cx="11" cy="32" fill="#FBBF24"/>
+        <circle class="a-tip tip-up" r="1.5" fill="#FFF7E6" filter="url(#f-tip)"/>
+        <circle class="a-tip tip-dn" r="1.5" fill="#FFF7E6" filter="url(#f-tip)"/>
+      </svg>
+    </div>
+
+    <!-- Painel ilustrativo de um cliente (dados fictícios de exemplo) -->
+    <div class="wrap dash-wrap" aria-hidden="true">
+      <div class="dash trig">
+        <div class="dp-top">
+          <span class="logo"><svg><use href="#logo"/></svg><span>Painel</span></span>
+          <div class="dp-tabs">
+            <span class="on"><svg><use href="#i-grid"/></svg>Visão geral</span>
+            <span><svg><use href="#i-bag"/></svg>Pedidos</span>
+            <span><svg><use href="#i-globe"/></svg>Site</span>
+            <span><svg><use href="#i-users"/></svg>Clientes</span>
+            <span><svg><use href="#i-gear"/></svg>Ajustes</span>
+          </div>
+          <div class="dp-ic"><svg><use href="#i-bell"/></svg><span class="avatar-s">DB</span></div>
+        </div>
+        <div class="dp-body">
+          <div class="dp-head">
+            <div><h3>Doceria do Bairro</h3><small><i class="live"></i> docerianoseubairro.com.br · no ar</small></div>
+            <span class="dp-chip">Últimos 30 dias</span>
+          </div>
+          <div class="dp-stats">
+            <div class="kpi"><small>Visitas no site</small><div class="v" data-count="2418">0</div><span class="d">↑ 18%</span>
+              <svg class="spark" viewBox="0 0 112 44"><path pathLength="1" stroke="#4ADE80" d="M2 36 C14 34 18 26 28 28 S42 38 54 28 S70 12 80 16 S98 10 110 4"/></svg></div>
+            <div class="kpi"><small>Pedidos no WhatsApp</small><div class="v" data-count="186">0</div><span class="d">↑ 24%</span>
+              <svg class="spark" viewBox="0 0 112 44" data-d=".3s"><path pathLength="1" stroke="#FB923C" d="M2 34 C12 36 20 30 30 30 S44 20 56 24 S72 30 82 18 S100 8 110 6"/></svg></div>
+            <div class="kpi"><small>Posição no Google</small><div class="v">1º</div><span class="d n">“doceria em Agudos”</span>
+              <svg class="spark" viewBox="0 0 112 44" data-d=".4s"><path pathLength="1" stroke="#FBBF24" d="M2 40 C16 38 22 34 32 30 S48 30 58 22 S76 16 86 10 S102 6 110 4"/></svg></div>
+            <div class="kpi"><small>Carregamento</small><div class="v" data-count="0.8" data-dec="1" data-suffix=" s">0</div><span class="d">rápido no celular</span>
+              <svg class="spark" viewBox="0 0 112 44" data-d=".5s"><path pathLength="1" stroke="#4ADE80" d="M2 6 C14 8 20 14 30 16 S46 26 58 28 S76 36 88 36 S102 38 110 40"/></svg></div>
+          </div>
+          <div class="dp-grid">
+            <div class="dp-card">
+              <h4>Pedidos recentes</h4>
+              <div class="sub">Chegaram pelo site nas últimas horas</div>
+              <div class="ord" data-d=".35s"><span class="av av-1">MS</span><div><b>Mariana S.</b><small>2 bolos de pote · entrega 16h</small></div><span class="val">R$ 24,00</span><span class="tag o">Pix aprovado</span></div>
+              <div class="ord" data-d=".47s"><span class="av av-2">CR</span><div><b>Carlos R.</b><small>Torta doce · retirada</small></div><span class="val">R$ 65,00</span><span class="tag a">Novo</span></div>
+              <div class="ord" data-d=".59s"><span class="av av-3">AP</span><div><b>Ana P.</b><small>50 brigadeiros · festa</small></div><span class="val">R$ 90,00</span><span class="tag g">Entregue</span></div>
+            </div>
+            <div class="dp-card">
+              <h4>Visitas por mês</h4>
+              <div class="sub">Este ano comparado ao anterior</div>
+              <div class="legend"><span><i class="lg-cur"></i>2026</span><span><i class="lg-prev"></i>2025</span></div>
+              <div class="chart">
+                <div class="gl gl-0"><span>3 mil</span></div><div class="gl gl-33"><span>2 mil</span></div><div class="gl gl-66"><span>1 mil</span></div><div class="gl gl-100"><span>0</span></div>
+                <div class="bars">
+                  <div class="bar-col"><i class="bar prev" data-h="34" data-d=".2s"></i><i class="bar cur" data-h="46" data-d=".25s"></i><em>Jan</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="40" data-d=".27s"></i><i class="bar cur" data-h="58" data-d=".32s"></i><em>Fev</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="37" data-d=".34s"></i><i class="bar cur" data-h="52" data-d=".39s"></i><em>Mar</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="48" data-d=".41s"></i><i class="bar cur" data-h="70" data-d=".46s"></i><em>Abr</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="44" data-d=".48s"></i><i class="bar cur" data-h="79" data-d=".53s"></i><em>Mai</em></div>
+                  <div class="bar-col"><i class="bar prev" data-h="52" data-d=".55s"></i><i class="bar cur" data-h="94" data-d=".6s"></i><em>Jun</em></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NÚMEROS -->
+  <div class="stats">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="stat-n rv"><strong class="grad" data-count="27" data-suffix="%">0%</strong><p>dos pequenos negócios ainda não vendem por site, redes ou aplicativo.</p><small>Sebrae/FGV</small></div>
+        <div class="stat-n rv" data-d=".08s"><strong class="grad" data-count="67" data-prefix="R$ " data-suffix=" bi">R$ 0 bi</strong><p>em vendas online de pequenos negócios em 2024. Em 2019 eram R$ 5 bi.</p><small>Sebrae</small></div>
+        <div class="stat-n rv" data-d=".16s"><strong class="grad" data-count="25" data-suffix=" km">0 km</strong><p>separam Agudos de Bauru, e atendemos toda a região.</p><small>Atendimento local</small></div>
+      </div>
+    </div>
+    <div class="cities-strip">
+      <p class="rv">Atendimento local em Agudos e região</p>
+      <div class="mq rv" data-d=".1s" aria-hidden="true">
+        <div class="mq-track">
+          <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
+          <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
+          <span class="mq-item"><svg><use href="#i-pin"/></svg>Agudos</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Bauru</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Lençóis Paulista</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Pederneiras</span><span class="mq-item"><svg><use href="#i-pin"/></svg>Piratininga</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVIÇOS -->
+  <section id="servicos">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="label">O que fazemos</span>
+        <h2>Tecnologia sob medida para o tamanho do seu negócio</h2>
+        <p class="lead">Fazemos desde o primeiro site da loja até o sistema que organiza o dia a dia da empresa, explicando tudo sem termos técnicos.</p>
+      </div>
+      <div class="bento">
+        <article class="card bc bc-a spot glow-hover trig rv">
+          <span class="num">01</span>
+          <h3>Sites profissionais</h3>
+          <p>Sites rápidos, bonitos no celular e preparados para aparecer no Google. Têm botão de WhatsApp, formulário e e-mail profissional.</p>
+          <div class="chips-v" aria-hidden="true">
+            <div class="chip-v hot" data-d=".35s"><svg><use href="#i-bolt"/></svg>Carrega rápido<span class="ok">ativo</span></div>
+            <div class="chip-v" data-d=".47s"><svg><use href="#i-phone"/></svg>Perfeito no celular</div>
+            <div class="chip-v" data-d=".59s"><svg><use href="#i-search"/></svg>Pronto para o Google</div>
+          </div>
+        </article>
+        <article class="card bc bc-b spot glow-hover trig rv" data-d=".08s">
+          <span class="num">02</span>
+          <h3>Catálogos e lojas virtuais</h3>
+          <p>Seus produtos ficam online com carrinho, e o pedido chega no WhatsApp ou é pago por Pix e cartão. Você cadastra os produtos num painel simples.</p>
+          <div class="order-stack" aria-hidden="true">
+            <div class="order-back"></div>
+            <div class="order">
+              <div class="r1"><b>Pedido #0142</b><span>R$ 89,00</span></div>
+              <small>2 bolos de pote + 1 torta doce</small>
+              <div class="st"><span class="w8">Aguardando Pix</span><span class="ok"><svg><use href="#i-check"/></svg>Pix aprovado</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="card bc bc-c spot glow-hover trig rv" data-d=".16s">
+          <div class="beam" aria-hidden="true"></div>
+          <div class="beam-glow" aria-hidden="true"></div>
+          <div class="tile" aria-hidden="true"><svg><use href="#logo"/></svg></div>
+          <span class="num">03</span>
+          <div class="txt">
+            <h3>Sistemas sob medida</h3>
+            <p>Agendamento, estoque, ordens de serviço, orçamentos e painéis. Trocamos a planilha e o papel por um sistema feito para o seu processo.</p>
+          </div>
+        </article>
+        <article class="card bc bc-d spot glow-hover trig rv" data-d=".1s">
+          <span class="num">05</span>
+          <div class="txt">
+            <h3>Suporte online</h3>
+            <p>Mande a dúvida pelo WhatsApp, em texto, áudio ou print. Respondemos rápido e você não precisa abrir chamado.</p>
+          </div>
+          <div class="sparkles" aria-hidden="true">
+            <svg class="sp1" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+            <svg class="sp2" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+            <svg class="sp3" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+            <svg class="sp4" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+          </div>
+          <div class="chat" aria-hidden="true">
+            <div class="chat-h"><span class="lg"><svg><use href="#logo"/></svg></span><div><b>ConectaByte</b><small>● online</small></div></div>
+            <div class="msgs">
+              <div class="bub in" data-d=".45s">Oi! Consegue trocar o preço da torta no site?<small>14:02</small></div>
+              <div class="typing"><i></i><i></i><i></i></div>
+              <div class="bub out" data-d="1.95s">Claro! Já está no ar ✓<small>14:06</small></div>
+            </div>
+          </div>
+        </article>
+        <article class="card bc bc-e spot glow-hover trig rv">
+          <span class="num">04</span>
+          <h3>Google Meu Negócio e SEO local</h3>
+          <p>Deixamos sua empresa no mapa, com horários, fotos e avaliações, para quem busca o seu produto em Agudos achar você primeiro.</p>
+          <div class="gsearch" aria-hidden="true">
+            <div class="gs-bar"><svg><use href="#i-search"/></svg>doceria em Agudos</div>
+            <div class="gs-res"><span class="pin"><svg><use href="#i-pin"/></svg></span><div><b>Doceria do Bairro</b><small>Aberto agora · Agudos</small></div><span class="rank">1º</span></div>
+          </div>
+        </article>
+        <article class="card bc bc-f spot glow-hover trig rv" data-d=".08s">
+          <span class="num">06</span>
+          <div class="txt">
+            <h3>Suporte presencial</h3>
+            <p>Vamos até a sua empresa para levantar o que você precisa, instalar, treinar a equipe e resolver problemas no local.</p>
+          </div>
+          <div class="visit" aria-hidden="true">
+            <div class="visit-h"><b>Próxima visita</b><span>Agenda da semana</span></div>
+            <div class="week"><span><b>Seg</b>Agudos</span><span class="go"><b>Ter</b>Bauru</span><span><b>Qua</b>Agudos</span><span class="go"><b>Qui</b>Bauru</span><span><b>Sex</b>Agudos</span></div>
+            <div class="route-card"><svg><use href="#i-cal"/></svg><div>Implantação e treinamento<small>Na sua empresa, no seu computador</small></div></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAIS -->
+  <section id="diferenciais">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="label">Por que a ConectaByte</span>
+        <h2>Sem surpresa na fatura e sem ficar preso a ninguém</h2>
+      </div>
+      <div class="f-row">
+        <div class="f-copy">
+          <h3 class="rv">Manutenção incluída</h3>
+          <p class="rv" data-d=".06s">A mensalidade cobre hospedagem, backup, segurança e pequenos ajustes.</p>
+          <a class="btn btn-ghost btn-sm rv" data-d=".12s" href="#pacotes">Ver pacotes <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <ul class="checks-v">
+            <li class="rv" data-d=".18s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Foco em cliente local</b><span>Todos os pacotes trazem Google Meu Negócio, botão de WhatsApp e SEO local.</span></div></li>
+            <li class="rv" data-d=".24s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Linguagem simples</b><span>Explicamos tudo sem jargão técnico, já na primeira conversa.</span></div></li>
+            <li class="rv" data-d=".3s"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i><div><b>Empresa da região</b><span>Conhecemos o comércio daqui e estamos perto quando você precisar.</span></div></li>
+          </ul>
+        </div>
+        <div class="card f-card trig rv" data-d=".1s" id="fCard">
+          <div class="f-item active"><span class="fi"><svg aria-hidden="true"><use href="#i-doc"/></svg></span><div><h4>Preço fechado</h4><p>O escopo, o prazo e o valor ficam por escrito antes de começar.</p></div><span class="n">01</span></div>
+          <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-split"/></svg></span><div><h4>Pagamento em etapas</h4><p>Você paga 50% na aprovação e 50% na entrega. Os pacotes maiores podem ser divididos em 3 vezes.</p></div><span class="n">02</span></div>
+          <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-unlock"/></svg></span><div><h4>O site é seu</h4><p>O domínio fica no seu nome e você recebe a documentação. Ninguém fica refém da gente.</p></div><span class="n">04</span></div>
+          <div class="f-item"><span class="fi"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><div><h4>30 dias de garantia</h4><p>Corrigimos sem custo qualquer erro que aparecer depois da entrega.</p></div><span class="n">06</span></div>
+          <svg class="ring" viewBox="0 0 640 640" aria-hidden="true">
+            <defs>
+              <linearGradient id="g-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".45" stop-color="#EA580C"/><stop offset="1" stop-color="#7C2D12"/></linearGradient>
+              <radialGradient id="g-ring-in" cx=".5" cy=".5" r=".5"><stop offset=".6" stop-color="#0D0F14"/><stop offset=".92" stop-color="#3A1A0C"/><stop offset="1" stop-color="#EA580C" stop-opacity=".6"/></radialGradient>
+              <filter id="f-ring" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+            </defs>
+            <circle cx="320" cy="320" r="296" fill="none" stroke="#14171E" stroke-width="44"/>
+            <circle cx="320" cy="320" r="244" fill="none" stroke="url(#g-ring)" stroke-width="26" filter="url(#f-ring)" opacity=".85"/>
+            <circle cx="320" cy="320" r="244" fill="none" stroke="url(#g-ring)" stroke-width="12"/>
+            <circle cx="320" cy="320" r="236" fill="url(#g-ring-in)"/>
+            <g class="ring-sweep"><circle cx="320" cy="320" r="250" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" pathLength="1" stroke-dasharray=".1 .9" opacity=".9"/></g>
+          </svg>
+          <svg class="shield" viewBox="0 0 190 210" aria-hidden="true">
+            <defs>
+              <linearGradient id="g-sh-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E5E7EB"/></linearGradient>
+              <linearGradient id="g-sh-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D1D5DB"/><stop offset="1" stop-color="#9CA3AF"/></linearGradient>
+            </defs>
+            <path d="M95 8 L172 36 V98 C172 150 138 186 95 202 C52 186 18 150 18 98 V36 Z" fill="url(#g-sh-l)"/>
+            <path d="M95 8 L172 36 V98 C172 150 138 186 95 202 Z" fill="url(#g-sh-r)"/>
+            <path class="sh-check" d="M60 104 L86 130 L134 80" fill="none" stroke="#EA580C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPORTE -->
+  <section id="suporte">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="label">Suporte de verdade</span>
+        <h2>Uma mensagem de distância e, quando precisar, na sua porta</h2>
+        <p class="lead">Freelancer some e agência fica longe. Nós somos daqui e continuamos com você depois que o site vai ao ar.</p>
+      </div>
+      <div class="s-row">
+        <div class="card s-card trig rv" id="sCard" aria-hidden="true">
+          <div class="s-top"><span class="fi"><svg><use href="#i-chat"/></svg></span><div><b>Respostas em até 2h úteis</b><small>Texto, áudio, foto ou print.</small></div></div>
+          <div class="plane" id="plane">
+            <div class="g g1"></div>
+            <div class="g g2"></div>
+            <div class="g g3"></div>
+            <div class="g g4"></div>
+            <div class="g g5"></div>
+            <div class="g g6"></div>
+            <div class="s3d">
+              <div class="r"><b>Novo pedido</b><svg><use href="#i-wa"/></svg></div>
+              <div class="t">2 bolos de pote · 16h</div>
+              <div class="p">R$ 24,00</div>
+              <svg class="wv" viewBox="0 0 110 40"><path pathLength="1" d="M2 30 C14 30 16 12 28 14 S44 34 56 26 S72 4 84 10 S100 26 108 20" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="sup-blocks">
+          <div class="card sup glow-hover rv">
+            <div class="kicker"><i></i>Online</div>
+            <h3>Suporte pelo WhatsApp</h3>
+            <p>Um único canal para qualquer dúvida, sem sistema de chamados nem espera.</p>
+            <ul class="checks">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Primeira resposta em até 2 horas úteis</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Urgências (site fora do ar) atendidas em até 1 hora útil</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aceitamos áudio, foto e print</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Backup, monitoramento e pequenas alterações todo mês</li>
+            </ul>
+          </div>
+          <div class="card sup pres glow-hover rv" data-d=".08s">
+            <div class="kicker"><i></i>Presencial</div>
+            <h3>Visita na sua empresa</h3>
+            <p>Algumas coisas se resolvem melhor pessoalmente, e a gente vai até você.</p>
+            <ul class="checks">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Visita de implantação incluída nos pacotes em Agudos</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Treinamento da sua equipe no seu próprio computador</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Bauru: visitas às terças e quintas à tarde</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Plano com 1 visita por mês para quem quer acompanhamento</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACOTES -->
+  <section id="pacotes">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="label">Pacotes</span>
+        <h2>Escolha o ponto de partida</h2>
+        <p class="lead">Os valores são fechados e a mensalidade inclui hospedagem, suporte e manutenção. Se nenhum pacote servir, montamos uma proposta sob medida.</p>
+      </div>
+
+      <div class="finder rv" role="group" aria-labelledby="finderTitle">
+        <strong id="finderTitle">O que você precisa?</strong>
+        <div class="chips" id="finder">
+          <label class="chip"><input type="checkbox" value="google"><span class="tick"><svg><use href="#i-check"/></svg></span>Aparecer no Google</label>
+          <label class="chip"><input type="checkbox" value="contatos"><span class="tick"><svg><use href="#i-check"/></svg></span>Receber contatos</label>
+          <label class="chip"><input type="checkbox" value="paginas"><span class="tick"><svg><use href="#i-check"/></svg></span>Site com várias páginas</label>
+          <label class="chip"><input type="checkbox" value="vender"><span class="tick"><svg><use href="#i-check"/></svg></span>Vender online</label>
+          <label class="chip"><input type="checkbox" value="sistema"><span class="tick"><svg><use href="#i-check"/></svg></span>Agenda, estoque ou pedidos</label>
+        </div>
+        <div class="finder-out" id="finderOut" aria-live="polite">Marque as opções e indicamos um pacote.</div>
+      </div>
+
+      <div class="plans-bar rv">
+        <p>Investimento único + mensalidade com hospedagem e suporte.</p>
+        <div class="seg" id="billing" role="group" aria-label="Forma de pagamento da mensalidade">
+          <span class="thumb" aria-hidden="true"></span>
+          <button type="button" aria-pressed="true" data-mode="mensal">Mensal</button>
+          <button type="button" aria-pressed="false" data-mode="anual">Anual <span class="save">−10%</span></button>
+        </div>
+      </div>
+
+      <div class="plans">
+        <article class="card plan glow-hover rv" data-plan="vitrine">
+          <div class="tags"><span class="ptag rec">Recomendado</span></div>
+          <h3>Vitrine</h3>
+          <p class="for">Para quem precisa aparecer no Google e receber contatos</p>
+          <div class="from">investimento</div>
+          <div class="price" data-count="1490" data-prefix="R$ ">R$ 1.490</div>
+          <div class="monthly"><span data-monthly="99">R$ 99</span><small>/mês</small></div>
+          <ul>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Site de 1 página, responsivo</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Botão de WhatsApp e formulário</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Google Meu Negócio configurado</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Domínio .com.br, SSL e hospedagem</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>1 visita de implantação em Agudos</li>
+          </ul>
+          <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VITRINE da ConectaByte.">Quero o Vitrine <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="prazo">Entrega em 7 dias úteis</p>
+        </article>
+        <article class="card plan pop rv" data-d=".06s" data-plan="presenca">
+          <span class="glow-b" aria-hidden="true"></span>
+          <div class="tags"><span class="ptag">Mais escolhido</span><span class="ptag rec">Recomendado</span></div>
+          <h3>Presença</h3>
+          <p class="for">Para empresas que querem credibilidade e mais clientes</p>
+          <div class="from">investimento</div>
+          <div class="price" data-count="3200" data-prefix="R$ ">R$ 3.200</div>
+          <div class="monthly"><span data-monthly="149">R$ 149</span><small>/mês</small></div>
+          <ul>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Até 6 páginas, com galeria e blog</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>SEO local e Google Analytics</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Integração com Instagram e WhatsApp</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>3 e-mails profissionais</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>2 rodadas de ajustes e treinamento de 1 hora</li>
+          </ul>
+          <a class="btn btn-primary btn-block" href="#" data-wa="Olá! Tenho interesse no pacote PRESENÇA da ConectaByte.">Quero o Presença <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="prazo">Entrega em 14 dias</p>
+        </article>
+        <article class="card plan glow-hover rv" data-d=".12s" data-plan="vendas">
+          <div class="tags"><span class="ptag rec">Recomendado</span></div>
+          <h3>Vendas</h3>
+          <p class="for">Para lojas, doceiras, restaurantes e distribuidores</p>
+          <div class="from">investimento</div>
+          <div class="price" data-count="4900" data-prefix="R$ ">R$ 4.900</div>
+          <div class="monthly"><span data-monthly="199">R$ 199</span><small>/mês</small></div>
+          <ul>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Catálogo ou loja com carrinho</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Pedido pelo WhatsApp ou Pix e cartão</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Painel para cadastrar produtos</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Até 100 produtos cadastrados por nós</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Treinamento da equipe</li>
+          </ul>
+          <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Tenho interesse no pacote VENDAS da ConectaByte.">Quero o Vendas <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="prazo">Entrega em 21 dias</p>
+        </article>
+        <article class="card plan glow-hover rv" data-d=".18s" data-plan="sistema">
+          <div class="tags"><span class="ptag rec">Recomendado</span></div>
+          <h3>Sob medida</h3>
+          <p class="for">Para quem ainda controla agenda, estoque ou pedidos no papel</p>
+          <div class="from">a partir de</div>
+          <div class="price" data-count="6500" data-prefix="R$ ">R$ 6.500</div>
+          <div class="monthly"><span data-monthly="299">R$ 299</span><small>/mês</small></div>
+          <ul>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Diagnóstico (R$ 600, abatido se fechar)</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Escopo e protótipo antes de programar</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Desenvolvimento em etapas</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>Migração de dados e treinamento</li>
+            <li><i><svg aria-hidden="true"><use href="#i-check"/></svg></i>30 dias de garantia</li>
+          </ul>
+          <a class="btn btn-ghost btn-block" href="#" data-wa="Olá! Quero conversar sobre um SISTEMA SOB MEDIDA com a ConectaByte.">Agendar diagnóstico <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="prazo">De 30 a 60 dias</p>
+        </article>
+      </div>
+
+      <div class="extras rv">
+        <div class="extra"><b>Suporte WhatsApp</b><span class="v">R$ 149/mês</span><p>Horário comercial, 1 alteração simples por mês, monitoramento e backup. Vale também para sites de terceiros.</p></div>
+        <div class="extra"><b>Suporte Presencial</b><span class="v">R$ 349/mês</span><p>Tudo do plano WhatsApp, mais 1 visita por mês e até 5 horas de serviço.</p></div>
+        <div class="extra"><b>Visita avulsa</b><span class="v">R$ 120/hora</span><p>Atendimento na sua empresa em Agudos.</p></div>
+        <div class="extra"><b>Fora de Agudos</b><span class="v">a partir de R$ 80</span><p>Taxa de deslocamento por visita para Bauru e demais cidades.</p></div>
+      </div>
+      <p class="terms">10% de desconto quando você indica um cliente que fecha · taxas do meio de pagamento por conta do cliente</p>
+    </div>
+  </section>
+
+  <!-- CLIENTES FUNDADORES -->
+  <section class="pt-0" id="fundadores">
+    <div class="wrap">
+      <div class="card pilot rv">
+        <div>
+          <span class="label">Lançamento</span>
+          <h2>Seja um dos 3 clientes fundadores</h2>
+          <p>Estamos abrindo <strong>3 vagas com 40% de desconto</strong> para empresas que topem gravar um depoimento e deixar o projeto aparecer no nosso portfólio.</p>
+        </div>
+        <div class="pilot-side">
+          <div class="seats" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="seats-label">3 de 3 vagas disponíveis</div>
+          <a class="btn btn-primary btn-block" href="#" data-wa="Olá! Quero saber sobre as vagas de cliente fundador com 40% de desconto." data-magnetic>Quero uma vaga <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODELOS -->
+  <section class="pt-0" id="modelos">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="label">Modelos</span>
+        <h2>Um site pensado para cada negócio</h2>
+        <p class="lead">Adaptamos o projeto à sua marca, aos seus produtos e à sua cidade.</p>
+      </div>
+      <div class="ports">
+        <a class="port rv" href="#" data-wa="Olá! Gostei do modelo de site para doceria da ConectaByte.">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="d-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7F0E8"/><stop offset="1" stop-color="#E6D9CB"/></linearGradient>
+              <linearGradient id="d-body" x1="0" x2="1"><stop offset="0" stop-color="#FBE3C8"/><stop offset=".55" stop-color="#F2C9A0"/><stop offset="1" stop-color="#D99A68"/></linearGradient>
+              <linearGradient id="d-top" x1="0" x2="1"><stop offset="0" stop-color="#FB923C"/><stop offset="1" stop-color="#C2410C"/></linearGradient>
+              <radialGradient id="d-sh"><stop offset="0" stop-color="#6B4C33" stop-opacity=".32"/><stop offset="1" stop-color="#6B4C33" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#d-bg)"/>
+            <circle cx="330" cy="120" r="150" fill="#fff" opacity=".4"/>
+            <ellipse cx="200" cy="438" rx="168" ry="40" fill="url(#d-sh)"/>
+            <ellipse cx="200" cy="414" rx="150" ry="38" fill="#fff"/>
+            <ellipse cx="200" cy="409" rx="134" ry="31" fill="#F1ECE6"/>
+            <path d="M90 290 v104 a110 28 0 0 0 220 0 v-104 z" fill="url(#d-body)"/>
+            <path d="M90 344 a110 28 0 0 0 220 0" fill="none" stroke="#E2A877" stroke-width="6"/>
+            <ellipse cx="200" cy="288" rx="113" ry="30" fill="url(#d-top)"/>
+            <g fill="#EA580C"><rect x="96" y="290" width="18" height="40" rx="9"/><rect x="128" y="300" width="18" height="30" rx="9"/><rect x="160" y="305" width="18" height="52" rx="9"/><rect x="196" y="307" width="18" height="34" rx="9"/><rect x="232" y="305" width="18" height="46" rx="9"/><rect x="266" y="300" width="18" height="28" rx="9"/><rect x="290" y="292" width="16" height="38" rx="8"/></g>
+            <ellipse cx="200" cy="283" rx="104" ry="24" fill="#F97316"/>
+            <ellipse cx="176" cy="276" rx="56" ry="8" fill="#FED7AA" opacity=".55"/>
+            <g fill="#FFF7ED"><rect x="150" y="282" width="10" height="4" rx="2" transform="rotate(25 155 284)"/><rect x="236" y="288" width="10" height="4" rx="2" transform="rotate(-30 241 290)"/><rect x="214" y="272" width="10" height="4" rx="2" transform="rotate(60 219 274)"/><rect x="128" y="292" width="10" height="4" rx="2" transform="rotate(-10 133 294)"/></g>
+            <path d="M201 244 q6 -26 26 -34" fill="none" stroke="#4B3A2A" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="200" cy="262" r="22" fill="#B91C1C"/>
+            <circle cx="192" cy="254" r="6" fill="#FECACA" opacity=".85"/>
+            <circle cx="88" cy="168" r="9" fill="#FBBF24"/><circle cx="318" cy="214" r="6" fill="#EA580C"/><circle cx="120" cy="104" r="5" fill="#EA580C"/>
+          </svg>
+          <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+          <span class="cap"><b>Doceria</b><small><span>Cardápio online e pedido pelo WhatsApp</span></small></span>
+        </a>
+        <a class="port rv" data-d=".08s" href="#" data-wa="Olá! Gostei do modelo de site para clínica da ConectaByte.">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="c-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E1E9ED"/><stop offset="1" stop-color="#C3D0D7"/></linearGradient>
+              <radialGradient id="c-sh"><stop offset="0" stop-color="#2C3E4A" stop-opacity=".3"/><stop offset="1" stop-color="#2C3E4A" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#c-bg)"/>
+            <circle cx="70" cy="110" r="140" fill="#fff" opacity=".35"/>
+            <ellipse cx="200" cy="452" rx="150" ry="30" fill="url(#c-sh)"/>
+            <g transform="rotate(-8 200 300)">
+              <rect x="86" y="196" width="230" height="230" rx="28" fill="#fff"/>
+              <path d="M86 224 a28 28 0 0 1 28 -28 h174 a28 28 0 0 1 28 28 v32 h-230z" fill="#EA580C"/>
+              <rect x="134" y="180" width="12" height="34" rx="6" fill="#1F2937"/><rect x="256" y="180" width="12" height="34" rx="6" fill="#1F2937"/>
+              <g fill="#D7DEE3"><circle cx="124" cy="290" r="9"/><circle cx="164" cy="290" r="9"/><circle cx="204" cy="290" r="9"/><circle cx="244" cy="290" r="9"/><circle cx="284" cy="290" r="9"/><circle cx="124" cy="330" r="9"/><circle cx="164" cy="330" r="9"/><circle cx="244" cy="330" r="9"/><circle cx="284" cy="330" r="9"/><circle cx="124" cy="370" r="9"/><circle cx="164" cy="370" r="9"/><circle cx="204" cy="370" r="9"/><circle cx="244" cy="370" r="9"/></g>
+              <rect x="186" y="312" width="36" height="36" rx="10" fill="#EA580C"/>
+              <path d="M195 330 l7 7 l12 -13" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <circle cx="304" cy="176" r="50" fill="#fff"/>
+            <rect x="296" y="150" width="16" height="52" rx="5" fill="#EA580C"/><rect x="278" y="168" width="52" height="16" rx="5" fill="#EA580C"/>
+            <rect x="60" y="430" width="120" height="44" rx="22" fill="#fff"/>
+            <circle cx="84" cy="452" r="8" fill="#4ADE80"/><text x="100" y="458" font-family="Inter, sans-serif" font-size="17" font-weight="600" fill="#1F2937">09:30</text>
+          </svg>
+          <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+          <span class="cap"><b>Clínica</b><small><span>Agendamento online e mapa de acesso</span></small></span>
+        </a>
+        <a class="port rv" data-d=".16s" href="#" data-wa="Olá! Gostei do modelo de site para oficina da ConectaByte.">
+          <svg class="art" viewBox="0 0 400 580" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="o-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFEDE6"/><stop offset="1" stop-color="#D9D6CB"/></linearGradient>
+              <linearGradient id="o-metal" x1="0" x2="1"><stop offset="0" stop-color="#F3F4F6"/><stop offset=".5" stop-color="#C9CDD4"/><stop offset="1" stop-color="#9CA3AF"/></linearGradient>
+              <radialGradient id="o-sh"><stop offset="0" stop-color="#3B3A33" stop-opacity=".3"/><stop offset="1" stop-color="#3B3A33" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="580" fill="url(#o-bg)"/>
+            <circle cx="320" cy="90" r="130" fill="#fff" opacity=".4"/>
+            <ellipse cx="200" cy="450" rx="160" ry="30" fill="url(#o-sh)"/>
+            <g transform="translate(200 300)">
+              <circle r="104" fill="none" stroke="#1F2430" stroke-width="36" stroke-dasharray="22.3 18.5"/>
+              <circle r="92" fill="#2A303C"/>
+              <circle r="88" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="2"/>
+              <circle r="40" fill="#EA580C"/>
+              <circle r="40" fill="none" stroke="#FB923C" stroke-width="3"/>
+              <circle r="16" fill="#1F2430"/>
+            </g>
+            <g transform="rotate(-38 200 300)">
+              <rect x="186" y="150" width="28" height="250" rx="14" fill="url(#o-metal)"/>
+              <path d="M200 96 a46 46 0 1 1 -0.1 0 z M186 92 h28 v40 h-28 z" fill="url(#o-metal)" fill-rule="evenodd"/>
+              <circle cx="200" cy="138" r="22" fill="#EFEDE6"/>
+              <rect x="190" y="96" width="20" height="44" fill="#EFEDE6"/>
+            </g>
+            <g fill="#1F2430"><polygon points="74,180 86,173 98,180 98,194 86,201 74,194"/><polygon points="314,420 324,414 334,420 334,432 324,438 314,432"/></g>
+            <circle cx="330" cy="200" r="8" fill="#FBBF24"/><circle cx="70" cy="420" r="6" fill="#EA580C"/>
+          </svg>
+          <span class="go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+          <span class="cap"><b>Oficina</b><small><span>Orçamento online e ordem de serviço</span></small></span>
+        </a>
+      </div>
+      <p class="port-note rv">Ilustrações de exemplo. Cada projeto é feito com a identidade da sua empresa.</p>
+    </div>
+  </section>
+
+  <!-- PROCESSO -->
+  <section class="pt-0" id="como-funciona">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="label">Como funciona</span>
+        <h2>Do primeiro “oi” ao site no ar</h2>
+        <p class="lead">Seguimos um processo claro e você acompanha cada etapa.</p>
+      </div>
+      <ol class="steps" id="steps">
+        <li class="step rv"><div class="dot">1</div><h3>Contato</h3><p>Você chama no WhatsApp e respondemos no mesmo dia.</p></li>
+        <li class="step rv" data-d=".06s"><div class="dot">2</div><h3>Diagnóstico</h3><p>Conversa de 30 a 45 min na sua empresa ou por vídeo.</p></li>
+        <li class="step rv" data-d=".12s"><div class="dot">3</div><h3>Proposta</h3><p>Escopo, prazo e valor em até 2 dias, com assinatura digital.</p></li>
+        <li class="step rv" data-d=".18s"><div class="dot">4</div><h3>Conteúdo</h3><p>Juntamos logo, fotos e textos com um checklist simples.</p></li>
+        <li class="step rv" data-d=".24s"><div class="dot">5</div><h3>Desenvolvimento</h3><p>Você acompanha tudo por um link de prévia e aprova.</p></li>
+        <li class="step rv" data-d=".3s"><div class="dot">6</div><h3>Entrega e suporte</h3><p>Publicamos, treinamos sua equipe e seguimos juntos.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- EQUIPE -->
+  <section id="equipe">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="label">O time por trás</span>
+        <h2>Quem vai cuidar do seu projeto</h2>
+        <p class="lead">A ConectaByte tem dois sócios, e você fala direto com quem faz.</p>
+      </div>
+      <div class="team-grid">
+        <article class="card member glow-hover rv">
+          <div class="avatar" aria-hidden="true">GA</div>
+          <div>
+            <h3>Giovanni Anicezio Andrade</h3>
+            <div class="role">Sócio · Direção técnica e produto</div>
+            <p>Estudante de Ciência da Computação, cuida da arquitetura, do desenvolvimento, da entrega e da segurança dos projetos. Já desenvolveu sistemas de agendamento, catálogos com carrinho integrado a Pix e cartão, e painéis de gestão sob medida para pequenos negócios.</p>
+            <div class="skills"><span>Desenvolvimento</span><span>Sistemas</span><span>Segurança</span><span>Qualidade</span></div>
+          </div>
+        </article>
+        <article class="card member glow-hover rv" data-d=".08s">
+          <div class="avatar" aria-hidden="true">AL</div>
+          <div>
+            <h3>Anthony Gabriel Schirato Lourenço</h3>
+            <div class="role">Sócio · Direção comercial e relacionamento</div>
+            <p>Estudante de Ciência da Computação, cuida de você do primeiro contato ao pós-venda e é especialista em plataformas e eventos digitais.</p>
+            <div class="skills"><span>Atendimento</span><span>Propostas</span><span>Eventos digitais</span><span>Pós-venda</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGIÃO -->
+  <section class="pt-0" id="regiao">
+    <div class="wrap region-grid">
+      <div class="rv">
+        <span class="label">Onde atendemos</span>
+        <h2>De Agudos para toda a região</h2>
+        <p class="lead">O atendimento online funciona em qualquer lugar, e a visita presencial cobre as cidades abaixo. Passe o mouse para ver no mapa.</p>
+        <ul class="cities" id="cities">
+          <li class="city" data-city="agudos"><span class="dot dot-1"></span><span><b>Agudos</b><small>Nossa base. A visita de implantação já vem nos pacotes.</small></span></li>
+          <li class="city" data-city="bauru"><span class="dot dot-2"></span><span><b>Bauru</b><small>Visitas agendadas às terças e quintas à tarde.</small></span></li>
+          <li class="city" data-city="lencois pederneiras piratininga"><span class="dot dot-3"></span><span><b>Lençóis Paulista · Pederneiras · Piratininga</b><small>Atendimento por vídeo e WhatsApp, com visita na implantação e nos planos presenciais.</small></span></li>
+        </ul>
+      </div>
+      <div class="card map rv" data-d=".1s" role="img" aria-label="Mapa esquemático: Agudos no centro, ligada a Bauru, Pederneiras, Lençóis Paulista e Piratininga">
+        <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#262B36"/></pattern></defs>
+          <rect width="480" height="380" rx="12" fill="url(#dots)"/>
+          <g fill="none" stroke="#3A404D" stroke-width="1.5" stroke-dasharray="5 6">
+            <path class="route" data-city="bauru" d="M290 200 L160 150"/>
+            <path class="route" data-city="pederneiras" d="M290 200 L300 70"/>
+            <path class="route" data-city="lencois" d="M290 200 L400 290"/>
+            <path class="route" data-city="piratininga" d="M160 150 L80 250"/>
+          </g>
+          <g font-family="Inter, sans-serif" font-size="13" fill="#B4B9C4">
+            <g class="node" data-city="bauru"><circle cx="160" cy="150" r="8" fill="#F8FAFC"/></g>
+            <text x="160" y="130" text-anchor="middle" font-weight="600" fill="#F5F6F8">Bauru</text>
+            <g class="node" data-city="pederneiras"><circle cx="300" cy="70" r="6" fill="#6B7280"/></g>
+            <text x="300" y="50" text-anchor="middle">Pederneiras</text>
+            <g class="node" data-city="lencois"><circle cx="400" cy="290" r="6" fill="#6B7280"/></g>
+            <text x="400" y="318" text-anchor="middle">Lençóis Paulista</text>
+            <g class="node" data-city="piratininga"><circle cx="80" cy="250" r="6" fill="#6B7280"/></g>
+            <text x="80" y="278" text-anchor="middle">Piratininga</text>
+            <text x="222" y="164" text-anchor="middle" font-size="11" fill="#828898" transform="rotate(21 222 164)">~25 km</text>
+            <circle class="pulse" cx="290" cy="200" r="12" fill="#EA580C"/>
+            <g class="node" data-city="agudos"><circle cx="290" cy="200" r="11" fill="#EA580C"/><circle cx="290" cy="200" r="4" fill="#fff"/></g>
+            <text x="290" y="234" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="600" font-size="15" fill="#FFFFFF">Agudos</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pt-0" id="duvidas">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="label">Dúvidas frequentes</span>
+        <h2>Perguntas que todo lojista faz</h2>
+      </div>
+      <div class="faq rv">
+        <details><summary>O site e o domínio ficam no meu nome?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Sim. O domínio é registrado no nome da sua empresa, o conteúdo é seu e você recebe a documentação do projeto. Ninguém fica preso à ConectaByte.</p></div></details>
+        <details><summary>Como é feito o pagamento?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Você paga 50% na aprovação da proposta e 50% na entrega. Os pacotes Vendas e Sob Medida podem ser divididos em até 3 parcelas. A mensalidade começa depois que o site vai ao ar e pode ser paga por Pix ou boleto, com 10% de desconto no plano anual.</p></div></details>
+        <details><summary>O que a mensalidade inclui?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Hospedagem, certificado de segurança (SSL), backup, monitoramento, atualizações e suporte pelo WhatsApp em horário comercial, com pequenas alterações todo mês.</p></div></details>
+        <details><summary>Já tenho um site feito por outra pessoa. Vocês dão suporte?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Sim. Os planos de Suporte WhatsApp (R$ 149/mês) e Suporte Presencial (R$ 349/mês) também valem para sites feitos por terceiros.</p></div></details>
+        <details><summary>Vocês atendem fora de Agudos?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Atendemos. Em Bauru, as visitas são agendadas às terças e quintas à tarde. Em Lençóis Paulista, Pederneiras e Piratininga, o atendimento é por vídeo e WhatsApp, com visita na implantação. Fora de Agudos há uma taxa de deslocamento a partir de R$ 80.</p></div></details>
+        <details><summary>E se aparecer um erro depois da entrega?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>Todo projeto tem 30 dias de garantia, e corrigimos qualquer erro sem custo. Alterações fora do escopo combinado são orçadas à parte, sempre antes de começar.</p></div></details>
+        <details><summary>Qual é o horário de atendimento?<span class="plus" aria-hidden="true"></span></summary><div class="faq-a"><p>De segunda a sexta, das 8h às 18h. Aos sábados atendemos só urgências de clientes do plano presencial.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="pt-0 contact" id="contato">
+    <div class="wrap">
+      <div class="cta-panel rv">
+        <div class="contact-grid">
+          <div>
+            <span class="label">Fale com a gente</span>
+            <h2>Vamos colocar sua empresa no topo?</h2>
+            <p class="lead">Conte um pouco sobre o seu negócio e respondemos pelo WhatsApp. O diagnóstico inicial é sem compromisso.</p>
+            <ul class="channels">
+              <li><a class="channel" href="#" data-wa="Olá! Vim pelo site da ConectaByte."><span class="ic"><svg aria-hidden="true"><use href="#i-wa"/></svg></span><span><b>WhatsApp</b><small>Resposta em até 2 horas úteis</small></span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+              <li><button class="channel" type="button" id="copyEmail" data-email="contato@conectabyte.com.br"><span class="ic"><svg aria-hidden="true"><use href="#i-mail"/></svg></span><span><b>contato@conectabyte.com.br</b><small>Clique para copiar o e-mail</small></span><svg class="go" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+              <li><a class="channel" href="https://instagram.com/conectabyte" target="_blank" rel="noopener"><span class="ic"><svg aria-hidden="true"><use href="#i-ig"/></svg></span><span><b>@conectabyte</b><small>Bastidores, dicas e projetos</small></span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+              <li><div class="channel static"><span class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></span><span><b id="openStatus">Seg. a sex., 8h às 18h</b><small>Agudos/SP · atendimento em toda a região</small></span></div></li>
+            </ul>
+          </div>
+
+          <form class="form" id="leadForm" novalidate>
+            <div class="field" id="fNome">
+              <label for="f-nome">Seu nome</label>
+              <input class="input" id="f-nome" name="nome" autocomplete="name" maxlength="80" placeholder="Como podemos te chamar?">
+              <span class="err">Informe seu nome para continuarmos.</span>
+            </div>
+            <div class="field">
+              <label for="f-empresa">Empresa</label>
+              <input class="input" id="f-empresa" name="empresa" autocomplete="organization" maxlength="100" placeholder="Nome do seu negócio">
+            </div>
+            <div class="field full">
+              <label for="f-cidade">Cidade</label>
+              <select class="input" id="f-cidade" name="cidade">
+                <option>Agudos</option><option>Bauru</option><option>Lençóis Paulista</option><option>Pederneiras</option><option>Piratininga</option><option>Outra</option>
+              </select>
+            </div>
+            <div class="field full" role="radiogroup" aria-labelledby="lblInteresse">
+              <span class="lbl" id="lblInteresse">Interesse</span>
+              <div class="chips" id="interesse">
+                <label class="chip"><input type="radio" name="interesse" value="Ainda não sei, quero orientação" checked><span class="tick"><svg><use href="#i-check"/></svg></span>Não sei ainda</label>
+                <label class="chip"><input type="radio" name="interesse" value="Pacote Vitrine" data-plan="vitrine"><span class="tick"><svg><use href="#i-check"/></svg></span>Vitrine</label>
+                <label class="chip"><input type="radio" name="interesse" value="Pacote Presença" data-plan="presenca"><span class="tick"><svg><use href="#i-check"/></svg></span>Presença</label>
+                <label class="chip"><input type="radio" name="interesse" value="Pacote Vendas" data-plan="vendas"><span class="tick"><svg><use href="#i-check"/></svg></span>Vendas</label>
+                <label class="chip"><input type="radio" name="interesse" value="Sistema sob medida" data-plan="sistema"><span class="tick"><svg><use href="#i-check"/></svg></span>Sistema</label>
+                <label class="chip"><input type="radio" name="interesse" value="Suporte para site que já tenho"><span class="tick"><svg><use href="#i-check"/></svg></span>Suporte</label>
+              </div>
+            </div>
+            <div class="field full">
+              <label for="f-msg">Conte rapidamente o que você precisa</label>
+              <textarea class="input" id="f-msg" name="mensagem" maxlength="500" placeholder="Ex.: tenho uma doceria e quero receber encomendas pelo site."></textarea>
+              <span class="counter" id="counter">0/500</span>
+            </div>
+            <div class="field full">
+              <button class="btn btn-primary btn-block" type="submit" id="sendBtn"><svg aria-hidden="true"><use href="#i-wa"/></svg> Enviar pelo WhatsApp</button>
+            </div>
+            <p class="form-note">Os dados informados serão usados para preparar um contato comercial pelo WhatsApp; você revisa e envia a mensagem. <a class="privacy-link" href="privacidade.html">Leia o aviso de privacidade.</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-cta rv">
+      <div class="in">
+        <div>
+          <h2>Seu próximo passo começa aqui.</h2>
+          <p>Conte o que sua empresa precisa e converse direto com a ConectaByte.</p>
+        </div>
+        <a class="btn btn-light" href="#" data-wa="Olá! Vim pelo site da ConectaByte e quero conversar sobre meu projeto.">
+          <svg aria-hidden="true"><use href="#i-wa"/></svg> Chamar no WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="rv">
+        <a class="logo" href="#inicio" aria-label="ConectaByte, voltar ao início"><svg aria-hidden="true"><use href="#logo"/></svg><span>Conecta<b>Byte</b></span></a>
+        <p class="slogan">No topo da sua presença digital.</p>
+      </div>
+      <nav aria-label="Rodapé" class="rv" data-d=".08s">
+        <h6>Navegação</h6>
+        <a href="#servicos">Serviços</a><a href="#pacotes">Pacotes</a><a href="#equipe">Equipe</a><a href="#regiao">Região</a><a href="#duvidas">Dúvidas</a><a href="#contato">Contato</a>
+      </nav>
+    </div>
+    <div class="legal">
+      <span>© <span id="ano">2026</span> ConectaByte · Sites e sistemas · Agudos/SP</span>
+      <span class="privacy-links"><a class="privacy-link" href="privacidade.html">Privacidade e cookies</a><button class="cookie-manage" type="button" data-cookie-settings>Configurar cookies</button></span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" id="waFloat" href="#" data-wa="Olá! Vim pelo site da ConectaByte." aria-label="Conversar no WhatsApp">
+  <svg aria-hidden="true"><use href="#i-wa"/></svg><span>Fale com a gente</span>
+</a>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><svg aria-hidden="true"><use href="#i-check"/></svg><span></span></div>
+
+<div class="cookie-banner" id="cookieBanner" role="region" aria-label="Preferências de cookies" hidden>
+  <h2>Sua privacidade importa</h2>
+  <p>Este site não usa cookies de publicidade ou analytics. Guardamos apenas sua escolha neste navegador. <a href="privacidade.html">Saiba mais na política de privacidade.</a></p>
+  <div class="cookie-actions"><button class="btn btn-primary" type="button" data-cookie-save>Entendi</button><button class="btn btn-ghost" type="button" data-cookie-settings>Configurar</button></div>
+</div>
+</body>
+</html>
