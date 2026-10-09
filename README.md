@@ -1,5 +1,5 @@
 # ConectaByte
-
+// Tony lindo 
 Landing page institucional da ConectaByte, desenvolvida para apresentar serviços digitais a empresas de Agudos e região. O site reúne informações sobre soluções, pacotes, processo de atendimento e canais de contato em uma experiência responsiva e sem dependências de runtime.
 
 ## Visão geral
