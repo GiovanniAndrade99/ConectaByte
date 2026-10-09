@@ -32,7 +32,6 @@
   $$('[data-h]').forEach(el => { el.style.height = clamp(+el.dataset.h, 0, 100) + '%'; });
 
   const waLink = msg => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
-  const brl = n => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
   const fmt = (v, dec) => v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
 
   /* ---------- Cookies ---------- */
@@ -293,32 +292,6 @@
     });
     new IntersectionObserver(([en]) => { if (en.isIntersecting) run(); else { clearInterval(timer); timer = null; } }, { threshold: .3 }).observe($('#fCard'));
   })();
-
-  /* ---------- Mensalidade mensal x anual ---------- */
-  const seg2 = $('#billing');
-  function animateValue(el, from, to) {
-    if (reduce) { el.textContent = brl(to); return; }
-    const t0 = performance.now(), dur = 500;
-    const step = t => {
-      const p = Math.min((t - t0) / dur, 1), v = from + (to - from) * (1 - Math.pow(1 - p, 3));
-      el.textContent = brl(p < 1 ? Math.round(v) : to);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
-  $$('button', seg2).forEach(b => b.addEventListener('click', () => {
-    const annual = b.dataset.mode === 'anual';
-    if (seg2.classList.contains('right') === annual) return;
-    seg2.classList.toggle('right', annual);
-    $$('button', seg2).forEach(x => x.setAttribute('aria-pressed', x === b));
-    $$('[data-monthly]').forEach(el => {
-      const base = +el.dataset.monthly;
-      const to = annual ? Math.round(base * .9 * 100) / 100 : base;
-      const from = annual ? base : Math.round(base * .9 * 100) / 100;
-      animateValue(el, from, to);
-    });
-    $$('.plan .monthly small').forEach(s => (s.textContent = annual ? '/mês no plano anual' : '/mês'));
-  }));
 
   /* ---------- Assistente: qual pacote? ---------- */
   const finderOut = $('#finderOut');
