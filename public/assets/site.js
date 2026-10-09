@@ -241,8 +241,12 @@
   const words = ['lojas', 'padarias', 'clínicas', 'restaurantes', 'indústrias', 'escritórios'];
   const rot = $('#rotator');
   let wi = 0;
-  if (!reduce) setInterval(() => {
+  if (!reduce && rot) setInterval(() => {
+    // Limpa sobras de ciclos anteriores (ex.: aba ficou em segundo plano e o
+    // onfinish não rodou a tempo) para não acumular spans sobrepostos.
+    while (rot.children.length > 1) rot.lastElementChild.remove();
     const old = rot.firstElementChild, next = document.createElement('span');
+    old.getAnimations().forEach(a => a.cancel());
     next.textContent = words[wi = (wi + 1) % words.length];
     rot.appendChild(next);
     old.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-100%)', opacity: 0 }], { duration: 450, easing: 'cubic-bezier(.7,0,.2,1)' }).onfinish = () => old.remove();
