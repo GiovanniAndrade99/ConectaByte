@@ -3,6 +3,9 @@
 (function () {
   var d = document.documentElement;
   d.classList.add('js');
+  // Rede de seguranca: se o site.js nao carregar ou quebrar antes de terminar de
+  // iniciar, tira as classes que escondem o conteudo e o site aparece sem animacoes.
+  window.__cbFallback = setTimeout(function () { d.classList.remove('intro', 'js'); }, 5000);
   try {
     var q = location.search;
     var forced = /[?&]intro=1/.test(q);
@@ -16,8 +19,6 @@
     if (play) {
       d.classList.add('intro');
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-      // Rede de seguranca: se o script principal falhar, o site aparece mesmo assim.
-      window.__cbIntroFallback = setTimeout(function () { d.classList.remove('intro'); }, 5000);
     }
   } catch (e) { d.classList.remove('intro'); }
 })();

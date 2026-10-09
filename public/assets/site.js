@@ -379,6 +379,7 @@
   nome.addEventListener('input', () => fNome.classList.remove('invalid'));
   form.addEventListener('submit', e => {
     e.preventDefault();
+    if (sendBtn.classList.contains('loading')) return;
     if (!nome.value.trim()) {
       fNome.classList.remove('invalid'); void fNome.offsetWidth; fNome.classList.add('invalid');
       nome.focus();
@@ -401,6 +402,7 @@
       toast('Abrindo o WhatsApp…');
     }, reduce ? 0 : 700);
   });
+  sendBtn.disabled = false;
 
   $('#ano').textContent = now.getFullYear();
 
@@ -410,7 +412,6 @@
      ===================================================================== */
   function runIntro(done) {
     if (!html.classList.contains('intro')) { done(); return; }
-    clearTimeout(window.__cbIntroFallback);
     scrollTo(0, 0);
 
     const arc = $('#heroArc');
@@ -530,5 +531,6 @@
   }
 
   onScroll();
+  clearTimeout(window.__cbFallback);
   runIntro(() => { startObservers(); onScroll(); showCookies(); });
 })();

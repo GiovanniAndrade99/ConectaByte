@@ -17,10 +17,12 @@ A página inicial apresenta serviços, diferenciais, suporte, pacotes, processo 
 Não é necessário instalar dependências. Na raiz do repositório, inicie um servidor HTTP local:
 
 ```powershell
-python -m http.server 8000 --directory public
+python -m http.server 8000 --bind 127.0.0.1 --directory public
 ```
 
-Depois, acesse <http://localhost:8000>. Se o comando `python` não estiver disponível, use `py -m http.server 8000 --directory public` no Windows.
+Depois, acesse <http://localhost:8000>. Se o comando `python` não estiver disponível, use `py -m http.server 8000 --bind 127.0.0.1 --directory public` no Windows.
+
+Mantenha o `--bind 127.0.0.1`: sem ele o servidor escuta em todas as interfaces de rede e qualquer pessoa na mesma rede (Wi-Fi de café, escritório) consegue abrir os arquivos servidos.
 
 Sirva o conteúdo por HTTP em vez de abrir os arquivos diretamente no navegador. Isso permite validar os caminhos dos recursos e o comportamento da página como em uma hospedagem real.
 
