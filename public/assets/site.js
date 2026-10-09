@@ -366,12 +366,22 @@
   });
 
   /* ---------- Aberto agora? ---------- */
-  const now = new Date(), wd = now.getDay(), hr = now.getHours();
-  const open = wd >= 1 && wd <= 5 && hr >= 8 && hr < 18;
+  // Sempre no horario de Agudos (Brasilia), nao no relogio do visitante
+  const brt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Sao_Paulo', weekday: 'short', hour: 'numeric', hourCycle: 'h23' });
+  const isOpen = () => {
+    const p = Object.fromEntries(brt.formatToParts(new Date()).map(x => [x.type, x.value]));
+    return !/^(Sat|Sun)$/.test(p.weekday) && +p.hour >= 8 && +p.hour < 18;
+  };
   const openTag = document.createElement('span');
-  openTag.className = open ? 'open-now' : 'closed-now';
-  openTag.textContent = open ? 'aberto agora' : 'fechado agora';
+  const renderOpen = () => {
+    const open = isOpen();
+    openTag.className = open ? 'open-now' : 'closed-now';
+    openTag.textContent = open ? 'aberto agora' : 'fechado agora';
+  };
+  renderOpen();
   $('#openStatus').replaceChildren('Seg. a sex., 8h às 18h · ', openTag);
+  setInterval(renderOpen, 30000);
+  const now = new Date();
 
   /* ---------- Formulario -> WhatsApp ---------- */
   const form = $('#leadForm'), nome = $('#f-nome'), fNome = $('#fNome'), msg = $('#f-msg'), counter = $('#counter'), sendBtn = $('#sendBtn');
