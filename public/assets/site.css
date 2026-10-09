@@ -576,8 +576,8 @@ header.top.hide { transform: translateY(-100%); }
 .plan .for { font-size: .88rem; color: var(--ink-3); min-height: 2.9em; margin-bottom: 20px; }
 .plan .from { font-size: .76rem; color: var(--ink-3); margin-bottom: 4px; text-transform: lowercase; }
 .price { font: 600 clamp(2rem, 2.6vw, 2.5rem)/1 Poppins, sans-serif; letter-spacing: -.04em; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
-.monthly { font-size: .9rem; font-weight: 600; color: var(--orange-3); margin-bottom: 22px; font-variant-numeric: tabular-nums; }
-.monthly small { font-weight: 400; color: var(--ink-3); }
+.monthly { font-size: .9rem; font-weight: 400; color: var(--ink-3); margin-bottom: 22px; font-variant-numeric: tabular-nums; }
+.monthly b { font-weight: 600; color: var(--orange-3); }
 .plan ul { list-style: none; padding: 22px 0 0; margin: 0 0 24px; border-top: 1px solid var(--line); display: grid; gap: 12px; font-size: .88rem; flex: 1; }
 .plan li { display: flex; gap: 10px; align-items: flex-start; color: #CDD1D9; }
 .plan li i { width: 20px; height: 20px; flex: none; border-radius: 6px; display: grid; place-items: center; background: linear-gradient(180deg, #F47A2E, #C2410C); margin-top: 1px; }
@@ -588,6 +588,16 @@ header.top.hide { transform: translateY(-100%); }
 .extra b { display: block; font: 600 .95rem Poppins, sans-serif; }
 .extra .v { display: block; margin: 4px 0 8px; font: 600 1.05rem Poppins, sans-serif; color: var(--orange-3); font-variant-numeric: tabular-nums; }
 .extra p { margin: 0; font-size: .85rem; color: var(--ink-3); }
+.extra-wide { grid-column: 1 / -1; display: flex; align-items: center; gap: 36px; }
+.extra-wide .extra-head { flex: none; padding-right: 32px; border-right: 1px solid var(--line); }
+.extra-wide .extra-head b { font-size: 1.05rem; }
+.extra-wide .extra-head .v { margin: 4px 0 0; }
+.promo-rates { display: grid; gap: 10px; flex: 1; }
+.promo-row { display: flex; align-items: center; gap: 14px; }
+.promo-tag { flex: none; width: 52px; font: 600 .78rem Inter, sans-serif; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); }
+.promo-opt { display: flex; align-items: baseline; gap: 6px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.03); box-shadow: inset 0 0 0 1px var(--line); font-variant-numeric: tabular-nums; }
+.promo-opt b { font: 600 .85rem Poppins, sans-serif; color: var(--orange-3); }
+.promo-opt small { font-size: .74rem; color: var(--ink-3); }
 .terms { margin: 22px 0 0; text-align: center; font-size: .85rem; color: var(--ink-3); }
 
 /* ============ Clientes fundadores ============ */
@@ -855,6 +865,9 @@ html.intro .hero-arc .a-sweep, html.intro .hero-arc .a-glow, html.intro .hero-ar
   .plane { left: -6%; top: 170px; transform: rotateX(54deg) rotateZ(-30deg) scale(.8); }
   .sup { padding: 24px 22px; }
   .plans, .extras, .ports { grid-template-columns: 1fr; }
+  .extra-wide { flex-direction: column; align-items: stretch; gap: 16px; }
+  .extra-wide .extra-head { padding-right: 0; padding-bottom: 14px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .promo-row { flex-wrap: wrap; }
   .port { height: 440px; }
   .port .cap small { grid-template-rows: 1fr; opacity: 1; margin-top: 4px; }
   .steps { grid-template-columns: 1fr 1fr; }
